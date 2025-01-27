@@ -1,0 +1,41 @@
+@import "@visual-framework/vf-sass-starter";
+@import "@visual-framework/vf-body";
+@import "@visual-framework/vf-form";
+@import "@visual-framework/vf-card";
+@import "@visual-framework/vf-stack";
+@import "@visual-framework/vf-navigation";
+@import "@visual-framework/vf-hero";
+@import "@visual-framework/vf-list";
+@import "@visual-framework/vf-button";
+@import "@visual-framework/vf-table";
+@import "@visual-framework/vf-u-fullbleed";
+@import "@visual-framework/vf-box";
+@import "@visual-framework/vf-tree";
+@import "@visual-framework/vf-details";
+@import "@visual-framework/embl-grid";
+@import "@visual-framework/vf-section-header";
+@import "@visual-framework/vf-heading";
+@import "@visual-framework/vf-tabs";
+@import "@visual-framework/vf-link";
+@import "@visual-framework/vf-text";
+@import "@visual-framework/vf-divider";
+@import "@visual-framework/vf-progress-indicator";
+@import "@visual-framework/vf-grid";
+@import "@visual-framework/vf-cluster";
+@import "@visual-framework/vf-list";
+@import "@visual-framework/vf-page-header";
+@import "@visual-framework/vf-utility-classes";
+
+@import "@visual-framework/vf-font-plex-sans/index.scss";
+@import "@visual-framework/vf-font-plex-mono/index.scss";
+@import "EBI-Icon-fonts/fonts.css";
+
+body {
+  font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+}
+
+.vf-stack {
+  .embl-grid:last-of-type + .vf-divider {
+    display: none !important;
+  }
+}

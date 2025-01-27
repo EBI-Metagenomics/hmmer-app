@@ -1,0 +1,73 @@
+// components/atoms/Checkbox/index.scss
+.checkbox-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .checkbox {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--vf-color--grey);
+    background-color: var(--vf-ui-color--white);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+  
+    &:hover,
+    &:focus {
+      border-color: var(--vf-color--grey--dark);
+      box-shadow: 0 0 0 0.125rem var(--vf-color--grey--dark);
+    }
+  
+    // Checked state
+    &:checked {
+      background-color: var(--vf-color--blue);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cpath d='M39.94 125a19.88 19.88 0 01-15.53-7.81L2.48 92.26a10 10 0 0115-13.2l20.55 23.39a2.5 2.5 0 003.68.08l81-84.42a10.002 10.002 0 1114.5 13.78l-82.02 86.33A19.41 19.41 0 0139.94 125z' fill='%23fff'/%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 0.75em;
+      border-color: var(--vf-color--blue);
+    }
+  
+    // Indeterminate state
+    &:indeterminate {
+      background-color: var(--vf-color--blue);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Crect x='5' y='11' width='14' height='2' fill='white'/%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 1em;
+      border-color: var(--vf-color--blue);
+    }
+  
+    &:disabled {
+      background-color: var(--vf-color--grey--lightest);
+      border-color: var(--vf-color--grey);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  
+    &--invalid {
+      border-color: var(--vf-color--red);
+    }
+  }
+  
+  // Optional label styles
+  .checkbox-label {
+    margin-left: 8px;
+    color: var(--vf-color--grey--dark);
+    cursor: pointer;
+  
+    .checkbox:disabled + & {
+      color: var(--vf-color--grey);
+      cursor: not-allowed;
+    }
+  }
+  
+  // Optional helper text
+  .checkbox-helper {
+    margin-left: 8px;
+    font-size: 0.875em;
+    color: var(--vf-color--grey);
+  }

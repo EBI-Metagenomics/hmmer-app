@@ -1,0 +1,21 @@
+.vf-progress-indicator {
+  overflow: hidden; // Important for indeterminate animation
+}
+
+.progress-indicator__mark {
+  transition: width 0.3s ease;
+}
+
+.vf-progress-indicator__mark--indeterminate {
+  width: 30%;
+  animation: indeterminate 1.5s infinite ease-in-out;
+}
+
+@keyframes indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
