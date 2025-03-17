@@ -26,7 +26,7 @@ export const TaxonomyFilterInput: React.FC = () => {
 };
 
 const localClient = createClient({
-  baseUrl: import.meta.env.VITE_API_BASE_URL,
+  baseUrl: import.meta.env.VITE_API_URL,
 });
 
 const TaxonomyTree: React.FC = () => {

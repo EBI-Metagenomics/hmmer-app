@@ -1,3 +1,12 @@
-export { AlignmentTable } from "./AlignmentTable";
+export { Annotations } from "./Annotations";
+export { AlignmentView } from "./AlignmentView";
+export { ArchitectureFilter } from "./ArchitectureFilter";
+export { DomainArchitectureList } from "./DomainArchitectureList";
+export { DownloadList } from "./DownloadList";
+export { DistributionGraph } from "./DistributionGraph";
 export { Form } from "./Form";
 export { ResultTable } from "./ResultTable";
+export { SpeciesFilter } from "./SpeciesFilter";
+export { TaxonomyElement } from "./TaxonomyElement";
+export { TaxonomyTable } from "./TaxonomyTable";
+export { TaxonomyTree } from "./TaxonomyTree";

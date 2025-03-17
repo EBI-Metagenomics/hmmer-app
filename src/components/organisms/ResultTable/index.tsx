@@ -1,327 +1,453 @@
-import { Fragment, useState, useMemo } from "react";
+import { Fragment, useState, useMemo, useEffect } from "react";
 import _ from "lodash";
+import { useSearchParams } from "react-router";
 import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getExpandedRowModel,
-  useReactTable,
-  PaginationState,
-  Row,
-  VisibilityState,
+    createColumnHelper,
+    flexRender,
+    getCoreRowModel,
+    getExpandedRowModel,
+    useReactTable,
+    Row,
+    VisibilityState,
+    Table,
 } from "@tanstack/react-table";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import Modal from "react-modal";
 
-import { resultApiGetResultOptions } from "@/client/@tanstack/react-query.gen";
-import { TreeToggleButton } from "@components/atoms";
-import { Pagination } from "@components/molecules";
-import { AlignmentTable } from "@components/organisms";
-import { Hit } from "@/client/types.gen";
+import { TreeToggleButton, HitPosition, Alignment } from "@components/atoms";
+import { Pagination, JobStatus } from "@components/molecules";
+import { Annotations, AlignmentView, SpeciesFilter, ArchitectureFilter, DistributionGraph } from "@components/organisms";
+import { P7Hit, ResultResponseSchema } from "@/client/types.gen";
 
 import "./index.scss";
 
-Modal.setAppElement("#root");
+const columnHelper = createColumnHelper<P7Hit>();
 
-const columnHelper = createColumnHelper<Hit>();
+const columns = [
+    {
+        id: "expander",
+        header: () => null,
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return <TreeToggleButton onClick={row.getToggleExpandedHandler()} isOpen={row.getIsExpanded()} />;
+        },
+        enableHiding: false,
+        maxSize: 10,
+    },
+    {
+        id: "rowNumber",
+        header: "Row",
+        cell: ({ row }: { row: Row<P7Hit> }) => row.index + 1,
+        maxSize: 20,
+    },
+    columnHelper.accessor("metadata.accession", {
+        id: "accession",
+        header: "Target",
+        enableHiding: false,
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return (
+                <a href={(row.original.metadata?.external_link as string) ?? ""} className="vf-link">
+                    {(row.original.metadata?.accession as string) ?? ""}
+                </a>
+            );
+        },
+    }),
+    columnHelper.accessor("metadata.identifier", {
+        id: "identifier",
+        header: "Secondary Accessions & Ids",
+    }),
+    columnHelper.accessor("metadata.description", {
+        id: "description",
+        header: "Description",
+        minSize: 800,
+    }),
+    columnHelper.accessor("metadata.kingdom", {
+        id: "kingdom",
+        header: "Kingdom",
+    }),
+    columnHelper.accessor("metadata.phylum", {
+        id: "phylum",
+        header: "Phylum",
+    }),
+    columnHelper.accessor("metadata.species", {
+        id: "species",
+        header: "Species",
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return (
+                <a href={(row.original.metadata?.taxonomy_link as string) ?? ""} className="vf-link">
+                    {(row.original.metadata?.species as string) ?? ""}
+                </a>
+            );
+        },
+        minSize: 300,
+    }),
+    {
+        id: "structures",
+        header: "Predicted Structures",
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return (
+                <ul className="vf-list vf-list--default | vf-list--tight">
+                    {_.map(row.original.metadata?.structures ?? [], ({ id, external_link }) => (
+                        <li key={id} className="vf-list__item">
+                            <a href={external_link} className="vf-link">
+                                {id}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            );
+        },
+    },
+    {
+        id: "hitPositions",
+        header: "Hit Positions",
+        cell: ({ row }: { row: Row<P7Hit> }) => <HitPosition hit={row.original} />,
+    },
+    {
+        id: "numHits",
+        header: "# Hits",
+        cell: ({ row }: { row: Row<P7Hit> }) => row.original.nreported,
+    },
+    {
+        id: "numSignificantHits",
+        header: "# Significant Hits",
+        cell: ({ row }: { row: Row<P7Hit> }) => row.original.nincluded,
+    },
+    columnHelper.accessor("score", {
+        id: "bitscore",
+        header: "Bit Score",
+        cell: (props) => props.getValue().toFixed(2),
+    }),
+    columnHelper.accessor("evalue", {
+        id: "evalue",
+        header: "E-value",
+        cell: (props) => props.getValue()?.toPrecision(2),
+        enableHiding: false,
+        minSize: 150,
+    }),
+];
 
-const defaultColumns = [
-  {
-    id: "expander",
-    header: () => null,
-    cell: ({ row }: { row: Row<Hit> }) => {
-      return (
-        <TreeToggleButton
-          onClick={row.getToggleExpandedHandler()}
-          isOpen={row.getIsExpanded()}
-        />
-      );
+const hmmscanColumns = [
+    {
+        id: "expander",
+        header: () => null,
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return <TreeToggleButton onClick={row.getToggleExpandedHandler()} isOpen={row.getIsExpanded()} />;
+        },
+        enableHiding: false,
+        maxSize: 10,
     },
-    enableHiding: false,
-  },
-  {
-    id: "rowNumber",
-    header: "Row",
-    cell: ({ row }: { row: Row<Hit> }) => row.index + 1,
-  },
-  columnHelper.accessor("metadata.accession", {
-    id: "accession",
-    header: "Target",
-    enableHiding: false,
-    cell: ({ row }: { row: Row<Hit> }) => {
-      return <a href={row.original.metadata.external_link} className="vf-link">{row.original.metadata.accession}</a>;
+    columnHelper.group({
+        header: "Family",
+        columns: [
+            columnHelper.accessor("metadata.identifier", {
+                id: "identifier",
+                header: "Identifier",
+            }),
+            columnHelper.accessor("metadata.accession", {
+                id: "accession",
+                header: "Accession",
+                enableHiding: false,
+                cell: ({ row }: { row: Row<P7Hit> }) => {
+                    return (
+                        <a href={(row.original.metadata?.external_link as string) ?? ""} className="vf-link">
+                            {(row.original.metadata?.accession as string) ?? ""}
+                        </a>
+                    );
+                },
+            }),
+        ],
+    }),
+    columnHelper.accessor("metadata.clan", {
+        id: "clan",
+        header: "Clan",
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return (
+                <a href={(row.original.metadata?.clan_link as string) ?? ""} className="vf-link">
+                    {(row.original.metadata?.clan as string) ?? ""}
+                </a>
+            );
+        },
+    }),
+    columnHelper.accessor("metadata.description", {
+        id: "description",
+        header: "Description",
+        minSize: 800,
+    }),
+    {
+        id: "start",
+        header: "Start",
+        cell: ({ row }: { row: Row<P7Hit> }) => row.original.domains?.[row.original.best_domain].ienv,
     },
-  }),
-  columnHelper.accessor("metadata.identifier", {
-    id: "identifier",
-    header: "Secondary Accessions & Ids",
-  }),
-  columnHelper.accessor("metadata.description", {
-    id: "description",
-    header: "Description",
-  }),
-  columnHelper.accessor("metadata.kingdom", {
-    id: "kingdom",
-    header: "Kingdom",
-  }),
-  columnHelper.accessor("metadata.phylum", {
-    id: "phylum",
-    header: "Phylum",
-  }),
-  columnHelper.accessor("metadata.species", {
-    id: "species",
-    header: "Species",
-    cell: ({ row }: { row: Row<Hit> }) => {
-      return <a href={row.original.metadata.taxonomy_link} className="vf-link">{row.original.metadata.species}</a>;
+    {
+        id: "end",
+        header: "End",
+        cell: ({ row }: { row: Row<P7Hit> }) => row.original.domains?.[row.original.best_domain].jenv,
     },
-  }),
-  {
-    id: "structures",
-    header: "Predicted Structures",
-    cell: ({ row }: { row: Row<Hit> }) => {
-      return (
-        <ul className="vf-list vf-list--default | vf-list--tight">
-          {_.map(row.original.metadata.structures ?? [], ({id, external_link}) => (
-            <li key={id} className="vf-list__item">
-              <a href={external_link} className="vf-link">{id}</a>
-            </li>
-          ))}
-        </ul>
-      );
-    },
-  },
-  {
-    id: "numHits",
-    header: "# Hits",
-    cell: ({ row }: { row: Row<Hit> }) => row.original.domains.reported.length,
-  },
-  {
-    id: "numSignificantHits",
-    header: "# Significant Hits",
-    cell: ({ row }: { row: Row<Hit> }) => row.original.domains.included.length,
-  },
-  columnHelper.accessor("score", {
-    id: "bitscore",
-    header: "Bit Score",
-    cell: (props) => props.getValue().toFixed(2),
-  }),
-  columnHelper.accessor("evalue", {
-    id: "evalue",
-    header: "E-value",
-    cell: (props) => props.getValue().toPrecision(2),
-    enableHiding: false,
-  }),
+    columnHelper.group({
+        header: "Alignment",
+        columns: [
+            {
+                id: "alignmentStart",
+                header: "Start",
+                cell: ({ row }: { row: Row<P7Hit> }) => row.original.domains?.[row.original.best_domain].iali,
+            },
+            {
+                id: "alignmentEnd",
+                header: "End",
+                cell: ({ row }: { row: Row<P7Hit> }) => row.original.domains?.[row.original.best_domain].jali,
+            },
+        ],
+    }),
+    columnHelper.group({
+        header: "Model",
+        columns: [
+            {
+                id: "modelStart",
+                header: "Start",
+                cell: ({ row }: { row: Row<P7Hit> }) =>
+                    row.original.domains?.[row.original.best_domain].alignment_display.hmmfrom,
+            },
+            {
+                id: "modelEnd",
+                header: "End",
+                cell: ({ row }: { row: Row<P7Hit> }) =>
+                    row.original.domains?.[row.original.best_domain].alignment_display.hmmto,
+            },
+            {
+                id: "modelLength",
+                header: "Length",
+                cell: ({ row }: { row: Row<P7Hit> }) =>
+                    row.original.domains?.[row.original.best_domain].alignment_display.m,
+            },
+        ],
+    }),
+    columnHelper.accessor("score", {
+        id: "bitscore",
+        header: "Bit Score",
+        cell: (props) => props.getValue().toFixed(2),
+    }),
+    columnHelper.group({
+        header: "Domain e-values",
+        columns: [
+            {
+                id: "domainIEvalue",
+                header: "Independent",
+                cell: ({ row }: { row: Row<P7Hit> }) =>
+                    row.original.domains?.[row.original.best_domain].ievalue?.toPrecision(2),
+            },
+            {
+                id: "domainCEvalue",
+                header: "Conditional",
+                cell: ({ row }: { row: Row<P7Hit> }) =>
+                    row.original.domains?.[row.original.best_domain].cevalue?.toPrecision(2),
+            },
+        ],
+    }),
 ];
 
 interface ResultTableProps {
-  id: string;
+    id: string,
+    data?: ResultResponseSchema;
 }
 
-export const ResultTable = ({ id }: ResultTableProps) => {
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 50,
-  });
+export const ResultTable: React.FC<ResultTableProps> = ({ id, data }) => {
+    const [searchParams, setSearchParams] = useSearchParams({
+        page: _.toString(1),
+        pageSize: _.toString(50),
+    });
 
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    rowNumber: false,
-    identifier: false,
-    kingdom: false,
-    phylum: false,
-    structures: false,
-    numHits: false,
-    numSignificantHits: false,
-    bitscore: false,
-  });
+    const page = _.toInteger(searchParams.get("page"));
+    const pageSize = _.toInteger(searchParams.get("pageSize"));
+    const taxonomyIds = searchParams.getAll("taxonomyIds").map(_.toInteger);
+    const architecture = searchParams.get("architectures") || undefined;
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(() => {
+        const storedColumnVisibility = JSON.parse(localStorage.getItem("columnVisibility") ?? "{}");
 
-  const [columns] = useState<typeof defaultColumns>(() => [...defaultColumns]);
+        return {
+            rowNumber: false,
+            identifier: false,
+            kingdom: false,
+            phylum: false,
+            structures: false,
+            hitPositions: false,
+            numHits: false,
+            numSignificantHits: false,
+            bitscore: false,
+            alignmentStart: false,
+            alignmentEnd: false,
+            modelStart: false,
+            modelEnd: false,
+            modelLength: false,
+            ...storedColumnVisibility,
+        };
+    });
 
-  const [columnsOpen, setColumnsOpen] = useState(false);
+    
+    const algo = data?.result?.stats.algo ?? "unknown";
 
-  const { data } = useQuery({
-    ...resultApiGetResultOptions({
-      path: { id: id! },
-      query: {
-        limit: pagination.pageSize,
-        offset: pagination.pageIndex * pagination.pageSize,
-      },
-    }),
-    staleTime: Infinity,
-    placeholderData: keepPreviousData,
-  });
+    const defaultData = useMemo(() => [], []);
 
-  const defaultData = useMemo(() => [], []);
+    const table = useReactTable({
+        data: data?.result?.hits ?? defaultData,
+        columns: algo === "hmmscan" ? hmmscanColumns : columns,
+        getRowCanExpand: (row) => row.original.nincluded > 0,
+        getCoreRowModel: getCoreRowModel(),
+        getExpandedRowModel: getExpandedRowModel(),
+        getRowId: (row) => (row.metadata?.accession as string) ?? "-1",
+        rowCount: data?.result?.stats?.nreported ?? 0,
+        manualPagination: true,
+        onColumnVisibilityChange: setColumnVisibility,
+        state: {
+            columnVisibility,
+        },
+        defaultColumn: {
+            minSize: 100,
+        },
+    });
 
-  const table = useReactTable({
-    data: data?.hits ?? defaultData,
-    columns,
-    getRowCanExpand: (row) => row.original.domains.included.length > 0,
-    getCoreRowModel: getCoreRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
-    getRowId: (row) => row.metadata.accession,
-    rowCount: data?.stats.reported_hits,
-    manualPagination: true,
-    onPaginationChange: setPagination,
-    onColumnVisibilityChange: setColumnVisibility,
-    state: {
-      pagination,
-      columnVisibility,
-    },
-  });
+    useEffect(() => {
+        localStorage.setItem("columnVisibility", JSON.stringify(columnVisibility));
+    }, [columnVisibility]);
 
-  return (
-    <div className="vf-stack">
-      <div>
-        <div className="button-container">
-          <button
-            className="vf-button vf-button--primary vf-button--sm"
-            onClick={() => setColumnsOpen(true)}
-          >
-            Columns
-          </button>
-        </div>
-        <Modal
-          isOpen={columnsOpen}
-          onRequestClose={() => setColumnsOpen(false)}
-          contentLabel="Columns"
-          style={{
-            overlay: {
-              zIndex: 2000,
-              position: "fixed",
-            },
-            content: {
-              top: "50%",
-              left: "50%",
-              right: "auto",
-              bottom: "auto",
-              marginRight: "-50%",
-              transform: "translate(-50%, -50%)",
-            },
-          }}
-        >
-          <fieldset className="vf-form__fieldset vf-stack vf-stack--200">
-            <legend className="vf-form__legend">Columns</legend>
-            <div className="vf-form__item vf-form__item--checkbox">
-              <input
-                {...{
-                  type: "checkbox",
-                  id: "checkAll",
-                  checked: table.getIsAllColumnsVisible(),
-                  onChange: table.getToggleAllColumnsVisibilityHandler(),
-                  className: "vf-form__checkbox",
-                }}
-              />
-              <label htmlFor="checkAll" className="vf-form__label">
-                Toggle All
-              </label>
+    if (data?.status === "SUCCESS")
+        return (
+            <div className="embl-grid">
+                <div className="vf-stack vf-stack__400">
+                    { algo !== "hmmscan" && <SpeciesFilter />}
+                    { algo !== "hmmscan" && <ArchitectureFilter />}
+                    <ColumnSelection table={table} />
+                </div>
+                <div className="vf-stack vf-stack--800">
+                    {taxonomyIds.length === 0 && !architecture && algo !== "hmmscan" && <DistributionGraph id={id} />}
+                    {algo !== "hmmsearch" && <Annotations id={id} />}
+                    <div className="table-container">
+                        <table className="vf-table" style={{ width: "100%", display: "block" }}>
+                            <thead className="vf-table__header">
+                                {table.getHeaderGroups().map((headerGroup) => (
+                                    <tr key={headerGroup.id} className="vf-table__row">
+                                        {headerGroup.headers.map((header) => (
+                                            <th key={header.id} colSpan={header.colSpan} className="vf-table__heading">
+                                                {header.isPlaceholder
+                                                    ? null
+                                                    : flexRender(header.column.columnDef.header, header.getContext())}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </thead>
+                            <tbody className="vf-table__body">
+                                {table.getRowModel().rows.map((row) => {
+                                    return (
+                                        <Fragment key={row.original.index}>
+                                            <tr className="vf-table__row">
+                                                {/* first row is a normal row */}
+                                                {row.getVisibleCells().map((cell) => {
+                                                    return (
+                                                        <td
+                                                            key={cell.id}
+                                                            className="vf-table__cell"
+                                                            width={cell.column.getSize()}
+                                                        >
+                                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                                        </td>
+                                                    );
+                                                })}
+                                            </tr>
+                                            {row.getIsExpanded() && (
+                                                <tr>
+                                                    {/* 2nd row is a custom 1 cell row */}
+                                                    <td
+                                                        colSpan={row.getVisibleCells().length}
+                                                        className="alignment-cell"
+                                                    >
+                                                        {algo === "hmmscan" && (
+                                                            <table className="vf-table vf-table--bordered alignment-table vf-u-width__100">
+                                                                <tbody className="vf-table__body">
+                                                                    <tr className="vf-table__row">
+                                                                        <td className="vf-table__cell" colSpan={999}>
+                                                                            <Alignment
+                                                                                alignment={
+                                                                                    row.original.domains?.[
+                                                                                        row.original.best_domain
+                                                                                    ].alignment_display!
+                                                                                }
+                                                                                algorithm="hmmscan"
+                                                                            />
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        )}
+                                                        {algo !== "hmmscan" && (
+                                                            <div className="vf-stack vf-stack--200">
+                                                                <AlignmentView id={id} index={row.original.index!} />
+                                                            </div>
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </Fragment>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+
+                        <Pagination
+                            currentPage={page}
+                            currentPageSize={pageSize}
+                            pageCount={data?.page_count ?? 1}
+                            pageSizeOptions={[50, 100, 250, 1000]}
+                            onPageChange={(page) =>
+                                setSearchParams((prevSearchParams) => {
+                                    prevSearchParams.set("page", _.toString(page));
+                                    return prevSearchParams;
+                                })
+                            }
+                            onPageSizeChange={(pageSize) =>
+                                setSearchParams((prevSearchParams) => {
+                                    prevSearchParams.set("pageSize", _.toString(pageSize));
+                                    return prevSearchParams;
+                                })
+                            }
+                        />
+                    </div>
+                </div>
             </div>
+        );
+
+    if (data?.status === "FAILURE") return <div>Your job failed</div>;
+
+    return <JobStatus status={data?.status ?? "PENDING"} id={id!} />;
+};
+
+interface ColumnSelectionProps {
+    table: Table<P7Hit>;
+}
+
+const ColumnSelection: React.FC<ColumnSelectionProps> = ({ table }) => {
+    return (
+        <fieldset className="vf-form__fieldset vf-stack vf-stack--200 vf-text-body vf-text-body--3">
+            <legend className="vf-form__legend">Columns</legend>
             {_(table.getAllLeafColumns())
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <div
-                    key={column.id}
-                    className="vf-form__item vf-form__item--checkbox"
-                  >
-                    <input
-                      {...{
-                        type: "checkbox",
-                        id: `check${column.id}`,
-                        checked: column.getIsVisible(),
-                        onChange: column.getToggleVisibilityHandler(),
-                        className: "vf-form__checkbox",
-                      }}
-                    />
-                    <label
-                      htmlFor={`check${column.id}`}
-                      className="vf-form__label"
-                    >
-                      {column.columnDef?.header?.toString() || column.id}
-                    </label>
-                  </div>
-                );
-              })
-              .value()}
-          </fieldset>
-        </Modal>
-      </div>
-      <div className="vf-stack vf-stack--200">
-        <div className="table-container">
-          <table className="vf-table vf-u-width__100">
-            <thead className="vf-table__header">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} className="vf-table__row">
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className="vf-table__heading"
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody className="vf-table__body">
-              {table.getRowModel().rows.map((row) => {
-                return (
-                  <Fragment >
-                    <tr key={row.id} className="vf-table__row">
-                      {/* first row is a normal row */}
-                      {row.getVisibleCells().map((cell) => {
-                        return (
-                          <td
-                            key={cell.id}
-                            className="vf-table__cell"
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                    {row.getIsExpanded() && (
-                      <tr>
-                        {/* 2nd row is a custom 1 cell row */}
-                        <td colSpan={row.getVisibleCells().length}>
-                          <div className="vf-stack vf-stack--200">
-                            {_.map(
-                              row.original.domains.included,
-                              (domain, index) => (
-                                <AlignmentTable
-                                  key={`${row.original.metadata.accession}-${index}`}
-                                  domain={domain}
-                                />
-                              ),
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </Fragment>
-                );
-              })}
-            </tbody>
-            <tfoot className="vf-table__footer table-footer">
-              <tr>
-                <td colSpan={1000}>
-                  <Pagination
-                    tableInstance={table}
-                    pageSizeOptions={[50, 100, 250, 1000]}
-                  />
-                </td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                    return (
+                        <div key={column.id} className="vf-form__item vf-form__item--checkbox">
+                            <input
+                                {...{
+                                    type: "checkbox",
+                                    id: `${column.id}`,
+                                    checked: column.getIsVisible(),
+                                    onChange: column.getToggleVisibilityHandler(),
+                                    className: "vf-form__checkbox",
+                                }}
+                            />
+                            <label htmlFor={`${column.id}`} className="vf-form__label">
+                                {column.parent && `${column.parent.columnDef.header?.toString()} - `}
+                                {column.columnDef?.header?.toString() || column.id}
+                            </label>
+                        </div>
+                    );
+                })
+                .value()}
+        </fieldset>
+    );
 };

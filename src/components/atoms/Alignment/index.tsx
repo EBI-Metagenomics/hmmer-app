@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Alignment as AlignmentType } from "@/client/types.gen";
+import { P7AlignmentDisplay } from "@/client/types.gen";
 
 import "./index.scss";
 
@@ -15,7 +15,7 @@ type AlignmentBlock = {
 };
 
 type AlignmentProps = {
-  alignment: AlignmentType;
+  alignment: P7AlignmentDisplay;
   algorithm: string;
   alignmentOnly?: boolean;
 };
@@ -76,7 +76,7 @@ const HMMLine = ({
 
   return (
     <div>
-      {hmmname}&nbsp;&nbsp;
+      {hmmname}{" ".repeat(6 - hmmname.length)}
       {String(modStart).padStart(5, "\u00A0")}
       &nbsp;
       <span
@@ -155,7 +155,7 @@ const SequenceLine = ({
 
   return (
     <div>
-      {seqname}&nbsp;
+      {seqname}{" ".repeat(6 - seqname.length)}
       {String(seqStart).padStart(5, "\u00A0")}
       &nbsp;
       <span
@@ -213,14 +213,14 @@ export const Alignment: React.FC<AlignmentProps> = ({
   const blocks: AlignmentBlock[] = useMemo(() => {
     const result: AlignmentBlock[] = [];
     let i = 0;
-    let modStart = alignment.hmm_from;
-    let seqStart = alignment.target_from;
+    let modStart = alignment.hmmfrom;
+    let seqStart = alignment.sqfrom;
 
-    while (i * width < alignment.hmm_sequence.length) {
-      const hmmLinebit = alignment.hmm_sequence.substr(i * width, width);
-      const matchLinebit = alignment.identity_sequence.substr(i * width, width);
-      const ppLinebit = alignment.identity_sequence.substr(i * width, width); // Using identity sequence as PP line
-      const seqLinebit = alignment.target_sequence.substr(i * width, width);
+    while (i * width < alignment.model.length) {
+      const hmmLinebit = alignment.model.substr(i * width, width);
+      const matchLinebit = alignment.mline.substr(i * width, width);
+      const ppLinebit = alignment.ppline?.substr(i * width, width) ?? "";
+      const seqLinebit = alignment.aseq?.substr(i * width, width) ?? "";
 
       const modEnd = modStart + (hmmLinebit.match(/[A-Za-z]/g) || []).length - 1;
       const seqEnd = seqStart + (seqLinebit.match(/[A-Za-z]/g) || []).length - 1;

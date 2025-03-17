@@ -1,4 +1,4 @@
-.sequence-upload-container {
+.upload-container {
   width: 100%;
   height: 15em;
   cursor: pointer;
@@ -8,7 +8,7 @@
   justify-content: center;
 }
 
-.sequence-upload-icon {
+.upload-icon {
   font-size: 4em;
   color: var(--vf-color--neutral--700);
 }
@@ -20,12 +20,12 @@
   resize: none;
 }
 
-.sequence-input-wrapper {
+.input-wrapper {
   position: relative;
   width: 100%;
 }
 
-.sequence-input-helper-text {
+.input-helper-text {
   position: absolute;
   top: 50%; // Center vertically
   left: 50%; // Center horizontally
@@ -46,11 +46,11 @@
   background-color: rgba(255,255,255,0.9);
 }
 
-.vf-form__textarea:focus-visible ~ .sequence-input-helper-text {
+.vf-form__textarea:focus-visible ~ .input-helper-text {
   display: none;
 }
 
-.sequence-input-wrapper {
+.input-wrapper {
   .vf-link {
     cursor: pointer;
   }

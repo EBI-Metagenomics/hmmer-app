@@ -3,7 +3,7 @@ import { defaultPlugins, defineConfig } from "@hey-api/openapi-ts";
 export default defineConfig({
   client: "@hey-api/client-fetch",
   experimentalParser: true,
-  input: `${import.meta.env.VITE_API_BASE_URL}/api/v1/openapi.json`,
+  input: `${import.meta.env.VITE_API_URL}/api/v1/openapi.json`,
   output: {
     format: "prettier",
     lint: "eslint",

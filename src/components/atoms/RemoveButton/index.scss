@@ -1,0 +1,23 @@
+.remove-button {
+    // Reset button styles
+    all: unset;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+
+    // SVG styles
+    svg {
+      fill: var(--vf-color--grey);
+      width: 16px;
+      // transform: rotate(0deg);
+      // transform-origin: center;
+      // transition: transform 0.2s ease;
+    }
+  
+    // Hover and focus states
+    &:hover svg {
+      fill: var(--vf-color--neutral--900);
+    }
+  }

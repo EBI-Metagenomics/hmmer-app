@@ -1,0 +1,58 @@
+.graphics-container {
+    width: 900px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 0.5rem;
+    overflow: scroll;
+}
+
+.graphics-container div {
+    flex-shrink: 0;
+}
+
+.domain-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.domain-cell {
+    padding-left: 4.7rem;
+}
+
+/* Scroll hint animation on hover */
+.graphics-container:hover.with-nudge {
+    animation: gentle-scroll 1.5s ease-in-out;
+}
+
+@keyframes gentle-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-20px);
+    }
+    50% {
+        transform: translateX(0);
+    }
+    75% {
+        transform: translateX(-20px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.domain_gfx__tooltip {
+    z-index: 1000;
+}
+
+.architecture-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.graphics-container path {
+    filter: none;
+}

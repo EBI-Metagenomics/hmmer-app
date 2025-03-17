@@ -6,7 +6,7 @@ const Navigation: React.FC = () => {
 
   return (
       <>
-      <nav className="vf-navigation vf-navigation--main | vf-cluster">
+      <nav className="vf-navigation vf-navigation--main | vf-cluster vf-u-padding__top--200">
         <ul className="vf-navigation__list | vf-list | vf-cluster__inner">
           <li className="vf-navigation__item">
             <Link

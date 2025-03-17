@@ -1,136 +1,104 @@
-import { useEffect, useState, useRef, HTMLAttributes } from "react";
-import {
-  Route,
-  Routes,
-  useParams,
-  useNavigate,
-  useResolvedPath,
-  useMatch,
-} from "react-router";
+import { NavLink } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-// @ts-ignore
-import VfTabs from "@visual-framework/vf-tabs/vf-tabs.react.js";
-// @ts-ignore
-import "taxonomy-visualisation/dist/taxonomy-visualisation-ce.js";
+import _ from "lodash";
+import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, Row } from "@tanstack/react-table";
+import { JobsResponseSchema } from "@/client/types.gen";
+import { searchApiGetJobsOptions } from "@/client/@tanstack/react-query.gen";
 
-import { searchApiStatusOptions } from "@/client/@tanstack/react-query.gen";
-import { ResultTable } from "@components/organisms";
-import rootNode from "@/assets/1.json";
-import { Dictionary } from "lodash";
-import { H } from "node_modules/react-router/dist/production/route-data-DuV3tXo2.d.mts";
+const columnHelper = createColumnHelper<JobsResponseSchema>();
+
+const columns = [
+    columnHelper.accessor("task.status", {
+        header: "Status",
+        cell: ({ row }: { row: Row<JobsResponseSchema> }) => (
+            <span
+                style={{
+                    color:
+                        row.original.task.status === "SUCCESS"
+                            ? "#18974c"
+                            : row.original.task.status === "FAILURE"
+                              ? "#d32f2f"
+                              : "",
+                }}
+            >
+                {row.original.task.status}
+            </span>
+        ),
+    }),
+    columnHelper.accessor("id", {
+        header: "ID",
+        cell: ({ row }: { row: Row<JobsResponseSchema> }) => (
+            <NavLink to={`/results/${row.original.id}/score`}>{row.original.id}</NavLink>
+        ),
+    }),
+    columnHelper.accessor("algo", {
+        header: "Algorithm",
+    }),
+    columnHelper.accessor("task.date_created", {
+        header: "Started",
+        cell: ({ row }: { row: Row<JobsResponseSchema> }) => (
+            <span>{new Date(row.original.task.date_created).toLocaleString()}</span>
+        ),
+    }),
+    columnHelper.accessor("task.date_done", {
+        header: "Finished",
+        cell: ({ row }: { row: Row<JobsResponseSchema> }) => (
+            <span>{new Date(row.original.task.date_done).toLocaleString()}</span>
+        ),
+    }),
+];
 
 const ResultsPage: React.FC = () => {
-  const navigate = useNavigate();
-  const route = useMatch(`/results/:id/:tab`);
-  const matchedPath = route?.params.tab;
-  const id = route?.params.id;
+    const { data } = useQuery({
+        ...searchApiGetJobsOptions(),
+    });
 
-  const [jobStatus, setJobStatus] = useState<string>("PENDING");
+    const table = useReactTable({
+        data: data ?? [],
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+    });
 
-  const { data: jobStatusData } = useQuery({
-    ...searchApiStatusOptions({ path: { id: id! } }),
-    refetchInterval(query) {
-      if (query.state.data?.status === "SUCCESS") return false;
-      if (query.state.data?.status === "FAILURE") return false;
-
-      return 1000;
-    },
-    refetchIntervalInBackground: true,
-  });
-
-  useEffect(() => {
-    if (jobStatusData) {
-      setJobStatus(jobStatusData.status);
-    }
-  }, [jobStatusData]);
-
-  if (jobStatus === "SUCCESS") return (
-    <div className="vf-stack vf-stack--400">
-      <h2 className="vf-text vf-text-heading--2">Browse Results</h2>
-      <div className="vf-tabs">
-        <ul className="vf-tabs__list">
-          <li className="vf-tabs__item">
-            <a
-              role="tab"
-              // aria-selected={activeTab === tab.id}
-              // aria-controls={`${tab.id}-tab`}
-              onClick={() => navigate(`/results/${id}/score`)}
-              className={`vf-tabs__link ${matchedPath === "score" ? "is-active" : ""}`}
-            >
-              Score
-            </a>
-          </li>
-          <li className="vf-tabs__item">
-            <a
-              role="tab"
-              // aria-selected={activeTab === tab.id}
-              // aria-controls={`${tab.id}-tab`}
-              onClick={() => navigate(`/results/${id}/taxonomy`)}
-              className={`vf-tabs__link ${matchedPath === "taxonomy" ? "is-active" : ""}`}
-            >
-              Taxonomy
-            </a>
-          </li>
-          <li className="vf-tabs__item">
-            <a
-              role="tab"
-              // aria-selected={activeTab === tab.id}
-              // aria-controls={`${tab.id}-tab`}
-              onClick={() => navigate(`/results/${id}/domain`)}
-              className={`vf-tabs__link ${matchedPath === "domain" ? "is-active" : ""}`}
-            >
-              Domain
-            </a>
-          </li>
-        </ul>
-      </div>
-      <Routes>
-        <Route path="score" element={<ResultTable id={id!} />} />
-        <Route path="taxonomy" element={<TaxonomyElement />} />
-        <Route path="domain" element="Domain content" />
-      </Routes>
-    </div>
-  );
-  
-  if (jobStatus === "FAILURE") return (<div>Your job failed</div>)
-
-  return (<div>Your job is still running...</div>)
+    return (
+        <div className="vf-stack vf-stack--800">
+            <div className="vf-u-padding__top--800">
+                <h2 className="vf-text vf-text-heading--2">Results</h2>
+            </div>
+            <div>
+                <table className="vf-table vf-u-width__100">
+                    <thead className="vf-table__header">
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <tr key={headerGroup.id} className="vf-table__row">
+                                {headerGroup.headers.map((header) => (
+                                    <th key={header.id} className="vf-table__heading">
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(header.column.columnDef.header, header.getContext())}
+                                    </th>
+                                ))}
+                            </tr>
+                        ))}
+                    </thead>
+                    <tbody className="vf-table__body">
+                        {table.getRowModel().rows.map((row) => {
+                            return (
+                                <tr key={row.original.id} className="vf-table__row">
+                                    {/* first row is a normal row */}
+                                    {row.getVisibleCells().map((cell) => {
+                                        return (
+                                            <td key={cell.id} className="vf-table__cell">
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </td>
+                                        );
+                                    })}
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
 };
-
-const TaxonomyElement = () => {
-  const visualizationRef = useRef(null);
-  const [tree, setTree] = useState(rootNode);
-
-  useEffect(() => {
-    const visualization = visualizationRef.current;
-
-    if (visualization) {
-      visualization.data = tree;
-    }
-  }, [tree]);
-
-  return (
-    <div style={{ height: "500px" }}>
-      <div id="focus-root"></div>
-      <taxonomy-visualisation
-        ref={visualizationRef}
-        id="tree-root"
-        focus-id="focus-root"
-        ></taxonomy-visualisation>
-    </div>
-  );
-};
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      "taxonomy-visualisation": TaxonomyVisualisationAttributes;
-    }
-
-    interface TaxonomyVisualisationAttributes extends React.DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
-      data?: string;
-    }
-  }
-}
 
 export default ResultsPage;

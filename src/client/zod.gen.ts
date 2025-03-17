@@ -2,203 +2,360 @@
 
 import { z } from "zod";
 
-export const zHmmerJobStatusSchema = z.object({
-  id: z.string(),
-  status: z.string(),
-  result_url: z.union([z.string(), z.null()]),
-  error_message: z.union([z.string(), z.null()]),
+export const zArchitectureSchema = z.object({
+    names: z.string(),
+    score: z.number(),
+    graphics: z.string(),
+    accessions: z.string(),
 });
 
-export const zHmmerJobCreatedSchema = z.object({
-  id: z.string(),
-  status: z.string(),
-  status_url: z.string(),
+export const zArchitectureAggregationSchema = z.object({
+    count: z.number(),
+    architecture: zArchitectureSchema,
 });
 
-export const zPhmmerJobSchema = z.object({
-  popen: z.union([z.number().gte(0).lt(0.5), z.null()]).optional(),
-  pextend: z.union([z.number().gte(0).lt(1), z.null()]).optional(),
-  mx: z
-    .union([
-      z.enum(["BLOSUM62", "BLOSUM45", "BLOSUM90", "PAM30", "PAM70", "PAM250"]),
-      z.null(),
-    ])
-    .optional(),
-  threshold: z.enum(["evalue", "bitscore"]).optional(),
-  incE: z.union([z.number().lte(10), z.null()]).optional(),
-  incdomE: z.union([z.number().lte(10), z.null()]).optional(),
-  E: z.union([z.number().lte(10), z.null()]).optional(),
-  domE: z.union([z.number().lte(10), z.null()]).optional(),
-  incT: z.union([z.number(), z.null()]).optional(),
-  incdomT: z.union([z.number(), z.null()]).optional(),
-  T: z.union([z.number(), z.null()]).optional(),
-  domT: z.union([z.number(), z.null()]).optional(),
-  seq: z.string().min(1),
-  seqdb: z.string(),
+export const zArchitectureResponseSchema = z.object({
+    status: z.string(),
+    architectures: z.union([z.array(zArchitectureAggregationSchema), z.null()]),
 });
 
-export const zQuerySchema = z.object({
-  limit: z.number().optional().default(10),
-  offset: z.number().gte(0).optional().default(0),
-});
-
-export const zAlignment = z.object({
-  hmm_accession: z.string(),
-  hmm_from: z.number(),
-  hmm_length: z.number(),
-  hmm_name: z.string(),
-  hmm_sequence: z.string(),
-  hmm_to: z.number(),
-  identity_sequence: z.string(),
-  target_from: z.number(),
-  target_length: z.number(),
-  target_name: z.string(),
-  target_sequence: z.string(),
-  target_to: z.number(),
-});
-
-export const zDomain = z.object({
-  alignment: zAlignment,
-  bias: z.number(),
-  c_evalue: z.number(),
-  correction: z.number(),
-  env_from: z.number(),
-  env_to: z.number(),
-  envelope_score: z.number(),
-  i_evalue: z.number(),
-  included: z.boolean(),
-  pvalue: z.number(),
-  reported: z.boolean(),
-  score: z.number(),
-});
-
-export const zDomains = z.object({
-  included: z.array(zDomain),
-  reported: z.array(zDomain),
-});
-
-export const zHit = z.object({
-  bias: z.number(),
-  domains: zDomains,
-  dropped: z.boolean(),
-  duplicate: z.boolean(),
-  evalue: z.number(),
-  included: z.boolean(),
-  length: z.number(),
-  name: z.string(),
-  new: z.boolean(),
-  pre_score: z.number(),
-  pvalue: z.number(),
-  reported: z.boolean(),
-  score: z.number(),
-  sum_score: z.number(),
-  metadata: z.object({
-    structures: z
-      .array(
+export const zAnnotation = z.object({
+    length: z.number(),
+    regions: z.array(
         z.object({
-          id: z.string(),
-          external_link: z.string(),
+            color: z.string().optional().default(""),
+            end_style: z.string().optional().default("curved"),
+            start_style: z.string().optional().default("curved"),
+            display: z.boolean().optional().default(true),
+            href: z.string().optional().default(""),
+            clan: z.string().optional().default(""),
+            metadata: z.object({}).optional().default({}),
+            type: z.string().optional().default("pfam"),
+            text: z.string(),
+            model_length: z.number(),
+            model_start: z.number(),
+            model_end: z.number(),
+            start: z.number(),
+            end: z.number(),
+            ali_start: z.number(),
+            ali_end: z.number(),
         }),
-      )
-      .optional()
-      .default([]),
-    taxonomy_id: z.number(),
-    architecture_checksum: z.number(),
-    architecture_score: z.number(),
-    architecture: z.string(),
-    accession: z.string(),
-    identifier: z.string(),
-    description: z.string(),
-    uniprot_accession: z.union([z.string(), z.null()]),
-    uniprot_identifier: z.union([z.string(), z.null()]),
-    kingdom: z.union([z.string(), z.null()]),
-    phylum: z.union([z.string(), z.null()]),
-    species: z.union([z.string(), z.null()]),
-    external_link: z.string(),
-    taxonomy_link: z.string(),
-  }),
+    ),
 });
 
-export const zMetadata = z.object({
-  structures: z
-    .array(
-      z.object({
-        id: z.string(),
-        external_link: z.string(),
-      }),
-    )
-    .optional()
-    .default([]),
-  taxonomy_id: z.number(),
-  architecture_checksum: z.number(),
-  architecture_score: z.number(),
-  architecture: z.string(),
-  accession: z.string(),
-  identifier: z.string(),
-  description: z.string(),
-  uniprot_accession: z.union([z.string(), z.null()]),
-  uniprot_identifier: z.union([z.string(), z.null()]),
-  kingdom: z.union([z.string(), z.null()]),
-  phylum: z.union([z.string(), z.null()]),
-  species: z.union([z.string(), z.null()]),
-  external_link: z.string(),
-  taxonomy_link: z.string(),
+export const zArchitectureAnnotationsResponseSchema = z.object({
+    status: z.string(),
+    annotations: z.union([z.array(zAnnotation), z.null()]).optional(),
+});
+
+export const zRegion = z.object({
+    color: z.string().optional().default(""),
+    end_style: z.string().optional().default("curved"),
+    start_style: z.string().optional().default("curved"),
+    display: z.boolean().optional().default(true),
+    href: z.string().optional().default(""),
+    clan: z.string().optional().default(""),
+    metadata: z.object({}).optional().default({}),
+    type: z.string().optional().default("pfam"),
+    text: z.string(),
+    model_length: z.number(),
+    model_start: z.number(),
+    model_end: z.number(),
+    start: z.number(),
+    end: z.number(),
+    ali_start: z.number(),
+    ali_end: z.number(),
+});
+
+export const zArchitectureListResponseSchema = z.object({
+    status: z.string(),
+    architectures: z.union([z.array(zArchitectureSchema), z.null()]),
+});
+
+export const zResultQuerySchema = z.object({
+    page: z.number().optional().default(1),
+    page_size: z.number().optional().default(50),
+    taxonomy_ids: z.union([z.array(z.number()), z.null()]).optional(),
+    architecture: z.union([z.string(), z.null()]).optional(),
+    with_domains: z.union([z.boolean(), z.null()]).optional(),
+});
+
+export const zHmmdSearchStats = z.object({
+    id: z.string().optional(),
+    algo: z.string().optional(),
+    elapsed: z.number(),
+    user: z.number(),
+    sys: z.number(),
+    Z: z.number(),
+    domZ: z.number(),
+    Z_setby: z.number(),
+    domZ_setby: z.number(),
+    nmodels: z.number(),
+    nseqs: z.number(),
+    n_past_msv: z.number(),
+    n_past_bias: z.number(),
+    n_past_vit: z.number(),
+    n_past_fwd: z.number(),
+    nhits: z.number(),
+    nreported: z.number(),
+    nincluded: z.number(),
+    hit_offsets: z.union([z.array(z.number()), z.null()]),
+    size: z.number().optional(),
+});
+
+export const zP7AlignmentDisplay = z.object({
+    size: z.number(),
+    n: z.number(),
+    hmmfrom: z.number(),
+    hmmto: z.number(),
+    m: z.number(),
+    sqfrom: z.number(),
+    sqto: z.number(),
+    l: z.number(),
+    string_presence_flags: z.unknown(),
+    rfline: z.union([z.string(), z.null()]),
+    mmline: z.union([z.string(), z.null()]),
+    csline: z.union([z.string(), z.null()]),
+    model: z.string(),
+    mline: z.string(),
+    aseq: z.union([z.string(), z.null()]),
+    ntseq: z.union([z.string(), z.null()]),
+    ppline: z.union([z.string(), z.null()]),
+    hmmname: z.string(),
+    hmmacc: z.string(),
+    hmmdesc: z.string(),
+    sqname: z.string(),
+    sqacc: z.string(),
+    sqdesc: z.string(),
+    identity: z.union([z.unknown(), z.null()]).optional(),
+    similarity: z.union([z.unknown(), z.null()]).optional(),
+});
+
+export const zP7Domain = z.object({
+    size: z.number(),
+    ienv: z.number(),
+    jenv: z.number(),
+    iali: z.number(),
+    jali: z.number(),
+    iorf: z.number(),
+    jorf: z.number(),
+    envsc: z.number(),
+    domcorrection: z.number(),
+    dombias: z.number(),
+    oasc: z.number(),
+    bitscore: z.number(),
+    lnP: z.number(),
+    ievalue: z.number().optional(),
+    cevalue: z.number().optional(),
+    is_reported: z.boolean(),
+    is_included: z.boolean(),
+    scores_per_pos_length: z.number(),
+    scores_per_pos: z.array(z.number()),
+    alignment_display: zP7AlignmentDisplay,
+    display: z.boolean().optional(),
+    outcompeted: z.boolean().optional(),
+    significant: z.boolean().optional(),
+    uniq: z.number().optional(),
+    segments: z.union([z.array(z.unknown()), z.null()]).optional(),
+    predicted_active_sites: z.union([z.array(z.unknown()), z.null()]).optional(),
+});
+
+export const zP7Hit = z.object({
+    index: z.number().optional(),
+    size: z.number(),
+    window_length: z.number(),
+    sortkey: z.number(),
+    score: z.number(),
+    pre_score: z.number(),
+    sum_score: z.number(),
+    bias: z.number().optional(),
+    lnP: z.number(),
+    pre_lnP: z.number(),
+    sum_lnP: z.number(),
+    nexpected: z.number(),
+    nregions: z.number(),
+    nclustered: z.number(),
+    noverlaps: z.number(),
+    nenvelopes: z.number(),
+    ndom: z.number(),
+    flags: z.unknown(),
+    is_reported: z.boolean().optional(),
+    is_included: z.boolean().optional(),
+    is_new: z.boolean().optional(),
+    is_dropped: z.boolean().optional(),
+    nreported: z.number(),
+    nincluded: z.number(),
+    best_domain: z.number(),
+    seqidx: z.number(),
+    subseq_start: z.number(),
+    string_presence_flags: z.unknown(),
+    name: z.string(),
+    acc: z.union([z.string(), z.null()]),
+    desc: z.union([z.string(), z.null()]),
+    evalue: z.number().optional(),
+    metadata: z.union([z.object({}), z.null()]).optional(),
+    domains: z.union([z.array(zP7Domain), z.null()]),
 });
 
 export const zResult = z.object({
-  hits: z.array(zHit),
-  stats: z.object({
-    E: z.number(),
-    T: z.union([z.number(), z.null()]),
-    Z: z.number(),
-    bit_cutoffs: z.union([z.string(), z.null()]),
-    domE: z.number(),
-    domT: z.union([z.number(), z.null()]),
-    domZ: z.number(),
-    incE: z.number(),
-    incT: z.union([z.number(), z.null()]),
-    incdomE: z.number(),
-    incdomT: z.union([z.number(), z.null()]),
-    searched_models: z.number(),
-    searched_nodes: z.number(),
-    searched_residues: z.number(),
-    searched_sequences: z.number(),
-    included_hits: z.number(),
-    reported_hits: z.number(),
-  }),
+    stats: zHmmdSearchStats,
+    hits: z.array(zP7Hit),
 });
 
-export const zStats = z.object({
-  E: z.number(),
-  T: z.union([z.number(), z.null()]),
-  Z: z.number(),
-  bit_cutoffs: z.union([z.string(), z.null()]),
-  domE: z.number(),
-  domT: z.union([z.number(), z.null()]),
-  domZ: z.number(),
-  incE: z.number(),
-  incT: z.union([z.number(), z.null()]),
-  incdomE: z.number(),
-  incdomT: z.union([z.number(), z.null()]),
-  searched_models: z.number(),
-  searched_nodes: z.number(),
-  searched_residues: z.number(),
-  searched_sequences: z.number(),
-  included_hits: z.number(),
-  reported_hits: z.number(),
+export const zResultResponseSchema = z.object({
+    status: z.string(),
+    result: z.union([zResult, z.null()]).optional(),
+    page_count: z.union([z.number(), z.null()]).optional(),
 });
 
-export const zStructure = z.object({
-  id: z.string(),
-  external_link: z.string(),
+export const zAlignmentQuerySchema = z.object({
+    index: z.number().gte(0).optional().default(0),
 });
 
-export const zMessageSchema = z.object({
-  message: z.string(),
+export const zAlignmentResponseSchema = z.object({
+    status: z.string(),
+    domains: z.union([z.array(zP7Domain), z.null()]),
 });
 
-export const zSearchApiStatusResponse = zHmmerJobStatusSchema;
+export const zAlgoChoices = z.enum(["phmmer", "hmmsearch", "hmmscan", "jackhmmer"]);
 
-export const zPhmmerApiSearchResponse = zHmmerJobCreatedSchema;
+export const zSearchResponseSchema = z.object({
+    id: z.string(),
+});
 
-export const zResultApiGetResultResponse = zResult;
+export const zSearchRequestSchema = z.object({
+    taxonomy_distribution_graph_task_id: z.union([z.number(), z.null()]).optional(),
+    architecture_task_id: z.union([z.number(), z.null()]).optional(),
+    annotation_task_id: z.union([z.number(), z.null()]).optional(),
+    database: z.string().max(32),
+    input: z.string(),
+    threshold: z.string().max(16).optional().default("evalue"),
+    E: z.union([z.number(), z.null()]).optional(),
+    domE: z.union([z.number(), z.null()]).optional(),
+    T: z.union([z.number(), z.null()]).optional(),
+    domT: z.union([z.number(), z.null()]).optional(),
+    incE: z.union([z.number(), z.null()]).optional(),
+    incdomE: z.union([z.number(), z.null()]).optional(),
+    incT: z.union([z.number(), z.null()]).optional(),
+    incdomT: z.union([z.number(), z.null()]).optional(),
+    popen: z.union([z.number(), z.null()]).optional(),
+    pextend: z.union([z.number(), z.null()]).optional(),
+    mx: z.union([z.string().max(16), z.null()]).optional(),
+    with_taxonomy: z.boolean().optional().default(false),
+    with_architecture: z.boolean().optional().default(false),
+});
+
+export const zJobsResponseSchema = z.object({
+    task: z.object({
+        status: z.string().max(50).optional().default("PENDING"),
+        date_created: z.string().datetime(),
+        date_done: z.string().datetime(),
+    }),
+    id: z.union([z.string().uuid(), z.null()]).optional(),
+    algo: z.string().max(16).optional().default("phmmer"),
+});
+
+export const zTaskResultSchema = z.object({
+    status: z.string().max(50).optional().default("PENDING"),
+    date_created: z.string().datetime(),
+    date_done: z.string().datetime(),
+});
+
+export const zTaxonomyResponseSchema = z.object({
+    taxonomy_id: z.number(),
+    name: z.string().max(255),
+    rank: z.string().max(255),
+});
+
+export const zTaxonomyDistributionResponseSchema = z.object({
+    status: z.string(),
+    distribution: z
+        .union([
+            z.array(
+                z.object({
+                    taxonomy_id: z.union([z.number(), z.null()]),
+                    species: z.union([z.string(), z.null()]),
+                    count: z.number(),
+                }),
+            ),
+            z.null(),
+        ])
+        .optional(),
+});
+
+export const zTaxonomyResult = z.object({
+    taxonomy_id: z.union([z.number(), z.null()]),
+    species: z.union([z.string(), z.null()]),
+    count: z.number(),
+});
+
+export const zTaxonomyTree: z.ZodTypeAny = z.object({
+    id: z.number(),
+    name: z.string(),
+    hitcount: z.union([z.number(), z.null()]),
+    hitdist: z.union([z.array(z.number()), z.null()]),
+    children: z.union([
+        z.array(
+            z.lazy(() => {
+                return zTaxonomyTree;
+            }),
+        ),
+        z.null(),
+    ]),
+});
+
+export const zTaxonomyTreeResponseSchema = z.object({
+    status: z.string(),
+    tree: z.union([zTaxonomyTree, z.null()]).optional(),
+});
+
+export const zTaxonomyDistributionGraph = z.object({
+    data: z.array(z.array(z.number())),
+    labels: z.array(z.string()),
+    categories: z.array(z.string()),
+    colors: z.array(z.string()),
+});
+
+export const zTaxonomyDistributionGraphResponseSchema = z.object({
+    status: z.string(),
+    graph: z.union([zTaxonomyDistributionGraph, z.null()]).optional(),
+});
+
+export const zDownloadsResponseSchema = z.object({
+    format: z.string(),
+    name: z.string(),
+    description: z.string(),
+    status: z.string(),
+    url: z.union([z.string(), z.null()]),
+    size: z.union([z.number(), z.null()]),
+});
+
+export const zArchitectureApiGetArchitectureNameResponse = zArchitectureSchema;
+
+export const zArchitectureApiGetDomainArchitecturesResponse = zArchitectureResponseSchema;
+
+export const zArchitectureApiGetAnnotationsResponse = zArchitectureAnnotationsResponseSchema;
+
+export const zArchitectureApiGetAllArchitecturesResponse = zArchitectureListResponseSchema;
+
+export const zResultApiGetResultResponse = zResultResponseSchema;
+
+export const zResultApiGetDomainsResponse = zAlignmentResponseSchema;
+
+export const zSearchApiSearchResponse = zSearchResponseSchema;
+
+export const zSearchApiGetJobsResponse = z.array(zJobsResponseSchema);
+
+export const zTaxonomyApiSearchTaxonomyResponse = z.array(zTaxonomyResponseSchema);
+
+export const zTaxonomyApiGetTaxonomyResponse = zTaxonomyResponseSchema;
+
+export const zTaxonomyApiGetTaxonomyDistributionResponse = zTaxonomyDistributionResponseSchema;
+
+export const zTaxonomyApiGetTaxonomyTreeResponse = zTaxonomyTreeResponseSchema;
+
+export const zTaxonomyApiGetTaxonomyDistributionGraphResponse = zTaxonomyDistributionGraphResponseSchema;
+
+export const zDownloadApiGenerateFileResponse = z.void();
+
+export const zDownloadApiGetDownloadsResponse = z.array(zDownloadsResponseSchema);

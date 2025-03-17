@@ -1,6 +1,13 @@
-.table-container {
-    width: 100%;
-    height: calc(100vh - 250px);
+.table-container td {
+    padding: 6px 12px;
+}
+
+.table-container td th {
+    padding: 6px 12px;
+}
+
+.alignment-cell {
+    padding: 0 !important;
 }
 
 // .vf-table:not(.alignment-table) > .vf-table__footer

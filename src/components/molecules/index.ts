@@ -1,7 +1,13 @@
+export { ColumnSelection } from "./ColumnSelection";
 export { CutOffInput } from "./CutOffInput";
 export { FilterInput } from "./FilterInput";
 export { GapPenaltiesInput } from "./GapPenaltiesInput";
+export { Hero } from "./Hero";
+export { HMMDatabaseInput } from "./HMMDatabaseInput";
+export { Input } from "./Input";
+export { JobStatus } from "./JobStatus";
 export { Pagination } from "./Pagination";
 export { SequenceDatabaseInput } from "./SequenceDatabaseInput";
-export { SequenceInput } from "./SequenceInput";
 export { TaxonomyFilterInput } from "./TaxonomyFilterInput";
+export { Toast } from "./Toast";
+export { Typeahead } from "./Typeahead";

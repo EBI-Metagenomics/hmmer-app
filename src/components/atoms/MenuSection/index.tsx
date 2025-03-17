@@ -5,7 +5,6 @@ interface MenuSectionProps {
 }
 
 export const MenuSection: React.FC<MenuSectionProps> = ({
-  collapsible,
   title,
   children,
 }) => {

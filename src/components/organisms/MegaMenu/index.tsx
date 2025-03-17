@@ -1,7 +1,7 @@
 const MegaMenu = () => {
   return (
     <>
-      <header className="vf-global-header vf-mega-menu" role="menubar">
+      <header className="vf-global-header vf-mega-menu | vf-u-margin__top--400" role="menubar">
         <nav className="vf-navigation | vf-cluster">
           <ul className="vf-navigation__list | vf-list | vf-cluster__inner">
             <li className="vf-navigation__item">

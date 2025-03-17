@@ -1,16 +1,20 @@
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 export const SequenceDatabaseInput: React.FC = () => {
-  const { register } = useFormContext();
+    const { register, setValue } = useFormContext();
 
-  return (
-    <div className="vf-form__item">
-      <select
-        {...register("seqdb")}
-        className="vf-form__select"
-        id="vf-form__select"
-      >
-        <option key="refprot" value="refprot">
+    useEffect(() => {
+      setValue("database", "pdb", { shouldValidate: false})
+    }, []);
+
+    return (
+        <div className="vf-form__item">
+            <select {...register("database")} className="vf-form__select" id="vf-form__select">
+                <option key="pdb" value="pdb">
+                    PDB
+                </option>
+                {/* <option key="refprot" value="refprot">
           Reference Proteomes
         </option>
         <option key="swissprot" value="swissprot">
@@ -35,8 +39,8 @@ export const SequenceDatabaseInput: React.FC = () => {
           <option key="rp15" value="rp15">
             rp15
           </option>
-        </optgroup>
-      </select>
-    </div>
-  );
+        </optgroup> */}
+            </select>
+        </div>
+    );
 };

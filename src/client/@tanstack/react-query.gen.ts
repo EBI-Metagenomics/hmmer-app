@@ -2,246 +2,493 @@
 
 import type { Options } from "@hey-api/client-fetch";
 import {
-  queryOptions,
-  type UseMutationOptions,
-  type DefaultError,
-  infiniteQueryOptions,
-  type InfiniteData,
+    queryOptions,
+    infiniteQueryOptions,
+    type InfiniteData,
+    type DefaultError,
+    type UseMutationOptions,
 } from "@tanstack/react-query";
 import type {
-  SearchApiStatusData,
-  PhmmerApiSearchData,
-  PhmmerApiSearchResponse,
-  ResultApiGetResultData,
-  ResultApiGetResultError,
-  ResultApiGetResultResponse,
-  TaxonomyApiGetData,
+    ArchitectureApiGetArchitectureNameData,
+    ArchitectureApiGetDomainArchitecturesData,
+    ArchitectureApiGetAnnotationsData,
+    ArchitectureApiGetAllArchitecturesData,
+    ResultApiGetResultData,
+    ResultApiGetResultResponse,
+    ResultApiGetDomainsData,
+    SearchApiSearchData,
+    SearchApiSearchResponse,
+    SearchApiGetJobsData,
+    TaxonomyApiGetData,
+    TaxonomyApiSearchTaxonomyData,
+    TaxonomyApiGetTaxonomyData,
+    TaxonomyApiGetTaxonomyDistributionData,
+    TaxonomyApiGetTaxonomyTreeData,
+    TaxonomyApiGetTaxonomyDistributionGraphData,
+    DownloadApiGenerateFileData,
+    DownloadApiGenerateFileResponse,
+    DownloadApiGetDownloadsData,
 } from "../types.gen";
 import {
-  client,
-  searchApiStatus,
-  phmmerApiSearch,
-  resultApiGetResult,
-  taxonomyApiGet,
+    client,
+    architectureApiGetArchitectureName,
+    architectureApiGetDomainArchitectures,
+    architectureApiGetAnnotations,
+    architectureApiGetAllArchitectures,
+    resultApiGetResult,
+    resultApiGetDomains,
+    searchApiSearch,
+    searchApiGetJobs,
+    taxonomyApiGet,
+    taxonomyApiSearchTaxonomy,
+    taxonomyApiGetTaxonomy,
+    taxonomyApiGetTaxonomyDistribution,
+    taxonomyApiGetTaxonomyTree,
+    taxonomyApiGetTaxonomyDistributionGraph,
+    downloadApiGenerateFile,
+    downloadApiGetDownloads,
 } from "../sdk.gen";
 
 type QueryKey<TOptions extends Options> = [
-  Pick<TOptions, "baseUrl" | "body" | "headers" | "path" | "query"> & {
-    _id: string;
-    _infinite?: boolean;
-  },
+    Pick<TOptions, "baseUrl" | "body" | "headers" | "path" | "query"> & {
+        _id: string;
+        _infinite?: boolean;
+    },
 ];
 
 const createQueryKey = <TOptions extends Options>(
-  id: string,
-  options?: TOptions,
-  infinite?: boolean,
+    id: string,
+    options?: TOptions,
+    infinite?: boolean,
 ): QueryKey<TOptions>[0] => {
-  const params: QueryKey<TOptions>[0] = {
-    _id: id,
-    baseUrl: (options?.client ?? client).getConfig().baseUrl,
-  } as QueryKey<TOptions>[0];
-  if (infinite) {
-    params._infinite = infinite;
-  }
-  if (options?.body) {
-    params.body = options.body;
-  }
-  if (options?.headers) {
-    params.headers = options.headers;
-  }
-  if (options?.path) {
-    params.path = options.path;
-  }
-  if (options?.query) {
-    params.query = options.query;
-  }
-  return params;
+    const params: QueryKey<TOptions>[0] = {
+        _id: id,
+        baseUrl: (options?.client ?? client).getConfig().baseUrl,
+    } as QueryKey<TOptions>[0];
+    if (infinite) {
+        params._infinite = infinite;
+    }
+    if (options?.body) {
+        params.body = options.body;
+    }
+    if (options?.headers) {
+        params.headers = options.headers;
+    }
+    if (options?.path) {
+        params.path = options.path;
+    }
+    if (options?.query) {
+        params.query = options.query;
+    }
+    return params;
 };
 
-export const searchApiStatusQueryKey = (
-  options: Options<SearchApiStatusData>,
-) => [createQueryKey("searchApiStatus", options)];
+export const architectureApiGetArchitectureNameQueryKey = (
+    options: Options<ArchitectureApiGetArchitectureNameData>,
+) => [createQueryKey("architectureApiGetArchitectureName", options)];
 
-export const searchApiStatusOptions = (
-  options: Options<SearchApiStatusData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await searchApiStatus({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: searchApiStatusQueryKey(options),
-  });
+export const architectureApiGetArchitectureNameOptions = (options: Options<ArchitectureApiGetArchitectureNameData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await architectureApiGetArchitectureName({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: architectureApiGetArchitectureNameQueryKey(options),
+    });
 };
 
-export const phmmerApiSearchQueryKey = (
-  options: Options<PhmmerApiSearchData>,
-) => [createQueryKey("phmmerApiSearch", options)];
+export const architectureApiGetDomainArchitecturesQueryKey = (
+    options: Options<ArchitectureApiGetDomainArchitecturesData>,
+) => [createQueryKey("architectureApiGetDomainArchitectures", options)];
 
-export const phmmerApiSearchOptions = (
-  options: Options<PhmmerApiSearchData>,
+export const architectureApiGetDomainArchitecturesOptions = (
+    options: Options<ArchitectureApiGetDomainArchitecturesData>,
 ) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await phmmerApiSearch({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: phmmerApiSearchQueryKey(options),
-  });
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await architectureApiGetDomainArchitectures({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: architectureApiGetDomainArchitecturesQueryKey(options),
+    });
 };
 
-export const phmmerApiSearchMutation = (
-  options?: Partial<Options<PhmmerApiSearchData>>,
-) => {
-  const mutationOptions: UseMutationOptions<
-    PhmmerApiSearchResponse,
-    DefaultError,
-    Options<PhmmerApiSearchData>
-  > = {
-    mutationFn: async (localOptions) => {
-      const { data } = await phmmerApiSearch({
-        ...options,
-        ...localOptions,
-        throwOnError: true,
-      });
-      return data;
-    },
-  };
-  return mutationOptions;
+export const architectureApiGetAnnotationsQueryKey = (options: Options<ArchitectureApiGetAnnotationsData>) => [
+    createQueryKey("architectureApiGetAnnotations", options),
+];
+
+export const architectureApiGetAnnotationsOptions = (options: Options<ArchitectureApiGetAnnotationsData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await architectureApiGetAnnotations({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: architectureApiGetAnnotationsQueryKey(options),
+    });
 };
 
-export const resultApiGetResultQueryKey = (
-  options: Options<ResultApiGetResultData>,
-) => [createQueryKey("resultApiGetResult", options)];
+export const architectureApiGetAllArchitecturesQueryKey = (
+    options: Options<ArchitectureApiGetAllArchitecturesData>,
+) => [createQueryKey("architectureApiGetAllArchitectures", options)];
 
-export const resultApiGetResultOptions = (
-  options: Options<ResultApiGetResultData>,
-) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await resultApiGetResult({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: resultApiGetResultQueryKey(options),
-  });
+export const architectureApiGetAllArchitecturesOptions = (options: Options<ArchitectureApiGetAllArchitecturesData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await architectureApiGetAllArchitectures({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: architectureApiGetAllArchitecturesQueryKey(options),
+    });
 };
 
-const createInfiniteParams = <
-  K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">,
->(
-  queryKey: QueryKey<Options>,
-  page: K,
+export const resultApiGetResultQueryKey = (options: Options<ResultApiGetResultData>) => [
+    createQueryKey("resultApiGetResult", options),
+];
+
+export const resultApiGetResultOptions = (options: Options<ResultApiGetResultData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await resultApiGetResult({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: resultApiGetResultQueryKey(options),
+    });
+};
+
+const createInfiniteParams = <K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">>(
+    queryKey: QueryKey<Options>,
+    page: K,
 ) => {
-  const params = queryKey[0];
-  if (page.body) {
-    params.body = {
-      ...(queryKey[0].body as any),
-      ...(page.body as any),
-    };
-  }
-  if (page.headers) {
-    params.headers = {
-      ...queryKey[0].headers,
-      ...page.headers,
-    };
-  }
-  if (page.path) {
-    params.path = {
-      ...(queryKey[0].path as any),
-      ...(page.path as any),
-    };
-  }
-  if (page.query) {
-    params.query = {
-      ...(queryKey[0].query as any),
-      ...(page.query as any),
-    };
-  }
-  return params as unknown as typeof page;
+    const params = queryKey[0];
+    if (page.body) {
+        params.body = {
+            ...(queryKey[0].body as any),
+            ...(page.body as any),
+        };
+    }
+    if (page.headers) {
+        params.headers = {
+            ...queryKey[0].headers,
+            ...page.headers,
+        };
+    }
+    if (page.path) {
+        params.path = {
+            ...(queryKey[0].path as any),
+            ...(page.path as any),
+        };
+    }
+    if (page.query) {
+        params.query = {
+            ...(queryKey[0].query as any),
+            ...(page.query as any),
+        };
+    }
+    return params as unknown as typeof page;
 };
 
 export const resultApiGetResultInfiniteQueryKey = (
-  options: Options<ResultApiGetResultData>,
-): QueryKey<Options<ResultApiGetResultData>> => [
-  createQueryKey("resultApiGetResult", options, true),
-];
+    options: Options<ResultApiGetResultData>,
+): QueryKey<Options<ResultApiGetResultData>> => [createQueryKey("resultApiGetResult", options, true)];
 
-export const resultApiGetResultInfiniteOptions = (
-  options: Options<ResultApiGetResultData>,
-) => {
-  return infiniteQueryOptions<
-    ResultApiGetResultResponse,
-    ResultApiGetResultError,
-    InfiniteData<ResultApiGetResultResponse>,
-    QueryKey<Options<ResultApiGetResultData>>,
-    | number
-    | Pick<
-        QueryKey<Options<ResultApiGetResultData>>[0],
-        "body" | "headers" | "path" | "query"
-      >
-  >(
-    // @ts-ignore
-    {
-      queryFn: async ({ pageParam, queryKey, signal }) => {
+export const resultApiGetResultInfiniteOptions = (options: Options<ResultApiGetResultData>) => {
+    return infiniteQueryOptions<
+        ResultApiGetResultResponse,
+        DefaultError,
+        InfiniteData<ResultApiGetResultResponse>,
+        QueryKey<Options<ResultApiGetResultData>>,
+        number | Pick<QueryKey<Options<ResultApiGetResultData>>[0], "body" | "headers" | "path" | "query">
+    >(
         // @ts-ignore
-        const page: Pick<
-          QueryKey<Options<ResultApiGetResultData>>[0],
-          "body" | "headers" | "path" | "query"
-        > =
-          typeof pageParam === "object"
-            ? pageParam
-            : {
-                query: {
-                  offset: pageParam,
-                },
-              };
-        const params = createInfiniteParams(queryKey, page);
-        const { data } = await resultApiGetResult({
-          ...options,
-          ...params,
-          signal,
-          throwOnError: true,
-        });
-        return data;
-      },
-      queryKey: resultApiGetResultInfiniteQueryKey(options),
-    },
-  );
+        {
+            queryFn: async ({ pageParam, queryKey, signal }) => {
+                // @ts-ignore
+                const page: Pick<QueryKey<Options<ResultApiGetResultData>>[0], "body" | "headers" | "path" | "query"> =
+                    typeof pageParam === "object"
+                        ? pageParam
+                        : {
+                              query: {
+                                  page: pageParam,
+                              },
+                          };
+                const params = createInfiniteParams(queryKey, page);
+                const { data } = await resultApiGetResult({
+                    ...options,
+                    ...params,
+                    signal,
+                    throwOnError: true,
+                });
+                return data;
+            },
+            queryKey: resultApiGetResultInfiniteQueryKey(options),
+        },
+    );
 };
 
-export const taxonomyApiGetQueryKey = (
-  options?: Options<TaxonomyApiGetData>,
-) => [createQueryKey("taxonomyApiGet", options)];
+export const resultApiGetDomainsQueryKey = (options: Options<ResultApiGetDomainsData>) => [
+    createQueryKey("resultApiGetDomains", options),
+];
 
-export const taxonomyApiGetOptions = (
-  options?: Options<TaxonomyApiGetData>,
+export const resultApiGetDomainsOptions = (options: Options<ResultApiGetDomainsData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await resultApiGetDomains({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: resultApiGetDomainsQueryKey(options),
+    });
+};
+
+export const searchApiSearchQueryKey = (options: Options<SearchApiSearchData>) => [
+    createQueryKey("searchApiSearch", options),
+];
+
+export const searchApiSearchOptions = (options: Options<SearchApiSearchData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await searchApiSearch({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: searchApiSearchQueryKey(options),
+    });
+};
+
+export const searchApiSearchMutation = (options?: Partial<Options<SearchApiSearchData>>) => {
+    const mutationOptions: UseMutationOptions<SearchApiSearchResponse, DefaultError, Options<SearchApiSearchData>> = {
+        mutationFn: async (localOptions) => {
+            const { data } = await searchApiSearch({
+                ...options,
+                ...localOptions,
+                throwOnError: true,
+            });
+            return data;
+        },
+    };
+    return mutationOptions;
+};
+
+export const searchApiGetJobsQueryKey = (options?: Options<SearchApiGetJobsData>) => [
+    createQueryKey("searchApiGetJobs", options),
+];
+
+export const searchApiGetJobsOptions = (options?: Options<SearchApiGetJobsData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await searchApiGetJobs({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: searchApiGetJobsQueryKey(options),
+    });
+};
+
+export const taxonomyApiGetQueryKey = (options?: Options<TaxonomyApiGetData>) => [
+    createQueryKey("taxonomyApiGet", options),
+];
+
+export const taxonomyApiGetOptions = (options?: Options<TaxonomyApiGetData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await taxonomyApiGet({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: taxonomyApiGetQueryKey(options),
+    });
+};
+
+export const taxonomyApiSearchTaxonomyQueryKey = (options: Options<TaxonomyApiSearchTaxonomyData>) => [
+    createQueryKey("taxonomyApiSearchTaxonomy", options),
+];
+
+export const taxonomyApiSearchTaxonomyOptions = (options: Options<TaxonomyApiSearchTaxonomyData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await taxonomyApiSearchTaxonomy({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: taxonomyApiSearchTaxonomyQueryKey(options),
+    });
+};
+
+export const taxonomyApiGetTaxonomyQueryKey = (options: Options<TaxonomyApiGetTaxonomyData>) => [
+    createQueryKey("taxonomyApiGetTaxonomy", options),
+];
+
+export const taxonomyApiGetTaxonomyOptions = (options: Options<TaxonomyApiGetTaxonomyData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await taxonomyApiGetTaxonomy({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: taxonomyApiGetTaxonomyQueryKey(options),
+    });
+};
+
+export const taxonomyApiGetTaxonomyDistributionQueryKey = (
+    options: Options<TaxonomyApiGetTaxonomyDistributionData>,
+) => [createQueryKey("taxonomyApiGetTaxonomyDistribution", options)];
+
+export const taxonomyApiGetTaxonomyDistributionOptions = (options: Options<TaxonomyApiGetTaxonomyDistributionData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await taxonomyApiGetTaxonomyDistribution({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: taxonomyApiGetTaxonomyDistributionQueryKey(options),
+    });
+};
+
+export const taxonomyApiGetTaxonomyTreeQueryKey = (options: Options<TaxonomyApiGetTaxonomyTreeData>) => [
+    createQueryKey("taxonomyApiGetTaxonomyTree", options),
+];
+
+export const taxonomyApiGetTaxonomyTreeOptions = (options: Options<TaxonomyApiGetTaxonomyTreeData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await taxonomyApiGetTaxonomyTree({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: taxonomyApiGetTaxonomyTreeQueryKey(options),
+    });
+};
+
+export const taxonomyApiGetTaxonomyDistributionGraphQueryKey = (
+    options: Options<TaxonomyApiGetTaxonomyDistributionGraphData>,
+) => [createQueryKey("taxonomyApiGetTaxonomyDistributionGraph", options)];
+
+export const taxonomyApiGetTaxonomyDistributionGraphOptions = (
+    options: Options<TaxonomyApiGetTaxonomyDistributionGraphData>,
 ) => {
-  return queryOptions({
-    queryFn: async ({ queryKey, signal }) => {
-      const { data } = await taxonomyApiGet({
-        ...options,
-        ...queryKey[0],
-        signal,
-        throwOnError: true,
-      });
-      return data;
-    },
-    queryKey: taxonomyApiGetQueryKey(options),
-  });
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await taxonomyApiGetTaxonomyDistributionGraph({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: taxonomyApiGetTaxonomyDistributionGraphQueryKey(options),
+    });
+};
+
+export const downloadApiGenerateFileQueryKey = (options: Options<DownloadApiGenerateFileData>) => [
+    createQueryKey("downloadApiGenerateFile", options),
+];
+
+export const downloadApiGenerateFileOptions = (options: Options<DownloadApiGenerateFileData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await downloadApiGenerateFile({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: downloadApiGenerateFileQueryKey(options),
+    });
+};
+
+export const downloadApiGenerateFileMutation = (options?: Partial<Options<DownloadApiGenerateFileData>>) => {
+    const mutationOptions: UseMutationOptions<
+        DownloadApiGenerateFileResponse,
+        DefaultError,
+        Options<DownloadApiGenerateFileData>
+    > = {
+        mutationFn: async (localOptions) => {
+            const { data } = await downloadApiGenerateFile({
+                ...options,
+                ...localOptions,
+                throwOnError: true,
+            });
+            return data;
+        },
+    };
+    return mutationOptions;
+};
+
+export const downloadApiGetDownloadsQueryKey = (options: Options<DownloadApiGetDownloadsData>) => [
+    createQueryKey("downloadApiGetDownloads", options),
+];
+
+export const downloadApiGetDownloadsOptions = (options: Options<DownloadApiGetDownloadsData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await downloadApiGetDownloads({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: downloadApiGetDownloadsQueryKey(options),
+    });
 };
