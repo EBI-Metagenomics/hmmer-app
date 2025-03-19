@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/tools/Hmmer/",
+    "build": "vite build --base=/Tools/hmmer/",
     "lint": "eslint .",
     "preview": "vite preview",
     "openapi-ts": "env-cmd -- openapi-ts"
