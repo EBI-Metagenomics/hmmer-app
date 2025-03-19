@@ -40,7 +40,7 @@ function App() {
     client={queryClient}
     persistOptions={{ persister }}
   >
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <div className="vf-body">
           {/* <VfHero
             vf_hero_kicker="EMBL-EBI"
