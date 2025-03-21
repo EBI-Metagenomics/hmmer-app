@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useMatch, useSearchParams } from "react-router";
 
 // @ts-ignore
@@ -7,12 +8,15 @@ import VfTabs from "@visual-framework/vf-tabs/vf-tabs.react.js";
 import { useResult } from "@/hooks/useResult";
 
 import { ResultTable, TaxonomyElement, DomainArchitectureList, DownloadList } from "@components/organisms";
+import { useColumns } from "@/context/columns";
 
 const ResultsPage: React.FC = () => {
     const navigate = useNavigate();
     const route = useMatch(`/results/:id/:tab`);
     const matchedPath = route?.params.tab;
     const id = route?.params.id;
+
+    const [columns] = useColumns();
 
     const [searchParams] = useSearchParams({
         page: _.toString(1),
@@ -23,9 +27,8 @@ const ResultsPage: React.FC = () => {
     const pageSize = _.toInteger(searchParams.get("pageSize"));
     const taxonomyIds = searchParams.getAll("taxonomyIds").map(_.toInteger);
     const architecture = searchParams.get("architectures") || undefined;
-    const storedColumnVisibility = JSON.parse(localStorage.getItem("columnVisibility") ?? "{}");
 
-    const { data } = useResult(id!, page, pageSize, storedColumnVisibility.hitPositions, taxonomyIds, architecture);
+    const { data } = useResult(id!, page, pageSize, columns.hitPositions, taxonomyIds, architecture);
 
     return (
         <div className="vf-stack vf-stack--800">
