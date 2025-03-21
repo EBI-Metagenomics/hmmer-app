@@ -19,11 +19,11 @@ import { TaxonomyResult } from "@/client/types.gen";
 
 import "./index.scss";
 
-declare module '@tanstack/table-core' {
+declare module "@tanstack/table-core" {
     interface TableMeta<TData extends RowData> {
-      resultId: string
+        resultId: string;
     }
-  }
+}
 
 const columnHelper = createColumnHelper<TaxonomyResult>();
 
@@ -42,15 +42,25 @@ const columns = [
     {
         id: "show",
         header: "View",
-        cell: ({ row, table }: { row: Row<TaxonomyResult>, table: Table<TaxonomyResult> }) => {
-            return <Link to={{pathname: `/results/${table.options.meta?.resultId}/score`, search: `?taxonomyIds=${row.original.taxonomy_id}`}} className="vf-link">Show</Link>;
+        cell: ({ row, table }: { row: Row<TaxonomyResult>; table: Table<TaxonomyResult> }) => {
+            return (
+                <Link
+                    to={{
+                        pathname: `/results/${table.options.meta?.resultId}/score`,
+                        search: `?taxonomyIds=${row.original.taxonomy_id}`,
+                    }}
+                    className="vf-link"
+                >
+                    Show
+                </Link>
+            );
         },
     },
 ];
 
 interface ResultTableProps {
     id: string;
-    visibleIds: number[];
+    visibleIds?: number[];
 }
 
 export const TaxonomyTable: React.FC<ResultTableProps> = ({ id, visibleIds }) => {
@@ -64,12 +74,16 @@ export const TaxonomyTable: React.FC<ResultTableProps> = ({ id, visibleIds }) =>
     });
 
     useEffect(() => {
-        setColumnFilters([
-            {
+        const filters = [];
+
+        if (visibleIds && visibleIds.length > 0) {
+            filters.push({
                 id: "taxonomyId",
                 value: visibleIds,
-            },
-        ]);
+            });
+        }
+
+        setColumnFilters(filters);
     }, [visibleIds]);
 
     const defaultData = useMemo(() => [], []);

@@ -18,7 +18,7 @@ interface TaxonomyElementProps {
 }
 
 export const TaxonomyElement: React.FC<TaxonomyElementProps> = ({ id }) => {
-    const [visibleIds, setVisibleIds] = useState<number[]>([]);
+    const [visibleIds, setVisibleIds] = useState<number[] | undefined>();
 
     const { data, isPending } = useTaxonomyTree(id)
 
