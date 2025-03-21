@@ -25,7 +25,6 @@ export const SpeciesFilter: React.FC = () => {
     const taxonomies = useQueries({
         queries: _.map(searchParams.getAll("taxonomyIds"), (taxonomyId) => ({
             ...taxonomyApiGetTaxonomyOptions({ path: { id: _.toInteger(taxonomyId) } }),
-            staleTime: Infinity,
         })),
     });
 

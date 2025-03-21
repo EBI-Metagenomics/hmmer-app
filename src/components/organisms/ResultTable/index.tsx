@@ -17,6 +17,8 @@ import { Pagination, JobStatus } from "@components/molecules";
 import { Annotations, AlignmentView, SpeciesFilter, ArchitectureFilter, DistributionGraph } from "@components/organisms";
 import { P7Hit, ResultResponseSchema } from "@/client/types.gen";
 
+import { useColumns } from "@/context/columns";
+
 import "./index.scss";
 
 const columnHelper = createColumnHelper<P7Hit>();
@@ -258,27 +260,7 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id, data }) => {
     const pageSize = _.toInteger(searchParams.get("pageSize"));
     const taxonomyIds = searchParams.getAll("taxonomyIds").map(_.toInteger);
     const architecture = searchParams.get("architectures") || undefined;
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(() => {
-        const storedColumnVisibility = JSON.parse(localStorage.getItem("columnVisibility") ?? "{}");
-
-        return {
-            rowNumber: false,
-            identifier: false,
-            kingdom: false,
-            phylum: false,
-            structures: false,
-            hitPositions: false,
-            numHits: false,
-            numSignificantHits: false,
-            bitscore: false,
-            alignmentStart: false,
-            alignmentEnd: false,
-            modelStart: false,
-            modelEnd: false,
-            modelLength: false,
-            ...storedColumnVisibility,
-        };
-    });
+    const [columnVisibility, setColumnVisibility] = useColumns();
 
     
     const algo = data?.result?.stats.algo ?? "unknown";
