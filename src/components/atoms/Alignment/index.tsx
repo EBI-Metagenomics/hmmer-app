@@ -27,7 +27,7 @@ const AlignmentCounter = ({ length }: { length: number }) => {
 
   return (
     <div>
-      {spacer.repeat(13)}
+      {spacer.repeat(12)}
       {aliCountStrAll.substr(0, length)}
     </div>
   );
@@ -93,7 +93,7 @@ const HMMLine = ({
 
 const MatchLine = ({ matchLinebit }: { matchLinebit: string }) => (
   <div>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     {matchLinebit.replace(/ /g, "\u00A0")}
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   </div>
@@ -172,7 +172,7 @@ const SequenceLine = ({
 
 const PPLine = ({ ppLinebit }: { ppLinebit: string }) => (
   <div>
-    PP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    PP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     {ppLinebit.replace(/ /g, "\u00A0")}
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   </div>
