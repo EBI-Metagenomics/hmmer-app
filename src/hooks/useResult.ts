@@ -10,5 +10,4 @@ export const useResult = (id: string, page: number = 1, pageSize: number = 50, w
         return Math.min(1000 * (2 ** query.state.dataUpdateCount), 5 * 60 * 1000);
     },
     refetchIntervalInBackground: true,
-    staleTime: Infinity,
 });

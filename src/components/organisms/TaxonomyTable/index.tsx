@@ -60,7 +60,6 @@ export const TaxonomyTable: React.FC<ResultTableProps> = ({ id, visibleIds }) =>
         ...taxonomyApiGetTaxonomyDistributionOptions({
             path: { id: id! },
         }),
-        staleTime: Infinity,
         placeholderData: keepPreviousData,
     });
 

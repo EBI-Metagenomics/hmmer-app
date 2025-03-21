@@ -89,7 +89,6 @@ export const DomainArchitectureList: React.FC<DomainArchitectureListProps> = ({ 
 
             return Math.min(1000 * 2 ** query.state.dataUpdateCount, 5 * 60 * 1000);
         },
-        staleTime: Infinity,
     });
 
     const table = useReactTable({

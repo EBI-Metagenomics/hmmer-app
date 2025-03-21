@@ -23,7 +23,6 @@ export const DistributionGraph: React.FC<DistributionGraphProps> = ({ id }) => {
 
             return Math.min(1000 * 2 ** query.state.dataUpdateCount, 5 * 60 * 1000);
         },
-        staleTime: Infinity,
     });
 
     useEffect(() => {

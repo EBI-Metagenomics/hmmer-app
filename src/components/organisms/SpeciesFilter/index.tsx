@@ -20,7 +20,6 @@ export const SpeciesFilter: React.FC = () => {
     const { data } = useQuery({
         ...taxonomyApiSearchTaxonomyOptions({ query: { q: _.toString(query) } }),
         enabled: query !== "",
-        staleTime: Infinity,
     });
 
     const taxonomies = useQueries({

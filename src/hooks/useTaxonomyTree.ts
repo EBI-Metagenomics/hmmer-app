@@ -10,5 +10,4 @@ export const useTaxonomyTree = (id: string) => useQuery({
         return Math.min(1000 * (2 ** query.state.dataUpdateCount), 5 * 60 * 1000);
     },
     refetchIntervalInBackground: true,
-    staleTime: Infinity,
 });

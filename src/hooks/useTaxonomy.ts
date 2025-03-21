@@ -4,5 +4,4 @@ import { taxonomyApiGetTaxonomyOptions } from "@/client/@tanstack/react-query.ge
 
 export const useTaxonomy = (id: string | number) => useQuery({
     ...taxonomyApiGetTaxonomyOptions({ path: { id: _.toInteger(id)}}),
-    staleTime: Infinity,
 });

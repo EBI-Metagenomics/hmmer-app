@@ -12,7 +12,6 @@ export const ArchitectureFilter: React.FC = () => {
     const architectures = useQueries({
         queries: _.map(searchParams.getAll("architectures"), (architectureAccessions) => ({
             ...architectureApiGetArchitectureNameOptions({ path: { accessions: architectureAccessions } }),
-            staleTime: Infinity,
         })),
     });
 
