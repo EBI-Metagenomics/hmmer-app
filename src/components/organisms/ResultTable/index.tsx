@@ -40,7 +40,7 @@ const columns = [
     },
     {
         id: "rowNumber",
-        header: "Row",
+        header: "Row number",
         cell: ({ row }: { row: Row<P7Hit> }) => (row.original.index ?? 0) + 1,
         maxSize: 20,
     },
