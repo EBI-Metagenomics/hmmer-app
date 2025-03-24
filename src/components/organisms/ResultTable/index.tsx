@@ -1,4 +1,4 @@
-import { Fragment, useState, useMemo, useEffect } from "react";
+import { Fragment, useMemo, useEffect } from "react";
 import _ from "lodash";
 import { useSearchParams } from "react-router";
 import {
@@ -8,7 +8,6 @@ import {
     getExpandedRowModel,
     useReactTable,
     Row,
-    VisibilityState,
     Table,
 } from "@tanstack/react-table";
 
@@ -42,7 +41,7 @@ const columns = [
     {
         id: "rowNumber",
         header: "Row",
-        cell: ({ row }: { row: Row<P7Hit> }) => row.index + 1,
+        cell: ({ row }: { row: Row<P7Hit> }) => (row.original.index ?? 0) + 1,
         maxSize: 20,
     },
     columnHelper.accessor("metadata.accession", {
