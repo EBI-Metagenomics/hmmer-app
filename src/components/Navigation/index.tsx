@@ -76,11 +76,8 @@ const Navigation: React.FC = () => {
           </li>
           <li className="vf-navigation__item">
             <Link
-              to="/contact"
+              to="https://www.ebi.ac.uk/about/contact/support/hmmer"
               className="vf-navigation__link"
-              aria-current={
-                location.pathname.startsWith("/contact") ? "page" : undefined
-              }
             >
               Contact
             </Link>
