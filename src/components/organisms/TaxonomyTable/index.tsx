@@ -108,7 +108,7 @@ export const TaxonomyTable: React.FC<ResultTableProps> = ({ id, visibleIds }) =>
     });
 
     return (
-        <div className="table-container">
+        <div className="taxonomy-table-container">
             <table className="vf-table vf-u-width__100">
                 <thead className="vf-table__header">
                     {table.getHeaderGroups().map((headerGroup) => (

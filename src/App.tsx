@@ -8,7 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import VfHero from "@visual-framework/vf-hero/vf-hero.react.js";
 
 import { client } from "@/client/sdk.gen";
-import { Hero } from "./components/molecules";
+import { Hero, EBIFooter } from "./components/molecules";
 import Navigation from "./components/Navigation";
 import Home from "./components/pages/home";
 import SearchPage from "./components/pages/search";
@@ -16,6 +16,7 @@ import ResultsPage from "./components/pages/results";
 import ResultsDetailsPage from "./components/pages/resultsDetails";
 import { ColumnsProvider } from "./context/columns";
 
+import "@visual-framework/ebi-header-footer/ebi-header-footer--header.precompiled.js";
 import "./App.scss";
 
 const queryClient = new QueryClient({
@@ -39,29 +40,30 @@ function App() {
     return (
         <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
             <ColumnsProvider>
-                <BrowserRouter basename={import.meta.env.BASE_URL}>
-                    <div className="vf-body">
-                        {/* <VfHero
+                    <div className="vf-body vf-stack vf-stack--200">
+                        <BrowserRouter basename={import.meta.env.BASE_URL}>
+                            {/* <VfHero
             vf_hero_kicker="EMBL-EBI"
             vf_hero_heading="HMMER"
             vf_hero_subheading="Biosequence analysis using profile hidden Markov Models"
             vf_hero_image={`url(${heroImageUrl})`}
             spacing={800}
           /> */}
-                        <Hero />
-                        <Navigation />
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/home" element={<Home />} />
-                            <Route path="/search/*" element={<SearchPage />} />
-                            <Route path="/search" element={<Navigate to="phmmer" />} />
-                            <Route path="/results" element={<ResultsPage />} />
-                            <Route path="/results/:id/*" element={<ResultsDetailsPage />} />
-                            <Route path="/results/:id" element={<Navigate to="score" />} />
-                            <Route path="*" element={<div>Not found</div>} />
-                        </Routes>
+                            <Hero />
+                            <Navigation />
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route path="/home" element={<Home />} />
+                                <Route path="/search/*" element={<SearchPage />} />
+                                <Route path="/search" element={<Navigate to="phmmer" />} />
+                                <Route path="/results" element={<ResultsPage />} />
+                                <Route path="/results/:id/*" element={<ResultsDetailsPage />} />
+                                <Route path="/results/:id" element={<Navigate to="score" />} />
+                                <Route path="*" element={<div>Not found</div>} />
+                            </Routes>
+                        </BrowserRouter>
                     </div>
-                </BrowserRouter>
+                    <EBIFooter />
                 <ToastContainer position="bottom-right" />
                 <ReactQueryDevtools initialIsOpen={false} />
             </ColumnsProvider>

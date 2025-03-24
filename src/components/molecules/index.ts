@@ -1,5 +1,6 @@
 export { ColumnSelection } from "./ColumnSelection";
 export { CutOffInput } from "./CutOffInput";
+export { EBIFooter } from "./EBIFooter";
 export { FilterInput } from "./FilterInput";
 export { GapPenaltiesInput } from "./GapPenaltiesInput";
 export { Hero } from "./Hero";

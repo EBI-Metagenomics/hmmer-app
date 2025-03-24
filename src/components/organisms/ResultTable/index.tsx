@@ -14,7 +14,13 @@ import {
 
 import { TreeToggleButton, HitPosition, Alignment } from "@components/atoms";
 import { Pagination, JobStatus } from "@components/molecules";
-import { Annotations, AlignmentView, SpeciesFilter, ArchitectureFilter, DistributionGraph } from "@components/organisms";
+import {
+    Annotations,
+    AlignmentView,
+    SpeciesFilter,
+    ArchitectureFilter,
+    DistributionGraph,
+} from "@components/organisms";
 import { P7Hit, ResultResponseSchema } from "@/client/types.gen";
 
 import { useColumns } from "@/context/columns";
@@ -246,7 +252,7 @@ const hmmscanColumns = [
 ];
 
 interface ResultTableProps {
-    id: string,
+    id: string;
     data?: ResultResponseSchema;
 }
 
@@ -262,7 +268,6 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id, data }) => {
     const architecture = searchParams.get("architectures") || undefined;
     const [columnVisibility, setColumnVisibility] = useColumns();
 
-    
     const algo = data?.result?.stats.algo ?? "unknown";
 
     const defaultData = useMemo(() => [], []);
@@ -293,85 +298,102 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id, data }) => {
         return (
             <div className="embl-grid">
                 <div className="vf-stack vf-stack__400">
-                    { algo !== "hmmscan" && <SpeciesFilter />}
-                    { algo !== "hmmscan" && <ArchitectureFilter />}
+                    {algo !== "hmmscan" && <SpeciesFilter />}
+                    {algo !== "hmmscan" && <ArchitectureFilter />}
                     <ColumnSelection table={table} />
                 </div>
                 <div className="vf-stack vf-stack--800">
                     {taxonomyIds.length === 0 && !architecture && algo !== "hmmscan" && <DistributionGraph id={id} />}
                     {algo !== "hmmsearch" && <Annotations id={id} />}
-                    <div className="table-container">
-                        <table className="vf-table" style={{ width: "100%", display: "block" }}>
-                            <thead className="vf-table__header">
-                                {table.getHeaderGroups().map((headerGroup) => (
-                                    <tr key={headerGroup.id} className="vf-table__row">
-                                        {headerGroup.headers.map((header) => (
-                                            <th key={header.id} colSpan={header.colSpan} className="vf-table__heading">
-                                                {header.isPlaceholder
-                                                    ? null
-                                                    : flexRender(header.column.columnDef.header, header.getContext())}
-                                            </th>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </thead>
-                            <tbody className="vf-table__body">
-                                {table.getRowModel().rows.map((row) => {
-                                    return (
-                                        <Fragment key={row.original.index}>
-                                            <tr className="vf-table__row">
-                                                {/* first row is a normal row */}
-                                                {row.getVisibleCells().map((cell) => {
-                                                    return (
-                                                        <td
-                                                            key={cell.id}
-                                                            className="vf-table__cell"
-                                                            width={cell.column.getSize()}
-                                                        >
-                                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                                        </td>
-                                                    );
-                                                })}
-                                            </tr>
-                                            {row.getIsExpanded() && (
-                                                <tr>
-                                                    {/* 2nd row is a custom 1 cell row */}
-                                                    <td
-                                                        colSpan={row.getVisibleCells().length}
-                                                        className="alignment-cell"
-                                                    >
-                                                        {algo === "hmmscan" && (
-                                                            <table className="vf-table vf-table--bordered alignment-table vf-u-width__100">
-                                                                <tbody className="vf-table__body">
-                                                                    <tr className="vf-table__row">
-                                                                        <td className="vf-table__cell" colSpan={999}>
-                                                                            <Alignment
-                                                                                alignment={
-                                                                                    row.original.domains?.[
-                                                                                        row.original.best_domain
-                                                                                    ].alignment_display!
-                                                                                }
-                                                                                algorithm="hmmscan"
-                                                                            />
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        )}
-                                                        {algo !== "hmmscan" && (
-                                                            <div className="vf-stack vf-stack--200">
-                                                                <AlignmentView id={id} index={row.original.index!} />
-                                                            </div>
-                                                        )}
-                                                    </td>
+                    <div className="vf-stack vf-stack--200">
+                        <div className="table-container">
+                            <table className="vf-table" style={{ height: "100%" }}>
+                                <thead className="vf-table__header">
+                                    {table.getHeaderGroups().map((headerGroup) => (
+                                        <tr key={headerGroup.id} className="vf-table__row">
+                                            {headerGroup.headers.map((header) => (
+                                                <th
+                                                    key={header.id}
+                                                    colSpan={header.colSpan}
+                                                    className="vf-table__heading"
+                                                >
+                                                    {header.isPlaceholder
+                                                        ? null
+                                                        : flexRender(
+                                                              header.column.columnDef.header,
+                                                              header.getContext(),
+                                                          )}
+                                                </th>
+                                            ))}
+                                        </tr>
+                                    ))}
+                                </thead>
+                                <tbody className="vf-table__body">
+                                    {table.getRowModel().rows.map((row) => {
+                                        return (
+                                            <Fragment key={row.original.index}>
+                                                <tr className="vf-table__row">
+                                                    {/* first row is a normal row */}
+                                                    {row.getVisibleCells().map((cell) => {
+                                                        return (
+                                                            <td
+                                                                key={cell.id}
+                                                                className="vf-table__cell"
+                                                                width={cell.column.getSize()}
+                                                            >
+                                                                {flexRender(
+                                                                    cell.column.columnDef.cell,
+                                                                    cell.getContext(),
+                                                                )}
+                                                            </td>
+                                                        );
+                                                    })}
                                                 </tr>
-                                            )}
-                                        </Fragment>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-
+                                                {row.getIsExpanded() && (
+                                                    <tr>
+                                                        {/* 2nd row is a custom 1 cell row */}
+                                                        <td
+                                                            colSpan={row.getVisibleCells().length}
+                                                            className="alignment-cell"
+                                                        >
+                                                            {algo === "hmmscan" && (
+                                                                <table className="vf-table vf-table--bordered alignment-table vf-u-width__100">
+                                                                    <tbody className="vf-table__body">
+                                                                        <tr className="vf-table__row">
+                                                                            <td
+                                                                                className="vf-table__cell"
+                                                                                colSpan={999}
+                                                                            >
+                                                                                <Alignment
+                                                                                    alignment={
+                                                                                        row.original.domains?.[
+                                                                                            row.original.best_domain
+                                                                                        ].alignment_display!
+                                                                                    }
+                                                                                    algorithm="hmmscan"
+                                                                                />
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            )}
+                                                            {algo !== "hmmscan" && (
+                                                                <div className="vf-stack vf-stack--200">
+                                                                    <AlignmentView
+                                                                        id={id}
+                                                                        index={row.original.index!}
+                                                                    />
+                                                                </div>
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                )}
+                                            </Fragment>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                         <Pagination
                             currentPage={page}
                             currentPageSize={pageSize}
