@@ -1,10 +1,19 @@
 .graphics-container {
     width: 900px;
+    height: 100%;
     display: flex;
     justify-content: start;
     align-items: center;
     gap: 0.5rem;
-    overflow: scroll;
+    overflow-x: scroll;
+    -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+    scrollbar-width: none;  /* Hide scrollbar for Firefox */
+    overscroll-behavior: contain;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.graphics-container::-webkit-scrollbar {
+    display: none;
 }
 
 .graphics-container div {

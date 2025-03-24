@@ -171,24 +171,24 @@ interface DomainGraphicsProps {
 }
 
 const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName }) => {
-    const graphicsParentContainerRef = useRef<HTMLDivElement>(null);
     const graphicsContainerRef = useRef<HTMLDivElement>(null);
+    const graphicsRef = useRef<HTMLDivElement>(null);
     const [shouldNudge, setShouldNudge] = useState<boolean>(false);
     const graphics = JSON.parse(architecture.graphics);
 
     useEffect(() => {
         const graphicsElement = new DomainGraphic({
             data: graphics,
-            parent: graphicsContainerRef.current,
+            parent: graphicsRef.current,
         });
 
         return graphicsElement.delete;
     }, [graphics]);
 
     useEffect(() => {
-        if (graphicsParentContainerRef.current) {
+        if (graphicsContainerRef.current) {
             setShouldNudge(
-                graphicsParentContainerRef.current.scrollWidth > graphicsParentContainerRef.current.clientWidth,
+                graphicsContainerRef.current.scrollWidth > graphicsContainerRef.current.clientWidth,
             );
         }
     }, []);
@@ -227,6 +227,15 @@ const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName 
         return result;
     };
 
+    const handleScroll = (e: React.WheelEvent<HTMLDivElement>) => {
+        if (!e.deltaX && !e.deltaY) {
+            return;
+        }
+
+        e.preventDefault();
+        e.currentTarget.scrollLeft += e.deltaX + e.deltaY;
+    };
+
     return (
         <div className="architecture-container">
             {showName && (
@@ -234,8 +243,8 @@ const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName 
                     <span style={{ fontWeight: 600 }}>{compressDomainString(architecture.names)}</span>
                 </div>
             )}
-            <div ref={graphicsParentContainerRef} className={`graphics-container ${shouldNudge ? "with-nudge" : ""}`}>
-                <div ref={graphicsContainerRef} />
+            <div ref={graphicsContainerRef} className={`graphics-container ${shouldNudge ? "with-nudge" : ""}`} onWheel={handleScroll}>
+                <div ref={graphicsRef} />
                 <div>
                     <span className="vf-text-body vf-text-body--5">{graphics.length}</span>
                 </div>
