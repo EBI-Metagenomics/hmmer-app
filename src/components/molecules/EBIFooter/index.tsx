@@ -19,5 +19,5 @@ export const EBIFooter: React.FC = () => {
         fetchHtml();
     }, []);
 
-    return <div dangerouslySetInnerHTML={{ __html: innerHtml }}></div>;
+    return <div className="vf-u-margin__top--1200" dangerouslySetInnerHTML={{ __html: innerHtml }}></div>;
 };
