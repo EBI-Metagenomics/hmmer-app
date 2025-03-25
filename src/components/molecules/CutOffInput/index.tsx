@@ -86,14 +86,20 @@ const EvalueInput = () => {
                         <label htmlFor="incE" className="vf-form__label">
                             Sequence
                         </label>
-                        <input {...register("incE")} className="vf-form__input" type="number" step="any" id="incE" />
+                        <input
+                            {...register("incE", { valueAsNumber: true })}
+                            className="vf-form__input"
+                            type="number"
+                            step="any"
+                            id="incE"
+                        />
                     </div>
                     <div className="vf-form__item">
                         <label htmlFor="incdomE" className="vf-form__label">
                             Hit
                         </label>
                         <input
-                            {...register("incdomE")}
+                            {...register("incdomE", { valueAsNumber: true })}
                             className="vf-form__input"
                             type="number"
                             step="any"
@@ -109,13 +115,25 @@ const EvalueInput = () => {
                         <label htmlFor="E" className="vf-form__label">
                             Sequence
                         </label>
-                        <input {...register("E")} className="vf-form__input" type="number" step="any" id="E" />
+                        <input
+                            {...register("E", { valueAsNumber: true })}
+                            className="vf-form__input"
+                            type="number"
+                            step="any"
+                            id="E"
+                        />
                     </div>
                     <div className="vf-form__item">
                         <label htmlFor="domE" className="vf-form__label">
                             Hit
                         </label>
-                        <input {...register("domE")} className="vf-form__input" type="number" step="any" id="domE" />
+                        <input
+                            {...register("domE", { valueAsNumber: true })}
+                            className="vf-form__input"
+                            type="number"
+                            step="any"
+                            id="domE"
+                        />
                     </div>
                 </div>
             </div>
@@ -125,7 +143,6 @@ const EvalueInput = () => {
 
 const BitscoreInput = () => {
     const { register } = useFormContext();
-
     return (
         <div className="vf-stack vf-stack--200">
             <div className="vf-form__item vf-cluster vf-cluster--200">
@@ -135,14 +152,20 @@ const BitscoreInput = () => {
                         <label htmlFor="incT" className="vf-form__label">
                             Sequence
                         </label>
-                        <input {...register("incT")} className="vf-form__input" type="number" step="any" id="incT" />
+                        <input
+                            {...register("incT", { valueAsNumber: true })}
+                            className="vf-form__input"
+                            type="number"
+                            step="any"
+                            id="incT"
+                        />
                     </div>
                     <div className="vf-form__item">
                         <label htmlFor="incdomT" className="vf-form__label">
                             Hit
                         </label>
                         <input
-                            {...register("incdomT")}
+                            {...register("incdomT", { valueAsNumber: true })}
                             className="vf-form__input"
                             type="number"
                             step="any"
@@ -158,13 +181,25 @@ const BitscoreInput = () => {
                         <label htmlFor="T" className="vf-form__label">
                             Sequence
                         </label>
-                        <input {...register("T")} className="vf-form__input" type="number" step="any" id="T" />
+                        <input
+                            {...register("T", { valueAsNumber: true })}
+                            className="vf-form__input"
+                            type="number"
+                            step="any"
+                            id="T"
+                        />
                     </div>
                     <div className="vf-form__item">
                         <label htmlFor="domT" className="vf-form__label">
                             Hit
                         </label>
-                        <input {...register("domT")} className="vf-form__input" type="number" step="any" id="domT" />
+                        <input
+                            {...register("domT", { valueAsNumber: true })}
+                            className="vf-form__input"
+                            type="number"
+                            step="any"
+                            id="domT"
+                        />
                     </div>
                 </div>
             </div>
