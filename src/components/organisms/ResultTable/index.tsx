@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useEffect, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import _ from "lodash";
 import { useSearchParams } from "react-router";
 import ReactModal from "react-modal";
@@ -14,15 +14,10 @@ import {
 
 import { TreeToggleButton, HitPosition, Alignment } from "@components/atoms";
 import { Pagination, JobStatus } from "@components/molecules";
-import {
-    Annotations,
-    AlignmentView,
-    ResultFilter,
-    DistributionGraph,
-} from "@components/organisms";
+import { Annotations, AlignmentView, ResultFilter, DistributionGraph } from "@components/organisms";
 import { P7Hit, ResultResponseSchema } from "@/client/types.gen";
 
-import { useColumns } from "@/context/columns";
+import { useColumns, usePageSize } from "@/context/customization";
 
 import "./index.scss";
 
@@ -256,16 +251,18 @@ interface ResultTableProps {
 }
 
 export const ResultTable: React.FC<ResultTableProps> = ({ id, data }) => {
+    const [storePageSize, setStoredPageSize] = usePageSize();
+    const [storedColumns, setStoredColumns] = useColumns();
+
     const [searchParams, setSearchParams] = useSearchParams({
         page: _.toString(1),
-        pageSize: _.toString(50),
+        pageSize: _.toString(storePageSize),
     });
 
     const page = _.toInteger(searchParams.get("page"));
     const pageSize = _.toInteger(searchParams.get("pageSize"));
     const taxonomyIds = searchParams.getAll("taxonomyIds").map(_.toInteger);
     const architecture = searchParams.get("architectures") || undefined;
-    const [columnVisibility, setColumnVisibility] = useColumns();
 
     const algo = data?.result?.stats.algo ?? "unknown";
 
@@ -280,18 +277,14 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id, data }) => {
         getRowId: (row) => (row.metadata?.accession as string) ?? "-1",
         rowCount: data?.result?.stats?.nreported ?? 0,
         manualPagination: true,
-        onColumnVisibilityChange: setColumnVisibility,
+        onColumnVisibilityChange: setStoredColumns,
         state: {
-            columnVisibility,
+            columnVisibility: storedColumns,
         },
         defaultColumn: {
             minSize: 100,
         },
     });
-
-    useEffect(() => {
-        localStorage.setItem("columnVisibility", JSON.stringify(columnVisibility));
-    }, [columnVisibility]);
 
     if (data?.status === "SUCCESS")
         return (
@@ -301,8 +294,20 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id, data }) => {
                 <div className="vf-stack vf-stack--400">
                     {algo !== "hmmscan" && <ResultFilter />}
                     <div className="vf-stack vf-stack--200">
-                        <div style={{display: "flex", justifyContent: "end"}}>
-                            <ColumnSelection table={table} />
+                        <div style={{ display: "flex", justifyContent: "end" }}>
+                            <Customization
+                                table={table}
+                                pageSizeOptions={[50, 100, 250, 1000]}
+                                currentPageSize={pageSize}
+                                onPageSizeChange={(pageSize) => {
+                                    setSearchParams((prevSearchParams) => {
+                                        prevSearchParams.set("pageSize", _.toString(pageSize));
+                                        return prevSearchParams;
+                                    });
+
+                                    setStoredPageSize(pageSize);
+                                }}
+                            />
                         </div>
                         <div className="table-container">
                             <table className="vf-table" style={{ height: "100%" }}>
@@ -394,18 +399,10 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id, data }) => {
                         </div>
                         <Pagination
                             currentPage={page}
-                            currentPageSize={pageSize}
                             pageCount={data?.page_count ?? 1}
-                            pageSizeOptions={[50, 100, 250, 1000]}
                             onPageChange={(page) =>
                                 setSearchParams((prevSearchParams) => {
                                     prevSearchParams.set("page", _.toString(page));
-                                    return prevSearchParams;
-                                })
-                            }
-                            onPageSizeChange={(pageSize) =>
-                                setSearchParams((prevSearchParams) => {
-                                    prevSearchParams.set("pageSize", _.toString(pageSize));
                                     return prevSearchParams;
                                 })
                             }
@@ -420,11 +417,19 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id, data }) => {
     return <JobStatus status={data?.status ?? "PENDING"} id={id!} />;
 };
 
-interface ColumnSelectionProps {
+interface CustomizationProps {
     table: Table<P7Hit>;
+    currentPageSize: number;
+    onPageSizeChange: (pageSize: number) => void;
+    pageSizeOptions: number[];
 }
 
-const ColumnSelection: React.FC<ColumnSelectionProps> = ({ table }) => {
+const Customization: React.FC<CustomizationProps> = ({
+    table,
+    currentPageSize,
+    onPageSizeChange,
+    pageSizeOptions,
+}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const customStyles = {
@@ -450,11 +455,11 @@ const ColumnSelection: React.FC<ColumnSelectionProps> = ({ table }) => {
                     setIsOpen(true);
                 }}
             >
-                Columns
+                Customise
             </button>
             <ReactModal
                 style={customStyles}
-                contentLabel="Columns"
+                contentLabel="Customization"
                 isOpen={isOpen}
                 onRequestClose={() => setIsOpen(false)}
             >
@@ -471,31 +476,48 @@ const ColumnSelection: React.FC<ColumnSelectionProps> = ({ table }) => {
                         <i className="icon icon-common icon-times" />
                     </button>
                 </div>
-                <fieldset className="vf-form__fieldset vf-stack vf-stack--200 vf-text-body vf-text-body--3">
-                    <legend className="vf-form__legend">Columns</legend>
-                    {_(table.getAllLeafColumns())
-                        .filter((column) => column.getCanHide())
-                        .map((column) => {
-                            return (
-                                <div key={column.id} className="vf-form__item vf-form__item--checkbox">
-                                    <input
-                                        {...{
-                                            type: "checkbox",
-                                            id: `${column.id}`,
-                                            checked: column.getIsVisible(),
-                                            onChange: column.getToggleVisibilityHandler(),
-                                            className: "vf-form__checkbox",
-                                        }}
-                                    />
-                                    <label htmlFor={`${column.id}`} className="vf-form__label">
-                                        {column.parent && `${column.parent.columnDef.header?.toString()} - `}
-                                        {column.columnDef?.header?.toString() || column.id}
-                                    </label>
-                                </div>
-                            );
-                        })
-                        .value()}
-                </fieldset>
+                <div style={{ display: "flex", justifyContent: "start", gap: "5rem" }}>
+                    <fieldset className="vf-form__fieldset vf-stack vf-stack--200 vf-text-body vf-text-body--3">
+                        <legend className="vf-form__legend">Page Size</legend>
+                        <select
+                            id="pageSize"
+                            className="vf-form__select"
+                            value={currentPageSize}
+                            onChange={(e) => onPageSizeChange(Number(e.target.value))}
+                        >
+                            {pageSizeOptions.map((size) => (
+                                <option key={size} value={size}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                    </fieldset>
+                    <fieldset className="vf-form__fieldset vf-stack vf-stack--200 vf-text-body vf-text-body--3">
+                        <legend className="vf-form__legend">Columns</legend>
+                        {_(table.getAllLeafColumns())
+                            .filter((column) => column.getCanHide())
+                            .map((column) => {
+                                return (
+                                    <div key={column.id} className="vf-form__item vf-form__item--checkbox">
+                                        <input
+                                            {...{
+                                                type: "checkbox",
+                                                id: `${column.id}`,
+                                                checked: column.getIsVisible(),
+                                                onChange: column.getToggleVisibilityHandler(),
+                                                className: "vf-form__checkbox",
+                                            }}
+                                        />
+                                        <label htmlFor={`${column.id}`} className="vf-form__label">
+                                            {column.parent && `${column.parent.columnDef.header?.toString()} - `}
+                                            {column.columnDef?.header?.toString() || column.id}
+                                        </label>
+                                    </div>
+                                );
+                            })
+                            .value()}
+                    </fieldset>
+                </div>
             </ReactModal>
         </>
     );

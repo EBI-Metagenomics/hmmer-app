@@ -1,8 +1,5 @@
 @import "@visual-framework/vf-pagination";
 
-.page-size-selector {
-    margin-left: auto;
-}
 
 .vf-pagination__item {
     padding: 0 8px;
@@ -11,10 +8,4 @@
 
 .vf-pagination__link:not(.disabled) {
     cursor: pointer;
-}
-
-.page-size-container {
-    display: flex;
-    align-items: center;
-    padding-left: 16px;
 }

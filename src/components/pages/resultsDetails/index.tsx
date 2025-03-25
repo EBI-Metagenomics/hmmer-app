@@ -7,7 +7,7 @@ import VfTabs from "@visual-framework/vf-tabs/vf-tabs.react.js";
 import { useResult } from "@/hooks/useResult";
 
 import { ResultTable, TaxonomyElement, DomainArchitectureList, DownloadList } from "@components/organisms";
-import { useColumns } from "@/context/columns";
+import { useColumns, usePageSize } from "@/context/customization";
 
 const ResultsPage: React.FC = () => {
     const navigate = useNavigate();
@@ -15,11 +15,12 @@ const ResultsPage: React.FC = () => {
     const matchedPath = route?.params.tab;
     const id = route?.params.id;
 
-    const [columns] = useColumns();
+    const [storedPageSize] = usePageSize();
+    const [storedColumns] = useColumns();
 
     const [searchParams] = useSearchParams({
         page: _.toString(1),
-        pageSize: _.toString(50),
+        pageSize: _.toString(storedPageSize),
     });
 
     const page = _.toInteger(searchParams.get("page"));
@@ -27,7 +28,7 @@ const ResultsPage: React.FC = () => {
     const taxonomyIds = searchParams.getAll("taxonomyIds").map(_.toInteger);
     const architecture = searchParams.get("architectures") || undefined;
 
-    const { data } = useResult(id!, page, pageSize, columns.hitPositions, taxonomyIds, architecture);
+    const { data } = useResult(id!, page, pageSize, storedColumns.hitPositions, taxonomyIds, architecture);
 
     return (
         <div className="vf-stack vf-stack--800">

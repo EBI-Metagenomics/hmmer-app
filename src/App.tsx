@@ -15,7 +15,7 @@ import Home from "./components/pages/home";
 import SearchPage from "./components/pages/search";
 import ResultsPage from "./components/pages/results";
 import ResultsDetailsPage from "./components/pages/resultsDetails";
-import { ColumnsProvider } from "./context/columns";
+import { CustomizationProvider } from "./context/customization";
 
 import "@visual-framework/ebi-header-footer/ebi-header-footer--header.precompiled.js";
 import "./App.scss";
@@ -42,7 +42,7 @@ ReactModal.setAppElement('#root');
 function App() {
     return (
         <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
-            <ColumnsProvider>
+            <CustomizationProvider>
                     <div className="vf-body vf-stack vf-stack--200">
                         <BrowserRouter basename={import.meta.env.BASE_URL}>
                             {/* <VfHero
@@ -69,7 +69,7 @@ function App() {
                     <EBIFooter />
                 <ToastContainer position="bottom-right" />
                 <ReactQueryDevtools initialIsOpen={false} />
-            </ColumnsProvider>
+            </CustomizationProvider>
         </PersistQueryClientProvider>
     );
 }
