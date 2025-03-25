@@ -59,8 +59,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
             // @ts-ignore
             _.each(error.detail, (e) => {
                 toast.error(e.msg);
-            })
-            
+            });
         }
     }, [error]);
 
@@ -137,16 +136,14 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                         <MenuSection title="Cut off">
                             <CutOffInput algo={algo} />
                         </MenuSection>
-                        {algo !== "hmmscan" && (
-                            <>
-                                <MenuSection title="Gap penalties">
-                                    <GapPenaltiesInput />
-                                </MenuSection>
-                                <MenuSection title="Filter">
-                                    <FilterInput />
-                                </MenuSection>
-                            </>
+                        {algo !== "hmmscan" && algo !== "hmmsearch" && (
+                            <MenuSection title="Gap penalties">
+                                <GapPenaltiesInput />
+                            </MenuSection>
                         )}
+                        <MenuSection title="Filter">
+                            <FilterInput />
+                        </MenuSection>
                         {/* <MenuSection title="Taxonomy filter">
               <TaxonomyFilterInput />
             </MenuSection> */}
