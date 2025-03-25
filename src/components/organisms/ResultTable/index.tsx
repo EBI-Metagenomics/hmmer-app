@@ -1,6 +1,7 @@
-import { Fragment, useMemo, useEffect } from "react";
+import { Fragment, useMemo, useEffect, useState } from "react";
 import _ from "lodash";
 import { useSearchParams } from "react-router";
+import ReactModal from "react-modal";
 import {
     createColumnHelper,
     flexRender,
@@ -16,8 +17,7 @@ import { Pagination, JobStatus } from "@components/molecules";
 import {
     Annotations,
     AlignmentView,
-    SpeciesFilter,
-    ArchitectureFilter,
+    ResultFilter,
     DistributionGraph,
 } from "@components/organisms";
 import { P7Hit, ResultResponseSchema } from "@/client/types.gen";
@@ -295,16 +295,15 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id, data }) => {
 
     if (data?.status === "SUCCESS")
         return (
-            <div className="embl-grid">
-                <div className="vf-stack vf-stack__400">
-                    {algo !== "hmmscan" && <SpeciesFilter />}
-                    {algo !== "hmmscan" && <ArchitectureFilter />}
-                    <ColumnSelection table={table} />
-                </div>
-                <div className="vf-stack vf-stack--800">
-                    {taxonomyIds.length === 0 && !architecture && algo !== "hmmscan" && <DistributionGraph id={id} />}
-                    {algo !== "hmmsearch" && <Annotations id={id} />}
+            <div className="vf-stack vf-stack--800">
+                {taxonomyIds.length === 0 && !architecture && algo !== "hmmscan" && <DistributionGraph id={id} />}
+                {algo !== "hmmsearch" && <Annotations id={id} />}
+                <div className="vf-stack vf-stack--400">
+                    {algo !== "hmmscan" && <ResultFilter />}
                     <div className="vf-stack vf-stack--200">
+                        <div style={{display: "flex", justifyContent: "end"}}>
+                            <ColumnSelection table={table} />
+                        </div>
                         <div className="table-container">
                             <table className="vf-table" style={{ height: "100%" }}>
                                 <thead className="vf-table__header">
@@ -426,31 +425,78 @@ interface ColumnSelectionProps {
 }
 
 const ColumnSelection: React.FC<ColumnSelectionProps> = ({ table }) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const customStyles = {
+        content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+        },
+        overlay: {
+            zIndex: 9999,
+        },
+    };
+
     return (
-        <fieldset className="vf-form__fieldset vf-stack vf-stack--200 vf-text-body vf-text-body--3">
-            <legend className="vf-form__legend">Columns</legend>
-            {_(table.getAllLeafColumns())
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                    return (
-                        <div key={column.id} className="vf-form__item vf-form__item--checkbox">
-                            <input
-                                {...{
-                                    type: "checkbox",
-                                    id: `${column.id}`,
-                                    checked: column.getIsVisible(),
-                                    onChange: column.getToggleVisibilityHandler(),
-                                    className: "vf-form__checkbox",
-                                }}
-                            />
-                            <label htmlFor={`${column.id}`} className="vf-form__label">
-                                {column.parent && `${column.parent.columnDef.header?.toString()} - `}
-                                {column.columnDef?.header?.toString() || column.id}
-                            </label>
-                        </div>
-                    );
-                })
-                .value()}
-        </fieldset>
+        <>
+            <button
+                className="vf-button vf-button--primary vf-button--sm"
+                onClick={(e) => {
+                    e.preventDefault();
+                    setIsOpen(true);
+                }}
+            >
+                Columns
+            </button>
+            <ReactModal
+                style={customStyles}
+                contentLabel="Columns"
+                isOpen={isOpen}
+                onRequestClose={() => setIsOpen(false)}
+            >
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setIsOpen(false);
+                        }}
+                        className="vf-button vf-button--link"
+                        style={{ margin: 0 }}
+                        type="button"
+                    >
+                        <i className="icon icon-common icon-times" />
+                    </button>
+                </div>
+                <fieldset className="vf-form__fieldset vf-stack vf-stack--200 vf-text-body vf-text-body--3">
+                    <legend className="vf-form__legend">Columns</legend>
+                    {_(table.getAllLeafColumns())
+                        .filter((column) => column.getCanHide())
+                        .map((column) => {
+                            return (
+                                <div key={column.id} className="vf-form__item vf-form__item--checkbox">
+                                    <input
+                                        {...{
+                                            type: "checkbox",
+                                            id: `${column.id}`,
+                                            checked: column.getIsVisible(),
+                                            onChange: column.getToggleVisibilityHandler(),
+                                            className: "vf-form__checkbox",
+                                        }}
+                                    />
+                                    <label htmlFor={`${column.id}`} className="vf-form__label">
+                                        {column.parent && `${column.parent.columnDef.header?.toString()} - `}
+                                        {column.columnDef?.header?.toString() || column.id}
+                                    </label>
+                                </div>
+                            );
+                        })
+                        .value()}
+                </fieldset>
+            </ReactModal>
+        </>
     );
 };

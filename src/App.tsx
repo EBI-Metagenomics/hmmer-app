@@ -3,6 +3,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { ToastContainer } from "react-toastify";
+import ReactModal from "react-modal";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 // @ts-ignore
 import VfHero from "@visual-framework/vf-hero/vf-hero.react.js";
@@ -35,6 +36,8 @@ client.setConfig({
 const persister = createSyncStoragePersister({
     storage: window.localStorage,
 });
+
+ReactModal.setAppElement('#root');
 
 function App() {
     return (
