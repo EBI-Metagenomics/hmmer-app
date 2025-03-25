@@ -64,6 +64,7 @@ export const Input: React.FC<InputProps> = ({ mode }) => {
         const { unsubscribe } = watch((value, { name }) => {
             if (name === "input") {
                 setIsEmpty(value.input === "");
+
                 if (value.input === "") {
                     setFile(null);
                 }

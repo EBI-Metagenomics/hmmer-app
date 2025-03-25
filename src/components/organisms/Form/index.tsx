@@ -63,6 +63,10 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
         }
     }, [error]);
 
+    useEffect(() => {
+        resetField("input");
+    }, [algo]);
+
     return (
         <div className="vf-stack vf-stack--1200 | vf-u-padding__top--400">
             <h3 className="vf-text vf-text-heading--3 vf-u-text-color--grey">
