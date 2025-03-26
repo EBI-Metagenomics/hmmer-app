@@ -23,12 +23,11 @@ import type {
     TaxonomyApiSearchTaxonomyResponse,
     TaxonomyApiGetTaxonomyData,
     TaxonomyApiGetTaxonomyResponse,
-    TaxonomyApiGetTaxonomyDistributionData,
-    TaxonomyApiGetTaxonomyDistributionResponse,
     TaxonomyApiGetTaxonomyTreeData,
     TaxonomyApiGetTaxonomyTreeResponse,
-    TaxonomyApiGetTaxonomyDistributionGraphData,
-    TaxonomyApiGetTaxonomyDistributionGraphResponse,
+    TaxonomyApiGetTaxonomyDistributionData,
+    TaxonomyApiGetTaxonomyDistributionResponse,
+    DownloadApiDownloadFileData,
     DownloadApiGenerateFileData,
     DownloadApiGenerateFileResponse,
     DownloadApiGetDownloadsData,
@@ -174,18 +173,6 @@ export const taxonomyApiGetTaxonomy = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * Get Taxonomy Distribution
- */
-export const taxonomyApiGetTaxonomyDistribution = <ThrowOnError extends boolean = false>(
-    options: Options<TaxonomyApiGetTaxonomyDistributionData, ThrowOnError>,
-) => {
-    return (options?.client ?? client).get<TaxonomyApiGetTaxonomyDistributionResponse, unknown, ThrowOnError>({
-        ...options,
-        url: "/api/v1/taxonomy/{id}/distribution",
-    });
-};
-
-/**
  * Get Taxonomy Tree
  */
 export const taxonomyApiGetTaxonomyTree = <ThrowOnError extends boolean = false>(
@@ -198,14 +185,26 @@ export const taxonomyApiGetTaxonomyTree = <ThrowOnError extends boolean = false>
 };
 
 /**
- * Get Taxonomy Distribution Graph
+ * Get Taxonomy Distribution
  */
-export const taxonomyApiGetTaxonomyDistributionGraph = <ThrowOnError extends boolean = false>(
-    options: Options<TaxonomyApiGetTaxonomyDistributionGraphData, ThrowOnError>,
+export const taxonomyApiGetTaxonomyDistribution = <ThrowOnError extends boolean = false>(
+    options: Options<TaxonomyApiGetTaxonomyDistributionData, ThrowOnError>,
 ) => {
-    return (options?.client ?? client).get<TaxonomyApiGetTaxonomyDistributionGraphResponse, unknown, ThrowOnError>({
+    return (options?.client ?? client).get<TaxonomyApiGetTaxonomyDistributionResponse, unknown, ThrowOnError>({
         ...options,
-        url: "/api/v1/taxonomy/{id}/disdtribution-graph",
+        url: "/api/v1/taxonomy/{id}/distribution",
+    });
+};
+
+/**
+ * Download File
+ */
+export const downloadApiDownloadFile = <ThrowOnError extends boolean = false>(
+    options: Options<DownloadApiDownloadFileData, ThrowOnError>,
+) => {
+    return (options?.client ?? client).get<unknown, unknown, ThrowOnError>({
+        ...options,
+        url: "/api/v1/download/{id}/{format}",
     });
 };
 

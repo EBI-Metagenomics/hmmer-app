@@ -262,17 +262,6 @@ export type TaxonomyResponseSchema = {
     rank: string;
 };
 
-export type TaxonomyDistributionResponseSchema = {
-    status: string;
-    distribution?: Array<TaxonomyResult> | null;
-};
-
-export type TaxonomyResult = {
-    taxonomy_id: number | null;
-    species: string | null;
-    count: number;
-};
-
 export type TaxonomyTree = {
     id: number;
     name: string;
@@ -293,7 +282,7 @@ export type TaxonomyDistributionGraph = {
     colors: Array<string>;
 };
 
-export type TaxonomyDistributionGraphResponseSchema = {
+export type TaxonomyDistributionResponseSchema = {
     status: string;
     graph?: TaxonomyDistributionGraph | null;
 };
@@ -513,25 +502,6 @@ export type TaxonomyApiGetTaxonomyResponses = {
 
 export type TaxonomyApiGetTaxonomyResponse = TaxonomyApiGetTaxonomyResponses[keyof TaxonomyApiGetTaxonomyResponses];
 
-export type TaxonomyApiGetTaxonomyDistributionData = {
-    body?: never;
-    path: {
-        id: string;
-    };
-    query?: never;
-    url: "/api/v1/taxonomy/{id}/distribution";
-};
-
-export type TaxonomyApiGetTaxonomyDistributionResponses = {
-    /**
-     * OK
-     */
-    200: TaxonomyDistributionResponseSchema;
-};
-
-export type TaxonomyApiGetTaxonomyDistributionResponse =
-    TaxonomyApiGetTaxonomyDistributionResponses[keyof TaxonomyApiGetTaxonomyDistributionResponses];
-
 export type TaxonomyApiGetTaxonomyTreeData = {
     body?: never;
     path: {
@@ -551,24 +521,41 @@ export type TaxonomyApiGetTaxonomyTreeResponses = {
 export type TaxonomyApiGetTaxonomyTreeResponse =
     TaxonomyApiGetTaxonomyTreeResponses[keyof TaxonomyApiGetTaxonomyTreeResponses];
 
-export type TaxonomyApiGetTaxonomyDistributionGraphData = {
+export type TaxonomyApiGetTaxonomyDistributionData = {
     body?: never;
     path: {
         id: string;
     };
     query?: never;
-    url: "/api/v1/taxonomy/{id}/disdtribution-graph";
+    url: "/api/v1/taxonomy/{id}/distribution";
 };
 
-export type TaxonomyApiGetTaxonomyDistributionGraphResponses = {
+export type TaxonomyApiGetTaxonomyDistributionResponses = {
     /**
      * OK
      */
-    200: TaxonomyDistributionGraphResponseSchema;
+    200: TaxonomyDistributionResponseSchema;
 };
 
-export type TaxonomyApiGetTaxonomyDistributionGraphResponse =
-    TaxonomyApiGetTaxonomyDistributionGraphResponses[keyof TaxonomyApiGetTaxonomyDistributionGraphResponses];
+export type TaxonomyApiGetTaxonomyDistributionResponse =
+    TaxonomyApiGetTaxonomyDistributionResponses[keyof TaxonomyApiGetTaxonomyDistributionResponses];
+
+export type DownloadApiDownloadFileData = {
+    body?: never;
+    path: {
+        id: string;
+        format: string;
+    };
+    query?: never;
+    url: "/api/v1/download/{id}/{format}";
+};
+
+export type DownloadApiDownloadFileResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type DownloadApiGenerateFileData = {
     body?: never;

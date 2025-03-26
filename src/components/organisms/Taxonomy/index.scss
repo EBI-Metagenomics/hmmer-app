@@ -1,9 +1,15 @@
-.taxonomy-table-container {
-    width: 100%;
-    height: calc(100vh - 250px);
+.link {
+    stroke: #18974c;
 }
 
-// .vf-table:not(.alignment-table) > .vf-table__footer
+.focus-ring {
+    fill: #0a5032;
+}
+
+.node {
+    fill: #3b6fb6 !important;
+}
+
 .vf-table:not(.alignment-table) > .vf-table__header {
     position: sticky;
     opacity: 90%;
@@ -13,9 +19,6 @@
   inset-block-start: 0; /* "top" */
   background-color: var(--vf-color--neutral--300);
 }
-// .vf-table:not(.alignment-table) > .vf-table__footer {
-//   inset-block-end: 0; /* "bottom" */
-// }
 
 .button-container {
     display: flex;

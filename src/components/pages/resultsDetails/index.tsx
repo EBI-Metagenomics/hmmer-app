@@ -1,13 +1,11 @@
 import _ from "lodash";
-import { Route, Routes, useNavigate, useMatch, useSearchParams } from "react-router";
+import { Route, Routes, useNavigate, useMatch } from "react-router";
 
 // @ts-ignore
 import VfTabs from "@visual-framework/vf-tabs/vf-tabs.react.js";
 
-import { useResult } from "@/hooks/useResult";
-
 import { ResultTable, TaxonomyElement, DomainArchitectureList, DownloadList } from "@components/organisms";
-import { useColumns, usePageSize } from "@/context/customization";
+import { useStats } from "@/context";
 
 const ResultsPage: React.FC = () => {
     const navigate = useNavigate();
@@ -15,20 +13,7 @@ const ResultsPage: React.FC = () => {
     const matchedPath = route?.params.tab;
     const id = route?.params.id;
 
-    const [storedPageSize] = usePageSize();
-    const [storedColumns] = useColumns();
-
-    const [searchParams] = useSearchParams({
-        page: _.toString(1),
-        pageSize: _.toString(storedPageSize),
-    });
-
-    const page = _.toInteger(searchParams.get("page"));
-    const pageSize = _.toInteger(searchParams.get("pageSize"));
-    const taxonomyIds = searchParams.getAll("taxonomyIds").map(_.toInteger);
-    const architecture = searchParams.get("architectures") || undefined;
-
-    const { data } = useResult(id!, page, pageSize, storedColumns.hitPositions, taxonomyIds, architecture);
+    const [stats] = useStats();
 
     return (
         <div className="vf-stack vf-stack--800">
@@ -49,7 +34,7 @@ const ResultsPage: React.FC = () => {
                                 Score
                             </a>
                         </li>
-                        {data?.result?.stats.algo !== "hmmscan" && (
+                        {stats && stats?.algo !== "hmmscan" && (
                             <li className="vf-tabs__item">
                                 <a
                                     role="tab"
@@ -62,7 +47,7 @@ const ResultsPage: React.FC = () => {
                                 </a>
                             </li>
                         )}
-                        {data?.result?.stats.algo !== "hmmscan" && (
+                        {stats && stats?.algo !== "hmmscan" && (
                             <li className="vf-tabs__item">
                                 <a
                                     role="tab"
@@ -89,7 +74,7 @@ const ResultsPage: React.FC = () => {
                     </ul>
                 </div>
                 <Routes>
-                    <Route path="score" element={<ResultTable data={data} id={id!} />} />
+                    <Route path="score" element={<ResultTable id={id!} />} />
                     <Route path="taxonomy" element={<TaxonomyElement id={id!} />} />
                     <Route path="domain" element={<DomainArchitectureList id={id!} />} />
                     <Route path="download" element={<DownloadList id={id!} />} />

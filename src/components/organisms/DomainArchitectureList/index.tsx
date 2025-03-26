@@ -21,7 +21,7 @@ import {
 } from "@/client/@tanstack/react-query.gen";
 import { ArchitectureAggregationSchema, ArchitectureSchema } from "@/client/types.gen";
 import { ProgressIndicator, TreeToggleButton } from "@/components/atoms";
-
+import { pending, failed, ready } from "@/utils/taskStates";
 import "./index.scss";
 
 declare module "@tanstack/table-core" {
@@ -84,8 +84,7 @@ export const DomainArchitectureList: React.FC<DomainArchitectureListProps> = ({ 
     const { data, isPending } = useQuery({
         ...architectureApiGetDomainArchitecturesOptions({ path: { id } }),
         refetchInterval(query) {
-            if (query.state.data?.status === "SUCCESS") return false;
-            if (query.state.data?.status === "FAILURE") return false;
+            if (ready(query.state.data) || failed(query.state.data)) return false;
 
             return Math.min(1000 * 2 ** query.state.dataUpdateCount, 5 * 60 * 1000);
         },
@@ -102,14 +101,28 @@ export const DomainArchitectureList: React.FC<DomainArchitectureListProps> = ({ 
         getRowCanExpand: () => true,
     });
 
-    if (isPending || data?.status !== "SUCCESS") {
+    if (isPending)
         return (
-            <div className="vf-stack vf-stack--400 vf-u-padding__top--400 vf-u-width__80">
-                <p className="vf-text-body vf-text-body--2">Fetching Domain Architecture...</p>
+            <div className="vf-stack vf-stack--400 | vf-u-padding__top--400">
+                <p className="vf-text-body vf-text-body--2">Fetching domain architecture...</p>
                 <ProgressIndicator />
             </div>
         );
-    }
+
+    if (pending(data))
+        return (
+            <div className="vf-stack vf-stack--400 | vf-u-padding__top--400">
+                <p className="vf-text-body vf-text-body--2">Domain architecture generation is still running...</p>
+                <ProgressIndicator />
+            </div>
+        );
+
+    if (failed(data))
+        return (
+            <div className="vf-stack vf-stack--400 | vf-u-padding__top--400">
+                <p className="vf-text-body vf-text-body--2">Domain architecture generation has failed!</p>
+            </div>
+        );
 
     return (
         <table className="vf-table vf-table--compact vf-u-width__100 domain-table">
@@ -187,9 +200,7 @@ const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName 
 
     useEffect(() => {
         if (graphicsContainerRef.current) {
-            setShouldNudge(
-                graphicsContainerRef.current.scrollWidth > graphicsContainerRef.current.clientWidth,
-            );
+            setShouldNudge(graphicsContainerRef.current.scrollWidth > graphicsContainerRef.current.clientWidth);
         }
     }, []);
 
@@ -243,7 +254,11 @@ const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName 
                     <span style={{ fontWeight: 600 }}>{compressDomainString(architecture.names)}</span>
                 </div>
             )}
-            <div ref={graphicsContainerRef} className={`graphics-container ${shouldNudge ? "with-nudge" : ""}`} onWheel={handleScroll}>
+            <div
+                ref={graphicsContainerRef}
+                className={`graphics-container ${shouldNudge ? "with-nudge" : ""}`}
+                onWheel={handleScroll}
+            >
                 <div ref={graphicsRef} />
                 <div>
                     <span className="vf-text-body vf-text-body--5">{graphics.length}</span>

@@ -2,7 +2,6 @@ import { useEffect, useRef } from "react";
 
 import { TaxonomyTree as TaxonomyTreeType  } from "@/client";
 import "taxonomy-visualisation/dist/taxonomy-visualisation-ce.js";
-import "./index.scss";
 
 interface TaxonomyTreeProps {
     tree: TaxonomyTreeType,

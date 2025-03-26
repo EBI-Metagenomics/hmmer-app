@@ -267,28 +267,6 @@ export const zTaxonomyResponseSchema = z.object({
     rank: z.string().max(255),
 });
 
-export const zTaxonomyDistributionResponseSchema = z.object({
-    status: z.string(),
-    distribution: z
-        .union([
-            z.array(
-                z.object({
-                    taxonomy_id: z.union([z.number(), z.null()]),
-                    species: z.union([z.string(), z.null()]),
-                    count: z.number(),
-                }),
-            ),
-            z.null(),
-        ])
-        .optional(),
-});
-
-export const zTaxonomyResult = z.object({
-    taxonomy_id: z.union([z.number(), z.null()]),
-    species: z.union([z.string(), z.null()]),
-    count: z.number(),
-});
-
 export const zTaxonomyTree: z.ZodTypeAny = z.object({
     id: z.number(),
     name: z.string(),
@@ -316,7 +294,7 @@ export const zTaxonomyDistributionGraph = z.object({
     colors: z.array(z.string()),
 });
 
-export const zTaxonomyDistributionGraphResponseSchema = z.object({
+export const zTaxonomyDistributionResponseSchema = z.object({
     status: z.string(),
     graph: z.union([zTaxonomyDistributionGraph, z.null()]).optional(),
 });
@@ -350,11 +328,9 @@ export const zTaxonomyApiSearchTaxonomyResponse = z.array(zTaxonomyResponseSchem
 
 export const zTaxonomyApiGetTaxonomyResponse = zTaxonomyResponseSchema;
 
-export const zTaxonomyApiGetTaxonomyDistributionResponse = zTaxonomyDistributionResponseSchema;
-
 export const zTaxonomyApiGetTaxonomyTreeResponse = zTaxonomyTreeResponseSchema;
 
-export const zTaxonomyApiGetTaxonomyDistributionGraphResponse = zTaxonomyDistributionGraphResponseSchema;
+export const zTaxonomyApiGetTaxonomyDistributionResponse = zTaxonomyDistributionResponseSchema;
 
 export const zDownloadApiGenerateFileResponse = z.void();
 

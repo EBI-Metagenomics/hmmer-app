@@ -1,8 +1,11 @@
 export { Alignment } from "./Alignment";
 export { Checkbox } from "./Checkbox";
+export { FetchWrapper } from "./FetchWrapper";
 export { HitPosition } from "./HitPosition";
 export { MenuSection } from "./MenuSection";
 export { ProgressIndicator } from "./ProgressIndicator";
+export { QueryErrorBoundary } from "./QueryErrorBoundary";
+export { QuerySuspense } from "./QuerySuspense";
 export { RemoveButton } from "./RemoveButton";
 export { Tabs } from "./Tabs";
 export { TreeToggleButton } from "./TreeToggleButton";

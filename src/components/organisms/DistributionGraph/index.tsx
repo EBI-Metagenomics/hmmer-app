@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import * as d3 from "d3";
 
-import { taxonomyApiGetTaxonomyDistributionGraphOptions } from "@/client/@tanstack/react-query.gen";
+import { taxonomyApiGetTaxonomyDistributionOptions } from "@/client/@tanstack/react-query.gen";
 import { ProgressIndicator } from "@/components/atoms";
 
 import "./index.scss";
@@ -16,7 +16,7 @@ export const DistributionGraph: React.FC<DistributionGraphProps> = ({ id }) => {
     const graphRef = useRef<HTMLDivElement>(null);
 
     const { data: graphData, isPending } = useQuery({
-        ...taxonomyApiGetTaxonomyDistributionGraphOptions({ path: { id } }),
+        ...taxonomyApiGetTaxonomyDistributionOptions({ path: { id } }),
         refetchInterval(query) {
             if (query.state.data?.status === "SUCCESS") return false;
             if (query.state.data?.status === "FAILURE") return false;

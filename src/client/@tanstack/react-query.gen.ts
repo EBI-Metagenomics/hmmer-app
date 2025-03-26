@@ -22,9 +22,9 @@ import type {
     TaxonomyApiGetData,
     TaxonomyApiSearchTaxonomyData,
     TaxonomyApiGetTaxonomyData,
-    TaxonomyApiGetTaxonomyDistributionData,
     TaxonomyApiGetTaxonomyTreeData,
-    TaxonomyApiGetTaxonomyDistributionGraphData,
+    TaxonomyApiGetTaxonomyDistributionData,
+    DownloadApiDownloadFileData,
     DownloadApiGenerateFileData,
     DownloadApiGenerateFileResponse,
     DownloadApiGetDownloadsData,
@@ -42,9 +42,9 @@ import {
     taxonomyApiGet,
     taxonomyApiSearchTaxonomy,
     taxonomyApiGetTaxonomy,
-    taxonomyApiGetTaxonomyDistribution,
     taxonomyApiGetTaxonomyTree,
-    taxonomyApiGetTaxonomyDistributionGraph,
+    taxonomyApiGetTaxonomyDistribution,
+    downloadApiDownloadFile,
     downloadApiGenerateFile,
     downloadApiGetDownloads,
 } from "../sdk.gen";
@@ -378,25 +378,6 @@ export const taxonomyApiGetTaxonomyOptions = (options: Options<TaxonomyApiGetTax
     });
 };
 
-export const taxonomyApiGetTaxonomyDistributionQueryKey = (
-    options: Options<TaxonomyApiGetTaxonomyDistributionData>,
-) => [createQueryKey("taxonomyApiGetTaxonomyDistribution", options)];
-
-export const taxonomyApiGetTaxonomyDistributionOptions = (options: Options<TaxonomyApiGetTaxonomyDistributionData>) => {
-    return queryOptions({
-        queryFn: async ({ queryKey, signal }) => {
-            const { data } = await taxonomyApiGetTaxonomyDistribution({
-                ...options,
-                ...queryKey[0],
-                signal,
-                throwOnError: true,
-            });
-            return data;
-        },
-        queryKey: taxonomyApiGetTaxonomyDistributionQueryKey(options),
-    });
-};
-
 export const taxonomyApiGetTaxonomyTreeQueryKey = (options: Options<TaxonomyApiGetTaxonomyTreeData>) => [
     createQueryKey("taxonomyApiGetTaxonomyTree", options),
 ];
@@ -416,16 +397,14 @@ export const taxonomyApiGetTaxonomyTreeOptions = (options: Options<TaxonomyApiGe
     });
 };
 
-export const taxonomyApiGetTaxonomyDistributionGraphQueryKey = (
-    options: Options<TaxonomyApiGetTaxonomyDistributionGraphData>,
-) => [createQueryKey("taxonomyApiGetTaxonomyDistributionGraph", options)];
+export const taxonomyApiGetTaxonomyDistributionQueryKey = (
+    options: Options<TaxonomyApiGetTaxonomyDistributionData>,
+) => [createQueryKey("taxonomyApiGetTaxonomyDistribution", options)];
 
-export const taxonomyApiGetTaxonomyDistributionGraphOptions = (
-    options: Options<TaxonomyApiGetTaxonomyDistributionGraphData>,
-) => {
+export const taxonomyApiGetTaxonomyDistributionOptions = (options: Options<TaxonomyApiGetTaxonomyDistributionData>) => {
     return queryOptions({
         queryFn: async ({ queryKey, signal }) => {
-            const { data } = await taxonomyApiGetTaxonomyDistributionGraph({
+            const { data } = await taxonomyApiGetTaxonomyDistribution({
                 ...options,
                 ...queryKey[0],
                 signal,
@@ -433,7 +412,26 @@ export const taxonomyApiGetTaxonomyDistributionGraphOptions = (
             });
             return data;
         },
-        queryKey: taxonomyApiGetTaxonomyDistributionGraphQueryKey(options),
+        queryKey: taxonomyApiGetTaxonomyDistributionQueryKey(options),
+    });
+};
+
+export const downloadApiDownloadFileQueryKey = (options: Options<DownloadApiDownloadFileData>) => [
+    createQueryKey("downloadApiDownloadFile", options),
+];
+
+export const downloadApiDownloadFileOptions = (options: Options<DownloadApiDownloadFileData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await downloadApiDownloadFile({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: downloadApiDownloadFileQueryKey(options),
     });
 };
 

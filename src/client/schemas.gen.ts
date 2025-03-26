@@ -1357,66 +1357,6 @@ export const TaxonomyResponseSchemaSchema = {
     type: "object",
 } as const;
 
-export const TaxonomyDistributionResponseSchemaSchema = {
-    properties: {
-        status: {
-            title: "Status",
-            type: "string",
-        },
-        distribution: {
-            anyOf: [
-                {
-                    items: {
-                        $ref: "#/components/schemas/TaxonomyResult",
-                    },
-                    type: "array",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Distribution",
-        },
-    },
-    required: ["status"],
-    title: "TaxonomyDistributionResponseSchema",
-    type: "object",
-} as const;
-
-export const TaxonomyResultSchema = {
-    properties: {
-        taxonomy_id: {
-            anyOf: [
-                {
-                    type: "integer",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Taxonomy Id",
-        },
-        species: {
-            anyOf: [
-                {
-                    type: "string",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Species",
-        },
-        count: {
-            title: "Count",
-            type: "integer",
-        },
-    },
-    required: ["taxonomy_id", "species", "count"],
-    title: "TaxonomyResult",
-    type: "object",
-} as const;
-
 export const TaxonomyTreeSchema = {
     properties: {
         id: {
@@ -1533,7 +1473,7 @@ export const TaxonomyDistributionGraphSchema = {
     type: "object",
 } as const;
 
-export const TaxonomyDistributionGraphResponseSchemaSchema = {
+export const TaxonomyDistributionResponseSchemaSchema = {
     properties: {
         status: {
             title: "Status",
@@ -1551,7 +1491,7 @@ export const TaxonomyDistributionGraphResponseSchemaSchema = {
         },
     },
     required: ["status"],
-    title: "TaxonomyDistributionGraphResponseSchema",
+    title: "TaxonomyDistributionResponseSchema",
     type: "object",
 } as const;
 
