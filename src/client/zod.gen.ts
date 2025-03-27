@@ -299,6 +299,11 @@ export const zTaxonomyDistributionResponseSchema = z.object({
     graph: z.union([zTaxonomyDistributionGraph, z.null()]).optional(),
 });
 
+export const zDownloadsQuerySchema = z.object({
+    taxonomy_ids: z.array(z.number()).optional(),
+    architecture: z.string().optional(),
+});
+
 export const zDownloadsResponseSchema = z.object({
     format: z.string(),
     name: z.string(),

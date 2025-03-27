@@ -1495,6 +1495,24 @@ export const TaxonomyDistributionResponseSchemaSchema = {
     type: "object",
 } as const;
 
+export const DownloadsQuerySchemaSchema = {
+    properties: {
+        taxonomy_ids: {
+            items: {
+                type: "integer",
+            },
+            title: "Taxonomy Ids",
+            type: "array",
+        },
+        architecture: {
+            title: "Architecture",
+            type: "string",
+        },
+    },
+    title: "DownloadsQuerySchema",
+    type: "object",
+} as const;
+
 export const DownloadsResponseSchemaSchema = {
     properties: {
         format: {

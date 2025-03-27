@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Route, Routes, useNavigate, useMatch } from "react-router";
+import { Route, Routes, useNavigate, useMatch, useSearchParams } from "react-router";
 
 // @ts-ignore
 import VfTabs from "@visual-framework/vf-tabs/vf-tabs.react.js";
@@ -9,6 +9,8 @@ import { useStats } from "@/context";
 
 const ResultsPage: React.FC = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
     const route = useMatch(`/results/:id/:tab`);
     const matchedPath = route?.params.tab;
     const id = route?.params.id;
@@ -28,7 +30,21 @@ const ResultsPage: React.FC = () => {
                                 role="tab"
                                 // aria-selected={activeTab === tab.id}
                                 // aria-controls={`${tab.id}-tab`}
-                                onClick={() => navigate(`/results/${id}/score`)}
+                                onClick={() => {
+                                    const search = new URLSearchParams();
+
+                                    if (searchParams.has("architectures")) {
+                                        search.append("architectures", searchParams.get("architectures") ?? "");
+                                    }
+
+                                    if (searchParams.has("taxonomyIds")) {
+                                        _.each(searchParams.getAll("taxonomyIds"), (value) =>
+                                            search.append("taxonomyIds", value),
+                                        );
+                                    }
+
+                                    navigate({ pathname: `/results/${id}/score`, search: search.toString() });
+                                }}
                                 className={`vf-tabs__link ${matchedPath === "score" ? "is-active" : ""}`}
                             >
                                 Score
@@ -65,7 +81,21 @@ const ResultsPage: React.FC = () => {
                                 role="tab"
                                 // aria-selected={activeTab === tab.id}
                                 // aria-controls={`${tab.id}-tab`}
-                                onClick={() => navigate(`/results/${id}/download`)}
+                                onClick={() => {
+                                    const search = new URLSearchParams();
+
+                                    if (searchParams.has("architectures")) {
+                                        search.append("architectures", searchParams.get("architectures") ?? "");
+                                    }
+
+                                    if (searchParams.has("taxonomyIds")) {
+                                        _.each(searchParams.getAll("taxonomyIds"), (value) =>
+                                            search.append("taxonomyIds", value),
+                                        );
+                                    }
+
+                                    navigate({ pathname: `/results/${id}/download`, search: search.toString() });
+                                }}
                                 className={`vf-tabs__link ${matchedPath === "download" ? "is-active" : ""}`}
                             >
                                 Download

@@ -287,6 +287,11 @@ export type TaxonomyDistributionResponseSchema = {
     graph?: TaxonomyDistributionGraph | null;
 };
 
+export type DownloadsQuerySchema = {
+    taxonomy_ids?: Array<number>;
+    architecture?: string;
+};
+
 export type DownloadsResponseSchema = {
     format: string;
     name: string;
@@ -546,7 +551,10 @@ export type DownloadApiDownloadFileData = {
         id: string;
         format: string;
     };
-    query?: never;
+    query?: {
+        taxonomy_ids?: Array<number>;
+        architecture?: string;
+    };
     url: "/api/v1/download/{id}/{format}";
 };
 
@@ -563,7 +571,10 @@ export type DownloadApiGenerateFileData = {
         id: string;
         format: string;
     };
-    query?: never;
+    query?: {
+        taxonomy_ids?: Array<number>;
+        architecture?: string;
+    };
     url: "/api/v1/download/{id}/{format}";
 };
 
@@ -581,7 +592,10 @@ export type DownloadApiGetDownloadsData = {
     path: {
         id: string;
     };
-    query?: never;
+    query?: {
+        taxonomy_ids?: Array<number>;
+        architecture?: string;
+    };
     url: "/api/v1/download/{id}";
 };
 

@@ -1,10 +1,12 @@
 import _ from "lodash";
 import { useEffect, useState } from "react";
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useSearchParams } from "react-router";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 import { downloadApiGetDownloadsOptions, downloadApiGenerateFileMutation } from "@/client/@tanstack/react-query.gen";
 import { DownloadsResponseSchema } from "@/client";
 import { ProgressIndicator } from "@/components/atoms";
+import { ResultFilter } from "../ResultFilter";
 
 import "./index.scss";
 
@@ -13,11 +15,18 @@ interface DownloadListProps {
 }
 
 export const DownloadList: React.FC<DownloadListProps> = ({ id }) => {
+    const [searchParams] = useSearchParams();
     const [downloads, setDownloads] = useState<DownloadsResponseSchema[]>([]);
 
     const { data, isPending, refetch } = useQuery({
         ...downloadApiGetDownloadsOptions({
             path: { id },
+            query: {
+                architecture: searchParams.get("architectures") ?? undefined,
+                taxonomy_ids: searchParams.has("taxonomyIds")
+                    ? _.map(searchParams.getAll("taxonomyIds"), _.toInteger)
+                    : undefined,
+            }
         }),
         refetchInterval(query) {
             if (
@@ -75,55 +84,68 @@ export const DownloadList: React.FC<DownloadListProps> = ({ id }) => {
     }
 
     return (
-        <div className="vf-grid vf-grid__col-3">
-            {_.map(downloads, (item, index) => (
-                <div key={index} className="vf-card vf-card--brand">
-                    <div className="vf-card__content">
-                        <div></div>
-                        <h3 className="vf-card__heading">{item.name}</h3>
-                        <p className="vf-card__text">{item.description}</p>
+        <div className="vf-stack vf-stack--400">
+            <ResultFilter />
+            <div className="vf-grid vf-grid__col-3">
+                {_.map(downloads, (item, index) => (
+                    <div key={index} className="vf-card vf-card--brand">
+                        <div className="vf-card__content">
+                            <div></div>
+                            <h3 className="vf-card__heading">{item.name}</h3>
+                            <p className="vf-card__text">{item.description}</p>
 
-                        <div className="download-button-container vf-u-margin__top--200">
-                            {item.status === "AVAILABLE" && (
-                                <a className="vf-button vf-button--primary vf-button--sm" href={item.url ?? ""}>
-                                    Download
-                                </a>
-                            )}
-                            {item.status === "GENERATING" && (
-                                <button disabled className="vf-button vf-button--secondary vf-button--sm">
-                                    <span className="spinner"></span>Generating
-                                </button>
-                            )}
-                            {item.status === "NOT_GENERATED" && (
-                                <button
-                                    className="vf-button vf-button--secondary vf-button--sm"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        mutate({ path: { id, format: item.format } });
-                                        setDownloads(
-                                            _.map(downloads, (download) =>
-                                                download.format !== item.format
-                                                    ? download
-                                                    : { ...download, status: "GENERATING" },
-                                            ),
-                                        );
-                                    }}
-                                >
-                                    Generate
-                                </button>
-                            )}
-                            {item.status === "FAILED" && (
-                                <button className="vf-button vf-button--secondary vf-button--sm">Failed</button>
-                            )}
-                            {item.size && (
-                                <p className="vf-card__text vf-text-body vf-text-body--3">
-                                    {bytesToHumanReadable(item.size)}
-                                </p>
-                            )}
+                            <div className="download-button-container vf-u-margin__top--200">
+                                {item.status === "AVAILABLE" && (
+                                    <a className="vf-button vf-button--primary vf-button--sm" href={item.url ?? ""}>
+                                        Download
+                                    </a>
+                                )}
+                                {item.status === "GENERATING" && (
+                                    <button disabled className="vf-button vf-button--secondary vf-button--sm">
+                                        <span className="spinner"></span>Generating
+                                    </button>
+                                )}
+                                {item.status === "NOT_GENERATED" && (
+                                    <button
+                                        className="vf-button vf-button--secondary vf-button--sm"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+
+                                            mutate({
+                                                path: { id, format: item.format },
+                                                query: {
+                                                    architecture: searchParams.get("architectures") ?? undefined,
+                                                    taxonomy_ids: searchParams.has("taxonomyIds")
+                                                        ? _.map(searchParams.getAll("taxonomyIds"), _.toInteger)
+                                                        : undefined,
+                                                },
+                                            });
+
+                                            setDownloads(
+                                                _.map(downloads, (download) =>
+                                                    download.format !== item.format
+                                                        ? download
+                                                        : { ...download, status: "GENERATING" },
+                                                ),
+                                            );
+                                        }}
+                                    >
+                                        Generate
+                                    </button>
+                                )}
+                                {item.status === "FAILED" && (
+                                    <button className="vf-button vf-button--secondary vf-button--sm">Failed</button>
+                                )}
+                                {item.size && (
+                                    <p className="vf-card__text vf-text-body vf-text-body--3">
+                                        {bytesToHumanReadable(item.size)}
+                                    </p>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     );
 };
