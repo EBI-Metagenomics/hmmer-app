@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import _ from "lodash";
 import { useSearchParams } from "react-router";
 import ReactModal from "react-modal";
@@ -259,8 +259,10 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
         pageSize: _.toString(storePageSize),
     });
 
+    const rowsRef = useRef<(HTMLTableRowElement | null)[]>([]);
     const page = _.toInteger(searchParams.get("page"));
     const pageSize = _.toInteger(searchParams.get("pageSize"));
+    const row = _.toInteger(searchParams.get("row"));
     const taxonomyIds = searchParams.getAll("taxonomyIds").map(_.toInteger);
     const architecture = searchParams.get("architectures") || undefined;
 
@@ -295,6 +297,32 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
             }
         }
     }, [data]);
+
+    useEffect(() => {
+        if (row > 0) {
+            const rowRef = rowsRef.current[row - 1];
+
+            if (rowRef) {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("animated");
+                        }
+                    },
+                    { threshold: 1 },
+                );
+
+                observer.observe(rowRef);
+                rowRef.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                return () => {
+                    if (rowRef) {
+                        observer.unobserve(rowRef);
+                    }
+                };
+            }
+        }
+    }, [row, data]);
 
     if (isPending)
         return (
@@ -361,10 +389,13 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                                 ))}
                             </thead>
                             <tbody className="vf-table__body">
-                                {table.getRowModel().rows.map((row) => {
+                                {table.getRowModel().rows.map((row, index) => {
                                     return (
                                         <Fragment key={row.original.index}>
-                                            <tr className="vf-table__row">
+                                            <tr
+                                                className="vf-table__row"
+                                                ref={(element) => (rowsRef.current[index] = element)}
+                                            >
                                                 {/* first row is a normal row */}
                                                 {row.getVisibleCells().map((cell) => {
                                                     return (
@@ -423,6 +454,8 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                         onPageChange={(page) =>
                             setSearchParams((prevSearchParams) => {
                                 prevSearchParams.set("page", _.toString(page));
+                                prevSearchParams.delete("row");
+
                                 return prevSearchParams;
                             })
                         }

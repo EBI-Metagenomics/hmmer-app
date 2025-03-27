@@ -32,3 +32,18 @@
     align-items: center;
     gap: 10px;
 }
+
+.animated {
+    animation: blink-row 0.8s ease-in-out;
+    animation-iteration-count: 3;
+}
+
+@keyframes blink-row {
+    0%,
+    100% {
+        background-color: #f3f3f3;
+    }
+    50% {
+        background-color: #d1e3f6;
+    }
+}

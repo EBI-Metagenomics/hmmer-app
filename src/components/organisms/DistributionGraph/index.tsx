@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from "react";
+import { useNavigate, createSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import * as d3 from "d3";
 
 import { taxonomyApiGetTaxonomyDistributionOptions } from "@/client/@tanstack/react-query.gen";
 import { ProgressIndicator } from "@/components/atoms";
+import { usePageSize } from "@/context";
 
 import "./index.scss";
 
@@ -13,6 +15,9 @@ interface DistributionGraphProps {
 }
 
 export const DistributionGraph: React.FC<DistributionGraphProps> = ({ id }) => {
+    const [pageSize] = usePageSize();
+    const navigate = useNavigate();
+
     const graphRef = useRef<HTMLDivElement>(null);
 
     const { data: graphData, isPending } = useQuery({
@@ -156,7 +161,6 @@ export const DistributionGraph: React.FC<DistributionGraphProps> = ({ id }) => {
                     .attr("data-row", row + 1)
                     .attr("class", "target");
 
-
                 // Create tooltip content
                 const tooltipId = `tooltip-${i}`;
                 target
@@ -169,6 +173,31 @@ export const DistributionGraph: React.FC<DistributionGraphProps> = ({ id }) => {
                         // Hide tooltip
                         d3.select("#" + tooltipId).style("display", "none");
                         d3.select(`#target-${i}`).style("opacity", 0);
+                    })
+                    .on("click", () => {
+                        const rowIndex = _.reduceRight(
+                            graphData.graph?.data ?? [],
+                            (sum, counts, binIndex) => {
+                                if (binIndex > i) {
+                                    return sum + _.sum(counts);
+                                }
+
+                                return sum;
+                            },
+                            0,
+                        );
+
+                        const page = _.floor(rowIndex / pageSize) + 1;
+                        const row = (rowIndex % pageSize) + 1;
+
+                        navigate({
+                            pathname: `/results/${id}/score`,
+                            search: createSearchParams({
+                                page: _.toString(page),
+                                pageSize: _.toString(pageSize),
+                                row: _.toString(row),
+                            }).toString(),
+                        });
                     });
 
                 // Create tooltip element
