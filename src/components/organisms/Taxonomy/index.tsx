@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { ProgressIndicator } from "@/components/atoms";
 import { useTaxonomyTree } from "@/hooks/useTaxonomyTree";
@@ -20,7 +20,6 @@ export const TaxonomyElement: React.FC<TaxonomyElementProps> = ({ id }) => {
     const { data, isPending } = useTaxonomyTree(id);
 
     const speciesFromNode = (node?: Node) => {
-        console.log(node);
         if (!node) return [];
 
         const rows: { taxonomy_id: number; species: string; count: number }[] = [];
@@ -41,6 +40,12 @@ export const TaxonomyElement: React.FC<TaxonomyElementProps> = ({ id }) => {
     const onFocusChange = (e: FocusEvent) => {
         setFocusedNode(e.detail as unknown as Node);
     };
+
+    useEffect(() => {
+        if (data && data.tree && !focusedNode) {
+            setFocusedNode(data.tree)
+        }
+    }, [data])
 
     const visibleRows = useMemo(() => speciesFromNode(focusedNode), [focusedNode]);
 
