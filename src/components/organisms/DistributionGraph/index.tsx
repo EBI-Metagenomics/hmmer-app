@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useNavigate, createSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import * as d3 from "d3";
@@ -17,6 +17,7 @@ interface DistributionGraphProps {
 export const DistributionGraph: React.FC<DistributionGraphProps> = ({ id }) => {
     const [pageSize] = usePageSize();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const graphRef = useRef<HTMLDivElement>(null);
 
@@ -190,13 +191,14 @@ export const DistributionGraph: React.FC<DistributionGraphProps> = ({ id }) => {
                         const page = _.floor(rowIndex / pageSize) + 1;
                         const row = (rowIndex % pageSize) + 1;
 
+                        const newSearchParams = new URLSearchParams(searchParams);
+                        newSearchParams.set("page", _.toString(page));
+                        newSearchParams.set("pageSize", _.toString(pageSize));
+                        newSearchParams.set("row", _.toString(row));
+
                         navigate({
                             pathname: `/results/${id}/score`,
-                            search: createSearchParams({
-                                page: _.toString(page),
-                                pageSize: _.toString(pageSize),
-                                row: _.toString(row),
-                            }).toString(),
+                            search: newSearchParams.toString(),
                         });
                     });
 
