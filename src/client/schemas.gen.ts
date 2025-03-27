@@ -2,6 +2,28 @@
 
 export const ArchitectureSchemaSchema = {
     properties: {
+        sequence_accession: {
+            anyOf: [
+                {
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Sequence Accession",
+        },
+        sequence_external_link: {
+            anyOf: [
+                {
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Sequence External Link",
+        },
         names: {
             title: "Names",
             type: "string",
@@ -19,7 +41,7 @@ export const ArchitectureSchemaSchema = {
             type: "string",
         },
     },
-    required: ["names", "score", "graphics", "accessions"],
+    required: ["sequence_accession", "sequence_external_link", "names", "score", "graphics", "accessions"],
     title: "ArchitectureSchema",
     type: "object",
 } as const;

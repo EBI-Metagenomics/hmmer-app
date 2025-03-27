@@ -3,6 +3,8 @@
 import { z } from "zod";
 
 export const zArchitectureSchema = z.object({
+    sequence_accession: z.union([z.string(), z.null()]),
+    sequence_external_link: z.union([z.string(), z.null()]),
     names: z.string(),
     score: z.number(),
     graphics: z.string(),

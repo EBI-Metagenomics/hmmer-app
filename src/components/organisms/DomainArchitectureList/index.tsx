@@ -49,7 +49,7 @@ const columns = [
     columnHelper.accessor("architecture.names", {
         header: "Domain Architecture",
         cell: ({ row }) => {
-            return <DomainGraphics architecture={row.original.architecture} showName />;
+            return <DomainGraphics architecture={row.original.architecture} showName showExample/>;
         },
     }),
     columnHelper.accessor("count", {
@@ -181,9 +181,10 @@ export const DomainArchitectureList: React.FC<DomainArchitectureListProps> = ({ 
 interface DomainGraphicsProps {
     architecture: ArchitectureSchema;
     showName?: boolean;
+    showExample?: boolean;
 }
 
-const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName }) => {
+const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName, showExample }) => {
     const graphicsContainerRef = useRef<HTMLDivElement>(null);
     const graphicsRef = useRef<HTMLDivElement>(null);
     const [shouldNudge, setShouldNudge] = useState<boolean>(false);
@@ -249,11 +250,17 @@ const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName 
 
     return (
         <div className="architecture-container">
-            {showName && (
-                <div>
-                    <span style={{ fontWeight: 600 }}>{compressDomainString(architecture.names)}</span>
-                </div>
-            )}
+            <div style={{ display: "flex", gap: "1rem" }}>
+                {showName && <span style={{ fontWeight: 600 }}>{compressDomainString(architecture.names)}</span>}
+                {showExample && architecture.sequence_external_link && (
+                    <span>
+                        example:{" "}
+                        <a href={architecture.sequence_external_link} className="vf-link">
+                            {architecture.sequence_accession}
+                        </a>
+                    </span>
+                )}
+            </div>
             <div
                 ref={graphicsContainerRef}
                 className={`graphics-container ${shouldNudge ? "with-nudge" : ""}`}
@@ -298,7 +305,7 @@ const DomainGraphicsList: React.FC<DomainGraphicsListProps> = ({ id, architectur
     return (
         <div className="vf-stack vf-stack--200">
             {_.map(data.architectures, (architecture, index) => (
-                <DomainGraphics key={index} architecture={architecture} />
+                <DomainGraphics key={index} architecture={architecture}/>
             ))}
         </div>
     );
