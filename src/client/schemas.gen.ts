@@ -41,7 +41,7 @@ export const ArchitectureSchemaSchema = {
             type: "string",
         },
     },
-    required: ["sequence_accession", "sequence_external_link", "names", "score", "graphics", "accessions"],
+    required: ["names", "score", "graphics", "accessions"],
     title: "ArchitectureSchema",
     type: "object",
 } as const;
@@ -302,6 +302,10 @@ export const HmmdSearchStatsSchema = {
         },
         algo: {
             title: "Algo",
+            type: "string",
+        },
+        database: {
+            title: "Database",
             type: "string",
         },
         elapsed: {

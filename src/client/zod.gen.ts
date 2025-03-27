@@ -3,8 +3,8 @@
 import { z } from "zod";
 
 export const zArchitectureSchema = z.object({
-    sequence_accession: z.union([z.string(), z.null()]),
-    sequence_external_link: z.union([z.string(), z.null()]),
+    sequence_accession: z.union([z.string(), z.null()]).optional(),
+    sequence_external_link: z.union([z.string(), z.null()]).optional(),
     names: z.string(),
     score: z.number(),
     graphics: z.string(),
@@ -85,6 +85,7 @@ export const zResultQuerySchema = z.object({
 export const zHmmdSearchStats = z.object({
     id: z.string().optional(),
     algo: z.string().optional(),
+    database: z.string().optional(),
     elapsed: z.number(),
     user: z.number(),
     sys: z.number(),

@@ -274,7 +274,12 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
 
     const table = useReactTable({
         data: data?.result?.hits ?? defaultData,
-        columns: algo === "hmmscan" ? hmmscanColumns : columns,
+        columns:
+            algo === "hmmscan"
+                ? hmmscanColumns
+                : stats?.database === "pdb"
+                  ? _.reject(columns, ["id", "structures"])
+                  : columns,
         getRowCanExpand: (row) => row.original.nincluded > 0,
         getCoreRowModel: getCoreRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
