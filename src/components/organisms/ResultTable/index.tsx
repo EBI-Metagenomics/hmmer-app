@@ -353,8 +353,8 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
 
     return (
         <div className="vf-stack vf-stack--800">
-            {taxonomyIds.length === 0 && !architecture && algo !== "hmmscan" && <DistributionGraph id={id} />}
             {algo !== "hmmsearch" && <Annotations id={id} />}
+            {taxonomyIds.length === 0 && !architecture && algo !== "hmmscan" && <DistributionGraph id={id} />}
             <div className="vf-stack vf-stack--400">
                 {algo !== "hmmscan" && <ResultFilter />}
                 <div className="vf-stack vf-stack--200">
