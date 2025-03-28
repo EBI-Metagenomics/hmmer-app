@@ -20,7 +20,7 @@ const ResultsPage: React.FC = () => {
     return (
         <div className="vf-stack vf-stack--800">
             <div className="vf-u-padding__top--800">
-                <h2 className="vf-text vf-text-heading--2">Browse Results</h2>
+                <h2 className="vf-text vf-text-heading--2">Browse {_.capitalize(stats?.algo ?? "")} Results</h2>
             </div>
             <div className="vf-stack vf-stack--200">
                 <div className="vf-tabs  | vf-u-padding__bottom--800">
