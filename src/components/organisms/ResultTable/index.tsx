@@ -250,6 +250,7 @@ interface ResultTableProps {
 }
 
 export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
+    const [customsationOpen, setCustomsationOpen] = useState<boolean>(false);
     const [storePageSize, setStoredPageSize] = usePageSize();
     const [storedColumns, setStoredColumns] = useColumns();
     const [stats, setStats] = useStats();
@@ -365,6 +366,8 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                 <div className="vf-stack vf-stack--200">
                     <div style={{ display: "flex", justifyContent: "end" }}>
                         <Customization
+                            open={customsationOpen}
+                            onClick={() => setCustomsationOpen(!customsationOpen)}
                             table={table}
                             pageSizeOptions={[50, 100, 250, 1000]}
                             currentPageSize={pageSize}
@@ -472,15 +475,15 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
 };
 
 interface CustomizationProps {
+    open: boolean;
+    onClick: () => void;
     table: Table<P7Hit>;
     currentPageSize: number;
     onPageSizeChange: (pageSize: number) => void;
     pageSizeOptions: number[];
 }
 
-const Customization: React.FC<CustomizationProps> = ({ table, currentPageSize, onPageSizeChange, pageSizeOptions }) => {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-
+const Customization: React.FC<CustomizationProps> = ({ table, currentPageSize, onPageSizeChange, pageSizeOptions, open, onClick }) => {
     const customStyles = {
         content: {
             top: "50%",
@@ -501,7 +504,7 @@ const Customization: React.FC<CustomizationProps> = ({ table, currentPageSize, o
                 className="vf-button vf-button--primary vf-button--sm"
                 onClick={(e) => {
                     e.preventDefault();
-                    setIsOpen(true);
+                    onClick();
                 }}
             >
                 Customise
@@ -509,14 +512,14 @@ const Customization: React.FC<CustomizationProps> = ({ table, currentPageSize, o
             <ReactModal
                 style={customStyles}
                 contentLabel="Customization"
-                isOpen={isOpen}
-                onRequestClose={() => setIsOpen(false)}
+                isOpen={open}
+                onRequestClose={onClick}
             >
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button
                         onClick={(e) => {
                             e.preventDefault();
-                            setIsOpen(false);
+                            onClick();
                         }}
                         className="vf-button vf-button--link"
                         style={{ margin: 0 }}
