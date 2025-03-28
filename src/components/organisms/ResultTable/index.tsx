@@ -17,7 +17,7 @@ import { Pagination } from "@components/molecules";
 import { Annotations, AlignmentView, ResultFilter, DistributionGraph } from "@components/organisms";
 import { P7Hit } from "@/client/types.gen";
 import { useResult } from "@/hooks/useResult";
-import { useColumns, usePageSize, useStats } from "@/context";
+import { useColumns, usePageSize, useStats, defaultColumns, defaultPageSize } from "@/context";
 import { pending, failed } from "@/utils/taskStates";
 import "./index.scss";
 
@@ -368,6 +368,16 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                         <Customization
                             open={customsationOpen}
                             onClick={() => setCustomsationOpen(!customsationOpen)}
+                            onDefaultClick={() => {
+                                setStoredColumns(defaultColumns);
+
+                                setSearchParams((prevSearchParams) => {
+                                    prevSearchParams.set("pageSize", _.toString(defaultPageSize));
+                                    return prevSearchParams;
+                                });
+
+                                setStoredPageSize(defaultPageSize);
+                            }}
                             table={table}
                             pageSizeOptions={[50, 100, 250, 1000]}
                             currentPageSize={pageSize}
@@ -477,13 +487,22 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
 interface CustomizationProps {
     open: boolean;
     onClick: () => void;
+    onDefaultClick: () => void;
     table: Table<P7Hit>;
     currentPageSize: number;
     onPageSizeChange: (pageSize: number) => void;
     pageSizeOptions: number[];
 }
 
-const Customization: React.FC<CustomizationProps> = ({ table, currentPageSize, onPageSizeChange, pageSizeOptions, open, onClick }) => {
+const Customization: React.FC<CustomizationProps> = ({
+    table,
+    currentPageSize,
+    onPageSizeChange,
+    pageSizeOptions,
+    open,
+    onClick,
+    onDefaultClick,
+}) => {
     const customStyles = {
         content: {
             top: "50%",
@@ -509,12 +528,7 @@ const Customization: React.FC<CustomizationProps> = ({ table, currentPageSize, o
             >
                 Customise
             </button>
-            <ReactModal
-                style={customStyles}
-                contentLabel="Customization"
-                isOpen={open}
-                onRequestClose={onClick}
-            >
+            <ReactModal style={customStyles} contentLabel="Customization" isOpen={open} onRequestClose={onClick}>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button
                         onClick={(e) => {
@@ -569,6 +583,18 @@ const Customization: React.FC<CustomizationProps> = ({ table, currentPageSize, o
                             })
                             .value()}
                     </fieldset>
+                </div>
+                <div className="vf-u-margin__top--800" style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            onDefaultClick();
+                        }}
+                        className="vf-button vf-button--sm vf-button--primary"
+                        type="button"
+                    >
+                        Restore Defaults
+                    </button>
                 </div>
             </ReactModal>
         </>

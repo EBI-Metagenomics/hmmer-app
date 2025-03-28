@@ -11,9 +11,26 @@ interface CustomizationContextProps {
     pageSize: [number, Dispatch<SetStateAction<number>>];
 }
 
-const CustomizationContext = createContext<CustomizationContextProps | undefined>(
-    undefined,
-);
+const CustomizationContext = createContext<CustomizationContextProps | undefined>(undefined);
+
+export const defaultColumns = {
+    rowNumber: false,
+    identifier: false,
+    kingdom: false,
+    phylum: false,
+    structures: false,
+    hitPositions: false,
+    numHits: false,
+    numSignificantHits: false,
+    bitscore: false,
+    alignmentStart: false,
+    alignmentEnd: false,
+    modelStart: false,
+    modelEnd: false,
+    modelLength: false,
+};
+
+export const defaultPageSize = 50;
 
 interface CustomizationProviderProps {
     children: React.ReactNode;
@@ -24,23 +41,8 @@ export const CustomizationProvider: React.FC<CustomizationProviderProps> = ({ ch
         const storedCustomization = JSON.parse(localStorage.getItem("customization") ?? "{}");
 
         return {
-            columns: {
-                rowNumber: false,
-                identifier: false,
-                kingdom: false,
-                phylum: false,
-                structures: false,
-                hitPositions: false,
-                numHits: false,
-                numSignificantHits: false,
-                bitscore: false,
-                alignmentStart: false,
-                alignmentEnd: false,
-                modelStart: false,
-                modelEnd: false,
-                modelLength: false,
-            },
-            pageSize: 50,
+            columns: defaultColumns,
+            pageSize: defaultPageSize,
             ...storedCustomization,
         };
     });
@@ -52,21 +54,25 @@ export const CustomizationProvider: React.FC<CustomizationProviderProps> = ({ ch
         setCustomization({
             ...customization,
             columns,
-        })
+        });
     }, [columns]);
 
     useEffect(() => {
         setCustomization({
             ...customization,
             pageSize,
-        })
+        });
     }, [pageSize]);
 
     useEffect(() => {
         localStorage.setItem("customization", JSON.stringify(customization));
     }, [customization]);
 
-    return <CustomizationContext.Provider value={{columns: [columns, setColumns], pageSize: [pageSize, setPageSize]}}>{children}</CustomizationContext.Provider>;
+    return (
+        <CustomizationContext.Provider value={{ columns: [columns, setColumns], pageSize: [pageSize, setPageSize] }}>
+            {children}
+        </CustomizationContext.Provider>
+    );
 };
 
 export const useColumns = () => {
