@@ -13,6 +13,9 @@ import Home from "./components/pages/home";
 import SearchPage from "./components/pages/search";
 import ResultsPage from "./components/pages/results";
 import ResultsDetailsPage from "./components/pages/resultsDetails";
+import Help from "./components/pages/help";
+import About from "./components/pages/about";
+
 import { CustomizationProvider, StatsProvider } from "./context";
 
 import "@visual-framework/ebi-header-footer/ebi-header-footer--header.precompiled.js";
@@ -59,6 +62,8 @@ function App() {
                                 <Route path="/results" element={<ResultsPage />} />
                                 <Route path="/results/:id/*" element={<ResultsDetailsPage />} />
                                 <Route path="/results/:id" element={<Navigate to="score" />} />
+                                <Route path="/help" element={<Help />} />
+                                <Route path="/about" element={<About />} />
                                 <Route path="*" element={<div>Not found</div>} />
                             </Routes>
                         </BrowserRouter>

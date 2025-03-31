@@ -10,7 +10,7 @@ const SearchPage: React.FC = () => {
     return (
         <>
             <div className="vf-stack vf-stack--800">
-                <div className="vf-u-padding__top--800">
+                <div className="vf-u-padding__top--400">
                     <h2 className="vf-text vf-text-heading--2">Search</h2>
                 </div>
                 <div className="vf-tabs">

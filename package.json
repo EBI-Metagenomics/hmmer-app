@@ -34,6 +34,7 @@
     "@visual-framework/vf-details": "^1.2.0",
     "@visual-framework/vf-divider": "^2.0.1",
     "@visual-framework/vf-extensions-react": "^0.0.7",
+    "@visual-framework/vf-flag": "^1.0.0",
     "@visual-framework/vf-font-plex-mono": "^1.1.1",
     "@visual-framework/vf-font-plex-sans": "^1.1.1",
     "@visual-framework/vf-footer": "^1.2.1",

@@ -43,11 +43,8 @@ const Navigation: React.FC = () => {
           </li>
           <li className="vf-navigation__item">
             <Link
-              to="/software"
+              to="http://hmmer.org/download.html"
               className="vf-navigation__link"
-              aria-current={
-                location.pathname.startsWith("/software") ? "page" : undefined
-              }
             >
               Software
             </Link>
