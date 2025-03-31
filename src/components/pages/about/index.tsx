@@ -98,7 +98,9 @@ const About: React.FC = () => {
                     <p>HMMER is supported by the following organisations:</p>
                     <div className="vf-grid vf-grid__col-6 vf-u-padding__left--400" style={{ alignItems: "center" }}>
                         <div>
-                            <img src="images/embl.png" alt="EMBL logo" />
+                            <a href="http://www.embl.org/">
+                                <img src="images/embl.png" alt="EMBL logo" />
+                            </a>
                         </div>
                         <div className="vf-grid__col--span-5">
                             <p className="vf-u-type__text-body--2 vf-u-margin--0">
@@ -107,7 +109,9 @@ const About: React.FC = () => {
                             </p>
                         </div>
                         <div>
-                            <img src="images/welcome.jpg" alt="Welcome Trust logo" />
+                            <a href="http://www.wellcome.ac.uk/">
+                                <img src="images/welcome.jpg" alt="Welcome Trust logo" />
+                            </a>
                         </div>
                         <div className="vf-grid__col--span-5">
                             <p className="vf-u-type__text-body--2 vf-u-margin--0">
@@ -117,7 +121,9 @@ const About: React.FC = () => {
                             </p>
                         </div>
                         <div>
-                            <img src="images/hhmi.jpg" alt="HHMI logo" />
+                            <a href="https://www.hhmi.org/">
+                                <img src="images/hhmi.jpg" alt="HHMI logo" />
+                            </a>
                         </div>
                         <div className="vf-grid__col--span-5">
                             <p className="vf-u-type__text-body--2 vf-u-margin--0">
