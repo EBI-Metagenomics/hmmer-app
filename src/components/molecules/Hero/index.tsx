@@ -3,7 +3,7 @@ import "./index.scss";
 export const Hero: React.FC = () => {
     return (
         <section
-            className="vf-hero | vf-u-fullbleed"
+            className="vf-hero vf-hero--800 | vf-u-fullbleed"
         >
             <div className="vf-hero__content | vf-box | vf-stack vf-stack--400">
                 <p className="vf-hero__kicker">EMBL-EBI</p>

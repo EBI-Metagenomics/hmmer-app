@@ -45,7 +45,11 @@ function App() {
                     <div className="vf-body vf-stack vf-stack--200">
                         <BrowserRouter basename={import.meta.env.BASE_URL}>
                             <Hero />
-                            <Navigation />
+
+                            <Routes>
+                                <Route path="/home" element={<></>} />
+                                <Route path="*" element={<Navigation />} />
+                            </Routes>
 
                             <Routes>
                                 <Route path="/" element={<Home />} />
