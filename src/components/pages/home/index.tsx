@@ -100,7 +100,7 @@ const Home = () => {
                     <Papers papers={papers} />
                 </div>
                 <a className="vf-button vf-button--tertiary vf-button--sm" href="http://eddylab.org/publications.html">
-                    more
+                    More publications
                 </a>
             </section>
         </>
