@@ -515,9 +515,11 @@ const Customization: React.FC<CustomizationProps> = ({
             bottom: "auto",
             marginRight: "-50%",
             transform: "translate(-50%, -50%)",
+            borderRadius: 0,
+            borderWidth: 2,
         },
         overlay: {
-            zIndex: 9999,
+            zIndex: 99999,
         },
     };
 
