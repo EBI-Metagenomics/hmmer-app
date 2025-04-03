@@ -81,8 +81,10 @@ const EvalueInput = () => {
         <div className="vf-stack vf-stack--200">
             <div className="vf-form__item vf-cluster vf-cluster--200">
                 <div className="vf-cluster__inner">
-                    <p className="vf-u-type__text-body--2 vf-u-width__25">Significance E-values</p>
-                    <div className="vf-form__item">
+                    <p className="vf-u-type__text-body--2 vf-u-width__25" style={{ flex: "10% 1 0" }}>
+                        Significance E-values
+                    </p>
+                    <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="incE" className="vf-form__label">
                             Sequence
                         </label>
@@ -94,7 +96,7 @@ const EvalueInput = () => {
                             id="incE"
                         />
                     </div>
-                    <div className="vf-form__item">
+                    <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="incdomE" className="vf-form__label">
                             Hit
                         </label>
@@ -110,8 +112,10 @@ const EvalueInput = () => {
             </div>
             <div className="vf-form__item vf-cluster vf-cluster--200">
                 <div className="vf-cluster__inner">
-                    <p className="vf-u-type__text-body--2 vf-u-width__25">Report E-values</p>
-                    <div className="vf-form__item">
+                    <p className="vf-u-type__text-body--2 vf-u-width__25" style={{ flex: "10% 1 0" }}>
+                        Report E-values
+                    </p>
+                    <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="E" className="vf-form__label">
                             Sequence
                         </label>
@@ -123,7 +127,7 @@ const EvalueInput = () => {
                             id="E"
                         />
                     </div>
-                    <div className="vf-form__item">
+                    <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="domE" className="vf-form__label">
                             Hit
                         </label>
@@ -147,8 +151,10 @@ const BitscoreInput = () => {
         <div className="vf-stack vf-stack--200">
             <div className="vf-form__item vf-cluster vf-cluster--200">
                 <div className="vf-cluster__inner">
-                    <p className="vf-u-type__text-body--2 vf-u-width__25">Significance Bit scores</p>
-                    <div className="vf-form__item">
+                    <p className="vf-u-type__text-body--2 vf-u-width__25" style={{ flex: "10% 1 0" }}>
+                        Significance Bit scores
+                    </p>
+                    <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="incT" className="vf-form__label">
                             Sequence
                         </label>
@@ -160,7 +166,7 @@ const BitscoreInput = () => {
                             id="incT"
                         />
                     </div>
-                    <div className="vf-form__item">
+                    <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="incdomT" className="vf-form__label">
                             Hit
                         </label>
@@ -176,8 +182,10 @@ const BitscoreInput = () => {
             </div>
             <div className="vf-form__item vf-cluster vf-cluster--200">
                 <div className="vf-cluster__inner">
-                    <p className="vf-u-type__text-body--2 vf-u-width__25">Report Bit scores</p>
-                    <div className="vf-form__item">
+                    <p className="vf-u-type__text-body--2 vf-u-width__25" style={{ flex: "10% 1 0" }}>
+                        Report Bit scores
+                    </p>
+                    <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="T" className="vf-form__label">
                             Sequence
                         </label>
@@ -189,7 +197,7 @@ const BitscoreInput = () => {
                             id="T"
                         />
                     </div>
-                    <div className="vf-form__item">
+                    <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="domT" className="vf-form__label">
                             Hit
                         </label>
