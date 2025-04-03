@@ -55,7 +55,7 @@ function App() {
                             </Routes>
 
                             <Routes>
-                                <Route path="/" element={<Home />} />
+                                <Route path="/" element={<Navigate to="home" />} />
                                 <Route path="/home" element={<Home />} />
                                 <Route path="/search/*" element={<SearchPage />} />
                                 <Route path="/search" element={<Navigate to="phmmer" />} />
