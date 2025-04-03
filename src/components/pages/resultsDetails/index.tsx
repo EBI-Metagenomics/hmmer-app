@@ -76,31 +76,33 @@ const ResultsPage: React.FC = () => {
                                 </a>
                             </li>
                         )}
-                        <li className="vf-tabs__item">
-                            <a
-                                role="tab"
-                                // aria-selected={activeTab === tab.id}
-                                // aria-controls={`${tab.id}-tab`}
-                                onClick={() => {
-                                    const search = new URLSearchParams();
+                        {stats && (
+                            <li className="vf-tabs__item">
+                                <a
+                                    role="tab"
+                                    // aria-selected={activeTab === tab.id}
+                                    // aria-controls={`${tab.id}-tab`}
+                                    onClick={() => {
+                                        const search = new URLSearchParams();
 
-                                    if (searchParams.has("architectures")) {
-                                        search.append("architectures", searchParams.get("architectures") ?? "");
-                                    }
+                                        if (searchParams.has("architectures")) {
+                                            search.append("architectures", searchParams.get("architectures") ?? "");
+                                        }
 
-                                    if (searchParams.has("taxonomyIds")) {
-                                        _.each(searchParams.getAll("taxonomyIds"), (value) =>
-                                            search.append("taxonomyIds", value),
-                                        );
-                                    }
+                                        if (searchParams.has("taxonomyIds")) {
+                                            _.each(searchParams.getAll("taxonomyIds"), (value) =>
+                                                search.append("taxonomyIds", value),
+                                            );
+                                        }
 
-                                    navigate({ pathname: `/results/${id}/download`, search: search.toString() });
-                                }}
-                                className={`vf-tabs__link ${matchedPath === "download" ? "is-active" : ""}`}
-                            >
-                                Download
-                            </a>
-                        </li>
+                                        navigate({ pathname: `/results/${id}/download`, search: search.toString() });
+                                    }}
+                                    className={`vf-tabs__link ${matchedPath === "download" ? "is-active" : ""}`}
+                                >
+                                    Download
+                                </a>
+                            </li>
+                        )}
                     </ul>
                 </div>
                 <Routes>

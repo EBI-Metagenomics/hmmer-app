@@ -12,7 +12,7 @@ import {
     Table,
 } from "@tanstack/react-table";
 
-import { TreeToggleButton, HitPosition, Alignment, ProgressIndicator } from "@components/atoms";
+import { TreeToggleButton, HitPosition, Alignment, ProgressIndicator, NotFound } from "@components/atoms";
 import { Pagination } from "@components/molecules";
 import { Annotations, AlignmentView, ResultFilter, DistributionGraph } from "@components/organisms";
 import { P7Hit } from "@/client/types.gen";
@@ -356,6 +356,10 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                 </p>
             </div>
         );
+    
+    if (!data) {
+        return <NotFound title="Results not found" lede="We’re sorry - we can’t find the results you requested." message="It may have been removed or be temporarily unavailable."/>
+    }
 
     return (
         <div className="vf-stack vf-stack--800">

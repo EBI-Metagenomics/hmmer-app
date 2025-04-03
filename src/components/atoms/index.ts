@@ -3,6 +3,7 @@ export { Checkbox } from "./Checkbox";
 export { FetchWrapper } from "./FetchWrapper";
 export { HitPosition } from "./HitPosition";
 export { MenuSection } from "./MenuSection";
+export { NotFound } from "./NotFound";
 export { ProgressIndicator } from "./ProgressIndicator";
 export { QueryErrorBoundary } from "./QueryErrorBoundary";
 export { QuerySuspense } from "./QuerySuspense";

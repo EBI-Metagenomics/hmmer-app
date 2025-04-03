@@ -181,7 +181,7 @@ const Papers: React.FC<PapersProps> = ({ papers }) => {
     return (
         <>
             {papers.map((paper) => (
-                <article className="vf-summary vf-summary--publication">
+                <article key={paper.DOI} className="vf-summary vf-summary--publication">
                     <h3 className="vf-summary__title">
                         <a className="vf-summary__link" href={paper.resource.primary.URL}>
                             {paper.title[0]}

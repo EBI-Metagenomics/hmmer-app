@@ -15,6 +15,7 @@ import ResultsPage from "./components/pages/results";
 import ResultsDetailsPage from "./components/pages/resultsDetails";
 import Help from "./components/pages/help";
 import About from "./components/pages/about";
+import NotFoundPage from "./components/pages/404";
 
 import { CustomizationProvider, StatsProvider } from "./context";
 
@@ -64,7 +65,7 @@ function App() {
                                 <Route path="/results/:id" element={<Navigate to="score" />} />
                                 <Route path="/help" element={<Help />} />
                                 <Route path="/about" element={<About />} />
-                                <Route path="*" element={<div>Not found</div>} />
+                                <Route path="*" element={<NotFoundPage />} />
                             </Routes>
                         </BrowserRouter>
                     </div>

@@ -1,5 +1,6 @@
 import { Route, Routes, useNavigate, useMatch } from "react-router";
 
+import { NotFound } from "@/components/atoms";
 import { Form } from "@components/organisms";
 
 const SearchPage: React.FC = () => {
@@ -55,6 +56,15 @@ const SearchPage: React.FC = () => {
                 <Route path="phmmer" element={<Form algo="phmmer" />} />
                 <Route path="hmmscan" element={<Form algo="hmmscan" />} />
                 <Route path="hmmsearch" element={<Form algo="hmmsearch" />} />
+                <Route
+                    path="*"
+                    element={
+                        <NotFound
+                            title="Algorithm not supported"
+                            lede="We’re sorry - the algorithm you're looking for is not supported."
+                        />
+                    }
+                />
             </Routes>
         </>
     );
