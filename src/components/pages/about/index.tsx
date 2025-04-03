@@ -116,8 +116,8 @@ const About: React.FC = () => {
                         <div className="vf-grid__col--span-5">
                             <p className="vf-u-type__text-body--2 vf-u-margin--0">
                                 As well as providing and maintaining the campus on which the EMBL-EBI is located, the
-                                Wellcome Trust also now provides funding for HMMER (grant 108433/Z/15/Z). The current
-                                grant runs from October 2015 to September 2020.
+                                Wellcome Trust also now provides funding for HMMER (grant 221320/Z/20/Z). The current
+                                grant runs from April 2021 to March 2026.
                             </p>
                         </div>
                         <div>
