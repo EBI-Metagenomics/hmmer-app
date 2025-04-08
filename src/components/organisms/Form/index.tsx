@@ -16,8 +16,7 @@ import {
     CutOffInput,
     GapPenaltiesInput,
     FilterInput,
-    SequenceDatabaseInput,
-    HMMDatabaseInput,
+    DatabaseInput,
     Input,
     Toast,
 } from "@components/molecules";
@@ -129,12 +128,12 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                         </MenuSection>
                         {algo !== "hmmscan" && (
                             <MenuSection title="Sequence database">
-                                <SequenceDatabaseInput />
+                                <DatabaseInput type="seq"/>
                             </MenuSection>
                         )}
                         {algo === "hmmscan" && (
                             <MenuSection title="HMM database">
-                                <HMMDatabaseInput />
+                                <DatabaseInput type="hmm"/>
                             </MenuSection>
                         )}
                         <MenuSection title="Cut off">

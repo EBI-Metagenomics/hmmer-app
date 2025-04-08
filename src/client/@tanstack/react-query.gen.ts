@@ -16,6 +16,7 @@ import type {
     ResultApiGetResultData,
     ResultApiGetResultResponse,
     ResultApiGetDomainsData,
+    SearchApiGetDatabasesData,
     SearchApiSearchData,
     SearchApiSearchResponse,
     SearchApiGetJobsData,
@@ -37,6 +38,7 @@ import {
     architectureApiGetAllArchitectures,
     resultApiGetResult,
     resultApiGetDomains,
+    searchApiGetDatabases,
     searchApiSearch,
     searchApiGetJobs,
     taxonomyApiGet,
@@ -266,6 +268,25 @@ export const resultApiGetDomainsOptions = (options: Options<ResultApiGetDomainsD
             return data;
         },
         queryKey: resultApiGetDomainsQueryKey(options),
+    });
+};
+
+export const searchApiGetDatabasesQueryKey = (options?: Options<SearchApiGetDatabasesData>) => [
+    createQueryKey("searchApiGetDatabases", options),
+];
+
+export const searchApiGetDatabasesOptions = (options?: Options<SearchApiGetDatabasesData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await searchApiGetDatabases({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: searchApiGetDatabasesQueryKey(options),
     });
 };
 

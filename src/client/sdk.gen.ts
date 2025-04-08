@@ -14,6 +14,8 @@ import type {
     ResultApiGetResultResponse,
     ResultApiGetDomainsData,
     ResultApiGetDomainsResponse,
+    SearchApiGetDatabasesData,
+    SearchApiGetDatabasesResponse,
     SearchApiSearchData,
     SearchApiSearchResponse,
     SearchApiGetJobsData,
@@ -105,6 +107,18 @@ export const resultApiGetDomains = <ThrowOnError extends boolean = false>(
     return (options?.client ?? client).get<ResultApiGetDomainsResponse, unknown, ThrowOnError>({
         ...options,
         url: "/api/v1/result/{id}/domains",
+    });
+};
+
+/**
+ * Get Databases
+ */
+export const searchApiGetDatabases = <ThrowOnError extends boolean = false>(
+    options?: Options<SearchApiGetDatabasesData, ThrowOnError>,
+) => {
+    return (options?.client ?? client).get<SearchApiGetDatabasesResponse, unknown, ThrowOnError>({
+        ...options,
+        url: "/api/v1/search/databases",
     });
 };
 

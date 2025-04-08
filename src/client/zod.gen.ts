@@ -220,6 +220,14 @@ export const zAlignmentResponseSchema = z.object({
     domains: z.union([z.array(zP7Domain), z.null()]),
 });
 
+export const zDatabaseResponseSchema = z.object({
+    id: z.union([z.string().max(32), z.null()]).optional(),
+    type: z.string().max(16).optional().default("seq"),
+    name: z.string().max(32),
+    version: z.string().max(32),
+    release_date: z.string().date().optional().default("2025-04-08"),
+});
+
 export const zAlgoChoices = z.enum(["phmmer", "hmmsearch", "hmmscan", "jackhmmer"]);
 
 export const zSearchResponseSchema = z.object({
@@ -327,6 +335,8 @@ export const zArchitectureApiGetAllArchitecturesResponse = zArchitectureListResp
 export const zResultApiGetResultResponse = zResultResponseSchema;
 
 export const zResultApiGetDomainsResponse = zAlignmentResponseSchema;
+
+export const zSearchApiGetDatabasesResponse = z.array(zDatabaseResponseSchema);
 
 export const zSearchApiSearchResponse = zSearchResponseSchema;
 

@@ -203,6 +203,14 @@ export type AlignmentResponseSchema = {
     domains: Array<P7Domain> | null;
 };
 
+export type DatabaseResponseSchema = {
+    id?: string | null;
+    type?: string;
+    name: string;
+    version: string;
+    release_date?: Date;
+};
+
 export type AlgoChoices = "phmmer" | "hmmsearch" | "hmmscan" | "jackhmmer";
 
 export const AlgoChoices = {
@@ -424,6 +432,22 @@ export type ResultApiGetDomainsResponses = {
 };
 
 export type ResultApiGetDomainsResponse = ResultApiGetDomainsResponses[keyof ResultApiGetDomainsResponses];
+
+export type SearchApiGetDatabasesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: "/api/v1/search/databases";
+};
+
+export type SearchApiGetDatabasesResponses = {
+    /**
+     * OK
+     */
+    200: Array<DatabaseResponseSchema>;
+};
+
+export type SearchApiGetDatabasesResponse = SearchApiGetDatabasesResponses[keyof SearchApiGetDatabasesResponses];
 
 export type SearchApiSearchData = {
     body: SearchRequestSchema;

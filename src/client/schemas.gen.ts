@@ -1087,6 +1087,48 @@ export const AlignmentResponseSchemaSchema = {
     type: "object",
 } as const;
 
+export const DatabaseResponseSchemaSchema = {
+    properties: {
+        id: {
+            anyOf: [
+                {
+                    maxLength: 32,
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Id",
+        },
+        type: {
+            default: "seq",
+            maxLength: 16,
+            title: "Type",
+            type: "string",
+        },
+        name: {
+            maxLength: 32,
+            title: "Name",
+            type: "string",
+        },
+        version: {
+            maxLength: 32,
+            title: "Version",
+            type: "string",
+        },
+        release_date: {
+            default: "2025-04-08",
+            format: "date",
+            title: "Release Date",
+            type: "string",
+        },
+    },
+    required: ["name", "version"],
+    title: "DatabaseResponseSchema",
+    type: "object",
+} as const;
+
 export const AlgoChoicesSchema = {
     enum: ["phmmer", "hmmsearch", "hmmscan", "jackhmmer"],
     title: "AlgoChoices",
