@@ -1118,7 +1118,7 @@ export const DatabaseResponseSchemaSchema = {
             type: "string",
         },
         release_date: {
-            default: "2025-04-08",
+            default: "2025-04-09",
             format: "date",
             title: "Release Date",
             type: "string",
@@ -1405,9 +1405,16 @@ export const TaskResultSchemaSchema = {
 
 export const TaxonomyResponseSchemaSchema = {
     properties: {
-        taxonomy_id: {
-            title: "Taxonomy Id",
-            type: "integer",
+        id: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Id",
         },
         name: {
             maxLength: 255,
@@ -1420,7 +1427,7 @@ export const TaxonomyResponseSchemaSchema = {
             type: "string",
         },
     },
-    required: ["taxonomy_id", "name", "rank"],
+    required: ["name", "rank"],
     title: "TaxonomyResponseSchema",
     type: "object",
 } as const;

@@ -268,7 +268,7 @@ export type TaskResultSchema = {
 };
 
 export type TaxonomyResponseSchema = {
-    taxonomy_id: number;
+    id?: number | null;
     name: string;
     rank: string;
 };

@@ -225,7 +225,7 @@ export const zDatabaseResponseSchema = z.object({
     type: z.string().max(16).optional().default("seq"),
     name: z.string().max(32),
     version: z.string().max(32),
-    release_date: z.string().date().optional().default("2025-04-08"),
+    release_date: z.string().date().optional().default("2025-04-09"),
 });
 
 export const zAlgoChoices = z.enum(["phmmer", "hmmsearch", "hmmscan", "jackhmmer"]);
@@ -273,7 +273,7 @@ export const zTaskResultSchema = z.object({
 });
 
 export const zTaxonomyResponseSchema = z.object({
-    taxonomy_id: z.number(),
+    id: z.union([z.number(), z.null()]).optional(),
     name: z.string().max(255),
     rank: z.string().max(255),
 });

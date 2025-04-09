@@ -47,7 +47,7 @@ export const ResultFilter: React.FC = () => {
                                                     setSearchParams((prevSearchParams) => {
                                                         prevSearchParams.delete(
                                                             "taxonomyIds",
-                                                            _.toString(taxonomy.data?.taxonomy_id),
+                                                            _.toString(taxonomy.data?.id),
                                                         );
                                                         return prevSearchParams;
                                                     });
