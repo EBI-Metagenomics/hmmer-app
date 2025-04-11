@@ -76,8 +76,7 @@ export const SearchDetails: React.FC<SearchDetailsProps> = ({ id }) => {
         return `${job.database.name}, version ${job.database.version}, downloaded on ${new Date(job.database.release_date ?? "").toLocaleDateString()}`;
     };
 
-    const makeJobURL = (job: JobDetailsResponseSchema) =>
-        new URL(`results/${job.id}/score`, `${window.location.origin}`).toString();
+    const makeJobURL = (job: JobDetailsResponseSchema) => window.location.href
 
     if (!data) {
         return (
@@ -87,7 +86,7 @@ export const SearchDetails: React.FC<SearchDetailsProps> = ({ id }) => {
             </div>
         );
     }
-
+    console.log(window.location)
     return (
         <>
             <button
