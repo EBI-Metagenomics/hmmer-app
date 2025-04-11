@@ -6,4 +6,5 @@ export { DistributionGraph } from "./DistributionGraph";
 export { Form } from "./Form";
 export { ResultTable } from "./ResultTable";
 export { ResultFilter } from "./ResultFilter";
+export { SearchDetails } from "./SearchDetails";
 export { TaxonomyElement } from "./Taxonomy";

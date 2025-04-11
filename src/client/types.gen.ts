@@ -211,6 +211,41 @@ export type DatabaseResponseSchema = {
     release_date?: Date;
 };
 
+export type JobDetailsResponseSchema = {
+    task: TaskResultSchema;
+    database: DatabaseResponseSchema;
+    id?: string | null;
+    algo?: string;
+    input: string;
+    threshold?: string;
+    E?: number | null;
+    domE?: number | null;
+    T?: number | null;
+    domT?: number | null;
+    incE?: number | null;
+    incdomE?: number | null;
+    incT?: number | null;
+    incdomT?: number | null;
+    popen?: number | null;
+    pextend?: number | null;
+    mx?: string | null;
+};
+
+export type TaskResultSchema = {
+    /**
+     * Current state of the task being run
+     */
+    status?: string;
+    /**
+     * Datetime field when the task result was created in UTC
+     */
+    date_created: Date;
+    /**
+     * Datetime field when the task was completed in UTC
+     */
+    date_done: Date;
+};
+
 export type AlgoChoices = "phmmer" | "hmmsearch" | "hmmscan" | "jackhmmer";
 
 export const AlgoChoices = {
@@ -225,9 +260,6 @@ export type SearchResponseSchema = {
 };
 
 export type SearchRequestSchema = {
-    taxonomy_distribution_graph_task_id?: number | null;
-    architecture_task_id?: number | null;
-    annotation_task_id?: number | null;
     database: string;
     input: string;
     threshold?: string;
@@ -250,21 +282,6 @@ export type JobsResponseSchema = {
     task: TaskResultSchema;
     id?: string | null;
     algo?: string;
-};
-
-export type TaskResultSchema = {
-    /**
-     * Current state of the task being run
-     */
-    status?: string;
-    /**
-     * Datetime field when the task result was created in UTC
-     */
-    date_created: Date;
-    /**
-     * Datetime field when the task was completed in UTC
-     */
-    date_done: Date;
 };
 
 export type TaxonomyResponseSchema = {
@@ -448,6 +465,40 @@ export type SearchApiGetDatabasesResponses = {
 };
 
 export type SearchApiGetDatabasesResponse = SearchApiGetDatabasesResponses[keyof SearchApiGetDatabasesResponses];
+
+export type SearchApiGetJobDetailsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: "/api/v1/search/{id}";
+};
+
+export type SearchApiGetJobDetailsResponses = {
+    /**
+     * OK
+     */
+    200: JobDetailsResponseSchema;
+};
+
+export type SearchApiGetJobDetailsResponse = SearchApiGetJobDetailsResponses[keyof SearchApiGetJobDetailsResponses];
+
+export type SearchApiGetJobQueryData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: "/api/v1/search/{id}/query";
+};
+
+export type SearchApiGetJobQueryResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type SearchApiSearchData = {
     body: SearchRequestSchema;

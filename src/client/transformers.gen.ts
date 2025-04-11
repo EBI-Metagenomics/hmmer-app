@@ -2,6 +2,7 @@
 
 import type {
     SearchApiGetDatabasesResponse,
+    SearchApiGetJobDetailsResponse,
     SearchApiGetJobsResponse,
     TaxonomyApiGetTaxonomyTreeResponse,
 } from "./types.gen";
@@ -23,6 +24,17 @@ export const searchApiGetDatabasesResponseTransformer = async (data: any): Promi
 const taskResultSchemaSchemaResponseTransformer = (data: any) => {
     data.date_created = new Date(data.date_created);
     data.date_done = new Date(data.date_done);
+    return data;
+};
+
+const jobDetailsResponseSchemaSchemaResponseTransformer = (data: any) => {
+    data.task = taskResultSchemaSchemaResponseTransformer(data.task);
+    data.database = databaseResponseSchemaSchemaResponseTransformer(data.database);
+    return data;
+};
+
+export const searchApiGetJobDetailsResponseTransformer = async (data: any): Promise<SearchApiGetJobDetailsResponse> => {
+    data = jobDetailsResponseSchemaSchemaResponseTransformer(data);
     return data;
 };
 

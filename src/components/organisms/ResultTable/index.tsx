@@ -14,7 +14,7 @@ import {
 
 import { TreeToggleButton, HitPosition, Alignment, ProgressIndicator, NotFound } from "@components/atoms";
 import { Pagination } from "@components/molecules";
-import { Annotations, AlignmentView, ResultFilter, DistributionGraph } from "@components/organisms";
+import { Annotations, AlignmentView, ResultFilter, DistributionGraph, SearchDetails } from "@components/organisms";
 import { P7Hit } from "@/client/types.gen";
 import { useResult } from "@/hooks/useResult";
 import { useColumns, usePageSize, useStats, defaultColumns, defaultPageSize } from "@/context";
@@ -368,7 +368,8 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
             <div className="vf-stack vf-stack--400">
                 {algo !== "hmmscan" && <ResultFilter />}
                 <div className="vf-stack vf-stack--200">
-                    <div style={{ display: "flex", justifyContent: "end" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <SearchDetails id={id}/>
                         <Customization
                             open={customsationOpen}
                             onClick={() => setCustomsationOpen(!customsationOpen)}

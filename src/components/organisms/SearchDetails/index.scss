@@ -1,0 +1,17 @@
+.search-details-container {
+    width: 1000px;
+    display: grid;
+    grid-template-columns: 20% 80%;
+}
+
+.search-details-container > :nth-child(odd) {
+    margin-top: 1rem;
+}
+
+.query-container {
+    max-height: 400px;
+    max-width: 800px;
+    overflow: hidden;
+    mask-image: radial-gradient(ellipse at top left, rgba(0,0,0,1), rgba(0,0,0,0));
+    -webkit-mask-image: radial-gradient(ellipse at top left, rgba(0,0,0,1), rgba(0,0,0,0));
+}

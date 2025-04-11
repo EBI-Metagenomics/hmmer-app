@@ -1118,7 +1118,7 @@ export const DatabaseResponseSchemaSchema = {
             type: "string",
         },
         release_date: {
-            default: "2025-04-09",
+            default: "2025-04-11",
             format: "date",
             title: "Release Date",
             type: "string",
@@ -1126,6 +1126,208 @@ export const DatabaseResponseSchemaSchema = {
     },
     required: ["name", "version"],
     title: "DatabaseResponseSchema",
+    type: "object",
+} as const;
+
+export const JobDetailsResponseSchemaSchema = {
+    properties: {
+        task: {
+            $ref: "#/components/schemas/TaskResultSchema",
+        },
+        database: {
+            $ref: "#/components/schemas/DatabaseResponseSchema",
+        },
+        id: {
+            anyOf: [
+                {
+                    format: "uuid",
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Id",
+        },
+        algo: {
+            default: "phmmer",
+            maxLength: 16,
+            title: "Algo",
+            type: "string",
+        },
+        input: {
+            title: "Input",
+            type: "string",
+        },
+        threshold: {
+            default: "evalue",
+            maxLength: 16,
+            title: "Threshold",
+            type: "string",
+        },
+        E: {
+            anyOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: 1,
+            title: "E",
+        },
+        domE: {
+            anyOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: 1,
+            title: "domE",
+        },
+        T: {
+            anyOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: 7,
+            title: "T",
+        },
+        domT: {
+            anyOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: 5,
+            title: "domT",
+        },
+        incE: {
+            anyOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: 0.01,
+            title: "incE",
+        },
+        incdomE: {
+            anyOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: 0.03,
+            title: "incdomE",
+        },
+        incT: {
+            anyOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: 25,
+            title: "incT",
+        },
+        incdomT: {
+            anyOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: 22,
+            title: "incdomT",
+        },
+        popen: {
+            anyOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: 0.02,
+            title: "Popen",
+        },
+        pextend: {
+            anyOf: [
+                {
+                    type: "number",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: 0.4,
+            title: "Pextend",
+        },
+        mx: {
+            anyOf: [
+                {
+                    maxLength: 16,
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: "BLOSUM62",
+            title: "Mx",
+        },
+    },
+    required: ["task", "database", "input"],
+    title: "JobDetailsResponseSchema",
+    type: "object",
+} as const;
+
+export const TaskResultSchemaSchema = {
+    properties: {
+        status: {
+            default: "PENDING",
+            description: "Current state of the task being run",
+            maxLength: 50,
+            title: "Task State",
+            type: "string",
+        },
+        date_created: {
+            description: "Datetime field when the task result was created in UTC",
+            format: "date-time",
+            title: "Created DateTime",
+            type: "string",
+        },
+        date_done: {
+            description: "Datetime field when the task was completed in UTC",
+            format: "date-time",
+            title: "Completed DateTime",
+            type: "string",
+        },
+    },
+    required: ["date_created", "date_done"],
+    title: "TaskResultSchema",
     type: "object",
 } as const;
 
@@ -1150,41 +1352,7 @@ export const SearchResponseSchemaSchema = {
 
 export const SearchRequestSchemaSchema = {
     properties: {
-        taxonomy_distribution_graph_task_id: {
-            anyOf: [
-                {
-                    type: "integer",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Taxonomy Distribution Graph Task",
-        },
-        architecture_task_id: {
-            anyOf: [
-                {
-                    type: "integer",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Architecture Task",
-        },
-        annotation_task_id: {
-            anyOf: [
-                {
-                    type: "integer",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Annotation Task",
-        },
         database: {
-            maxLength: 32,
             title: "Database",
             type: "string",
         },
@@ -1373,33 +1541,6 @@ export const JobsResponseSchemaSchema = {
     },
     required: ["task"],
     title: "JobsResponseSchema",
-    type: "object",
-} as const;
-
-export const TaskResultSchemaSchema = {
-    properties: {
-        status: {
-            default: "PENDING",
-            description: "Current state of the task being run",
-            maxLength: 50,
-            title: "Task State",
-            type: "string",
-        },
-        date_created: {
-            description: "Datetime field when the task result was created in UTC",
-            format: "date-time",
-            title: "Created DateTime",
-            type: "string",
-        },
-        date_done: {
-            description: "Datetime field when the task was completed in UTC",
-            format: "date-time",
-            title: "Completed DateTime",
-            type: "string",
-        },
-    },
-    required: ["date_created", "date_done"],
-    title: "TaskResultSchema",
     type: "object",
 } as const;
 

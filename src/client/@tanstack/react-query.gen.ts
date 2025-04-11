@@ -17,6 +17,8 @@ import type {
     ResultApiGetResultResponse,
     ResultApiGetDomainsData,
     SearchApiGetDatabasesData,
+    SearchApiGetJobDetailsData,
+    SearchApiGetJobQueryData,
     SearchApiSearchData,
     SearchApiSearchResponse,
     SearchApiGetJobsData,
@@ -39,6 +41,8 @@ import {
     resultApiGetResult,
     resultApiGetDomains,
     searchApiGetDatabases,
+    searchApiGetJobDetails,
+    searchApiGetJobQuery,
     searchApiSearch,
     searchApiGetJobs,
     taxonomyApiGet,
@@ -287,6 +291,44 @@ export const searchApiGetDatabasesOptions = (options?: Options<SearchApiGetDatab
             return data;
         },
         queryKey: searchApiGetDatabasesQueryKey(options),
+    });
+};
+
+export const searchApiGetJobDetailsQueryKey = (options: Options<SearchApiGetJobDetailsData>) => [
+    createQueryKey("searchApiGetJobDetails", options),
+];
+
+export const searchApiGetJobDetailsOptions = (options: Options<SearchApiGetJobDetailsData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await searchApiGetJobDetails({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: searchApiGetJobDetailsQueryKey(options),
+    });
+};
+
+export const searchApiGetJobQueryQueryKey = (options: Options<SearchApiGetJobQueryData>) => [
+    createQueryKey("searchApiGetJobQuery", options),
+];
+
+export const searchApiGetJobQueryOptions = (options: Options<SearchApiGetJobQueryData>) => {
+    return queryOptions({
+        queryFn: async ({ queryKey, signal }) => {
+            const { data } = await searchApiGetJobQuery({
+                ...options,
+                ...queryKey[0],
+                signal,
+                throwOnError: true,
+            });
+            return data;
+        },
+        queryKey: searchApiGetJobQueryQueryKey(options),
     });
 };
 

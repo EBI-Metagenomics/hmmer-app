@@ -225,7 +225,37 @@ export const zDatabaseResponseSchema = z.object({
     type: z.string().max(16).optional().default("seq"),
     name: z.string().max(32),
     version: z.string().max(32),
-    release_date: z.string().date().optional().default("2025-04-09"),
+    release_date: z.string().date().optional().default("2025-04-11"),
+});
+
+export const zJobDetailsResponseSchema = z.object({
+    task: z.object({
+        status: z.string().max(50).optional().default("PENDING"),
+        date_created: z.string().datetime(),
+        date_done: z.string().datetime(),
+    }),
+    database: zDatabaseResponseSchema,
+    id: z.union([z.string().uuid(), z.null()]).optional(),
+    algo: z.string().max(16).optional().default("phmmer"),
+    input: z.string(),
+    threshold: z.string().max(16).optional().default("evalue"),
+    E: z.union([z.number(), z.null()]).optional(),
+    domE: z.union([z.number(), z.null()]).optional(),
+    T: z.union([z.number(), z.null()]).optional(),
+    domT: z.union([z.number(), z.null()]).optional(),
+    incE: z.union([z.number(), z.null()]).optional(),
+    incdomE: z.union([z.number(), z.null()]).optional(),
+    incT: z.union([z.number(), z.null()]).optional(),
+    incdomT: z.union([z.number(), z.null()]).optional(),
+    popen: z.union([z.number(), z.null()]).optional(),
+    pextend: z.union([z.number(), z.null()]).optional(),
+    mx: z.union([z.string().max(16), z.null()]).optional(),
+});
+
+export const zTaskResultSchema = z.object({
+    status: z.string().max(50).optional().default("PENDING"),
+    date_created: z.string().datetime(),
+    date_done: z.string().datetime(),
 });
 
 export const zAlgoChoices = z.enum(["phmmer", "hmmsearch", "hmmscan", "jackhmmer"]);
@@ -235,10 +265,7 @@ export const zSearchResponseSchema = z.object({
 });
 
 export const zSearchRequestSchema = z.object({
-    taxonomy_distribution_graph_task_id: z.union([z.number(), z.null()]).optional(),
-    architecture_task_id: z.union([z.number(), z.null()]).optional(),
-    annotation_task_id: z.union([z.number(), z.null()]).optional(),
-    database: z.string().max(32),
+    database: z.string(),
     input: z.string(),
     threshold: z.string().max(16).optional().default("evalue"),
     E: z.union([z.number(), z.null()]).optional(),
@@ -257,19 +284,9 @@ export const zSearchRequestSchema = z.object({
 });
 
 export const zJobsResponseSchema = z.object({
-    task: z.object({
-        status: z.string().max(50).optional().default("PENDING"),
-        date_created: z.string().datetime(),
-        date_done: z.string().datetime(),
-    }),
+    task: zTaskResultSchema,
     id: z.union([z.string().uuid(), z.null()]).optional(),
     algo: z.string().max(16).optional().default("phmmer"),
-});
-
-export const zTaskResultSchema = z.object({
-    status: z.string().max(50).optional().default("PENDING"),
-    date_created: z.string().datetime(),
-    date_done: z.string().datetime(),
 });
 
 export const zTaxonomyResponseSchema = z.object({
@@ -337,6 +354,8 @@ export const zResultApiGetResultResponse = zResultResponseSchema;
 export const zResultApiGetDomainsResponse = zAlignmentResponseSchema;
 
 export const zSearchApiGetDatabasesResponse = z.array(zDatabaseResponseSchema);
+
+export const zSearchApiGetJobDetailsResponse = zJobDetailsResponseSchema;
 
 export const zSearchApiSearchResponse = zSearchResponseSchema;
 
