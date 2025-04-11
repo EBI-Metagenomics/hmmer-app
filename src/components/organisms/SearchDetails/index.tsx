@@ -86,7 +86,7 @@ export const SearchDetails: React.FC<SearchDetailsProps> = ({ id }) => {
             </div>
         );
     }
-    console.log(window.location)
+
     return (
         <>
             <button
