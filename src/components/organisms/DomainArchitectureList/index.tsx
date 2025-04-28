@@ -49,7 +49,7 @@ const columns = [
     columnHelper.accessor("architecture.names", {
         header: "Domain Architecture",
         cell: ({ row }) => {
-            return <DomainGraphics architecture={row.original.architecture} showName showExample/>;
+            return <DomainGraphics architecture={row.original.architecture} showName showExample />;
         },
     }),
     columnHelper.accessor("count", {
@@ -178,19 +178,27 @@ export const DomainArchitectureList: React.FC<DomainArchitectureListProps> = ({ 
     );
 };
 
-
 const parseGraphics = (graphicsString: string) => {
     try {
         return JSON.parse(graphicsString);
     } catch (e1) {
         try {
-            const firstParse = JSON.parse(graphicsString);
-            return JSON.parse(firstParse);
+            let processedString = graphicsString;
+
+            if (processedString.startsWith('"') && processedString.endsWith('"')) {
+                processedString = processedString.substring(1, processedString.length - 1);
+            }
+
+            // Replace each double quote with a single quote
+            processedString = processedString.replace(/""/g, '"');
+
+            // Parse the cleaned string
+            return JSON.parse(processedString);
         } catch (e2) {
             return null;
         }
     }
-}
+};
 
 interface DomainGraphicsProps {
     architecture: ArchitectureSchema;
@@ -319,7 +327,7 @@ const DomainGraphicsList: React.FC<DomainGraphicsListProps> = ({ id, architectur
     return (
         <div className="vf-stack vf-stack--200">
             {_.map(data.architectures, (architecture, index) => (
-                <DomainGraphics key={index} architecture={architecture}/>
+                <DomainGraphics key={index} architecture={architecture} />
             ))}
         </div>
     );
