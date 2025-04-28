@@ -178,6 +178,20 @@ export const DomainArchitectureList: React.FC<DomainArchitectureListProps> = ({ 
     );
 };
 
+
+const parseGraphics = (graphicsString: string) => {
+    try {
+        return JSON.parse(graphicsString);
+    } catch (e1) {
+        try {
+            const firstParse = JSON.parse(graphicsString);
+            return JSON.parse(firstParse);
+        } catch (e2) {
+            return null;
+        }
+    }
+}
+
 interface DomainGraphicsProps {
     architecture: ArchitectureSchema;
     showName?: boolean;
@@ -188,7 +202,7 @@ const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName,
     const graphicsContainerRef = useRef<HTMLDivElement>(null);
     const graphicsRef = useRef<HTMLDivElement>(null);
     const [shouldNudge, setShouldNudge] = useState<boolean>(false);
-    const graphics = JSON.parse(architecture.graphics);
+    const graphics = parseGraphics(architecture.graphics);
 
     useEffect(() => {
         const graphicsElement = new DomainGraphic({
