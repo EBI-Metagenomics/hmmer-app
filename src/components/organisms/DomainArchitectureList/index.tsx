@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { useRef, useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
     createColumnHelper,
@@ -20,6 +20,7 @@ import {
     architectureApiGetAllArchitecturesOptions,
 } from "@/client/@tanstack/react-query.gen";
 import { ArchitectureAggregationSchema, ArchitectureSchema } from "@/client/types.gen";
+import { Pagination } from "@components/molecules";
 import { ProgressIndicator, TreeToggleButton } from "@/components/atoms";
 import { pending, failed, ready } from "@/utils/taskStates";
 import "./index.scss";
@@ -81,12 +82,20 @@ const columns = [
 ];
 
 export const DomainArchitectureList: React.FC<DomainArchitectureListProps> = ({ id }) => {
+    const [searchParams, setSearchParams] = useSearchParams({
+        page: _.toString(1),
+        pageSize: _.toString(50),
+    });
+
+    const page = _.toInteger(searchParams.get("page"));
+    const pageSize = _.toInteger(searchParams.get("pageSize"));
+
     const { data, isPending } = useQuery({
-        ...architectureApiGetDomainArchitecturesOptions({ path: { id } }),
+        ...architectureApiGetDomainArchitecturesOptions({ path: { id }, query: { page, page_size: pageSize } }),
         refetchInterval(query) {
             if (ready(query.state.data) || failed(query.state.data)) return false;
 
-            return Math.min(1000 * 2 ** query.state.dataUpdateCount, 5 * 60 * 1000);
+            return Math.min(500 * 2 ** query.state.dataUpdateCount, 3 * 60 * 1000);
         },
     });
 
@@ -125,56 +134,69 @@ export const DomainArchitectureList: React.FC<DomainArchitectureListProps> = ({ 
         );
 
     return (
-        <table className="vf-table vf-table--compact vf-u-width__100 domain-table">
-            <thead className="vf-table__header">
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id} className="vf-table__row">
-                        {headerGroup.headers.map((header) => (
-                            <th key={header.id} className="vf-table__heading">
-                                {header.isPlaceholder
-                                    ? null
-                                    : flexRender(header.column.columnDef.header, header.getContext())}
-                            </th>
-                        ))}
-                    </tr>
-                ))}
-            </thead>
-            <tbody className="vf-table__body">
-                {table.getRowModel().rows.map((row) => {
-                    return (
-                        <>
-                            <tr key={row.id} className="vf-table__row">
-                                {/* first row is a normal row */}
-                                {row.getVisibleCells().map((cell) => {
-                                    return (
-                                        <td key={cell.id} className="vf-table__cell">
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </td>
-                                    );
-                                })}
-                            </tr>
-                            {row.getIsExpanded() && (
-                                <>
-                                    {/* This empty row is for keeping the embl alternating colors for the table */}
-                                    <tr className="vf-table__row" hidden>
-                                        <td className="vf-table__cell"></td>
-                                    </tr>
-                                    <tr>
-                                        {/* 2nd row is a custom 1 cell row */}
-                                        <td colSpan={row.getVisibleCells().length} className="domain-cell">
-                                            <DomainGraphicsList
-                                                id={id}
-                                                architectureName={row.original.architecture.names}
-                                            />
-                                        </td>
-                                    </tr>
-                                </>
-                            )}
-                        </>
-                    );
-                })}
-            </tbody>
-        </table>
+        <div>
+            <table className="vf-table vf-table--compact vf-u-width__100 domain-table">
+                <thead className="vf-table__header">
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <tr key={headerGroup.id} className="vf-table__row">
+                            {headerGroup.headers.map((header) => (
+                                <th key={header.id} className="vf-table__heading">
+                                    {header.isPlaceholder
+                                        ? null
+                                        : flexRender(header.column.columnDef.header, header.getContext())}
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
+                </thead>
+                <tbody className="vf-table__body">
+                    {table.getRowModel().rows.map((row) => {
+                        return (
+                            <>
+                                <tr key={row.id} className="vf-table__row">
+                                    {/* first row is a normal row */}
+                                    {row.getVisibleCells().map((cell) => {
+                                        return (
+                                            <td key={cell.id} className="vf-table__cell">
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </td>
+                                        );
+                                    })}
+                                </tr>
+                                {row.getIsExpanded() && (
+                                    <>
+                                        {/* This empty row is for keeping the embl alternating colors for the table */}
+                                        <tr className="vf-table__row" hidden>
+                                            <td className="vf-table__cell"></td>
+                                        </tr>
+                                        <tr>
+                                            {/* 2nd row is a custom 1 cell row */}
+                                            <td colSpan={row.getVisibleCells().length} className="domain-cell">
+                                                <DomainGraphicsList
+                                                    id={id}
+                                                    architectureName={row.original.architecture.names}
+                                                />
+                                            </td>
+                                        </tr>
+                                    </>
+                                )}
+                            </>
+                        );
+                    })}
+                </tbody>
+            </table>
+            <Pagination
+                currentPage={page}
+                pageCount={data?.page_count ?? 1}
+                onPageChange={(page) =>
+                    setSearchParams((prevSearchParams) => {
+                        prevSearchParams.set("page", _.toString(page));
+
+                        return prevSearchParams;
+                    })
+                }
+            />
+        </div>
     );
 };
 

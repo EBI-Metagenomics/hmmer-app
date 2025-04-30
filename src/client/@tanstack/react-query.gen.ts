@@ -11,6 +11,7 @@ import {
 import type {
     ArchitectureApiGetArchitectureNameData,
     ArchitectureApiGetDomainArchitecturesData,
+    ArchitectureApiGetDomainArchitecturesResponse,
     ArchitectureApiGetAnnotationsData,
     ArchitectureApiGetAllArchitecturesData,
     ResultApiGetResultData,
@@ -129,6 +130,84 @@ export const architectureApiGetDomainArchitecturesOptions = (
     });
 };
 
+const createInfiniteParams = <K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">>(
+    queryKey: QueryKey<Options>,
+    page: K,
+) => {
+    const params = queryKey[0];
+    if (page.body) {
+        params.body = {
+            ...(queryKey[0].body as any),
+            ...(page.body as any),
+        };
+    }
+    if (page.headers) {
+        params.headers = {
+            ...queryKey[0].headers,
+            ...page.headers,
+        };
+    }
+    if (page.path) {
+        params.path = {
+            ...(queryKey[0].path as any),
+            ...(page.path as any),
+        };
+    }
+    if (page.query) {
+        params.query = {
+            ...(queryKey[0].query as any),
+            ...(page.query as any),
+        };
+    }
+    return params as unknown as typeof page;
+};
+
+export const architectureApiGetDomainArchitecturesInfiniteQueryKey = (
+    options: Options<ArchitectureApiGetDomainArchitecturesData>,
+): QueryKey<Options<ArchitectureApiGetDomainArchitecturesData>> => [
+    createQueryKey("architectureApiGetDomainArchitectures", options, true),
+];
+
+export const architectureApiGetDomainArchitecturesInfiniteOptions = (
+    options: Options<ArchitectureApiGetDomainArchitecturesData>,
+) => {
+    return infiniteQueryOptions<
+        ArchitectureApiGetDomainArchitecturesResponse,
+        DefaultError,
+        InfiniteData<ArchitectureApiGetDomainArchitecturesResponse>,
+        QueryKey<Options<ArchitectureApiGetDomainArchitecturesData>>,
+        | number
+        | Pick<QueryKey<Options<ArchitectureApiGetDomainArchitecturesData>>[0], "body" | "headers" | "path" | "query">
+    >(
+        // @ts-ignore
+        {
+            queryFn: async ({ pageParam, queryKey, signal }) => {
+                // @ts-ignore
+                const page: Pick<
+                    QueryKey<Options<ArchitectureApiGetDomainArchitecturesData>>[0],
+                    "body" | "headers" | "path" | "query"
+                > =
+                    typeof pageParam === "object"
+                        ? pageParam
+                        : {
+                              query: {
+                                  page: pageParam,
+                              },
+                          };
+                const params = createInfiniteParams(queryKey, page);
+                const { data } = await architectureApiGetDomainArchitectures({
+                    ...options,
+                    ...params,
+                    signal,
+                    throwOnError: true,
+                });
+                return data;
+            },
+            queryKey: architectureApiGetDomainArchitecturesInfiniteQueryKey(options),
+        },
+    );
+};
+
 export const architectureApiGetAnnotationsQueryKey = (options: Options<ArchitectureApiGetAnnotationsData>) => [
     createQueryKey("architectureApiGetAnnotations", options),
 ];
@@ -184,38 +263,6 @@ export const resultApiGetResultOptions = (options: Options<ResultApiGetResultDat
         },
         queryKey: resultApiGetResultQueryKey(options),
     });
-};
-
-const createInfiniteParams = <K extends Pick<QueryKey<Options>[0], "body" | "headers" | "path" | "query">>(
-    queryKey: QueryKey<Options>,
-    page: K,
-) => {
-    const params = queryKey[0];
-    if (page.body) {
-        params.body = {
-            ...(queryKey[0].body as any),
-            ...(page.body as any),
-        };
-    }
-    if (page.headers) {
-        params.headers = {
-            ...queryKey[0].headers,
-            ...page.headers,
-        };
-    }
-    if (page.path) {
-        params.path = {
-            ...(queryKey[0].path as any),
-            ...(page.path as any),
-        };
-    }
-    if (page.query) {
-        params.query = {
-            ...(queryKey[0].query as any),
-            ...(page.query as any),
-        };
-    }
-    return params as unknown as typeof page;
 };
 
 export const resultApiGetResultInfiniteQueryKey = (

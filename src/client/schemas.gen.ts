@@ -46,6 +46,25 @@ export const ArchitectureSchemaSchema = {
     type: "object",
 } as const;
 
+export const ArchitectureQuerySchemaSchema = {
+    properties: {
+        page: {
+            default: 1,
+            exclusiveMinimum: 0,
+            title: "Page",
+            type: "integer",
+        },
+        page_size: {
+            default: 50,
+            exclusiveMinimum: 0,
+            title: "Page Size",
+            type: "integer",
+        },
+    },
+    title: "ArchitectureQuerySchema",
+    type: "object",
+} as const;
+
 export const ArchitectureAggregationSchemaSchema = {
     properties: {
         count: {
@@ -81,8 +100,19 @@ export const ArchitectureResponseSchemaSchema = {
             ],
             title: "Architectures",
         },
+        page_count: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Page Count",
+        },
     },
-    required: ["status", "architectures"],
+    required: ["status", "architectures", "page_count"],
     title: "ArchitectureResponseSchema",
     type: "object",
 } as const;
@@ -1118,7 +1148,6 @@ export const DatabaseResponseSchemaSchema = {
             type: "string",
         },
         release_date: {
-            default: "2025-04-11",
             format: "date",
             title: "Release Date",
             type: "string",

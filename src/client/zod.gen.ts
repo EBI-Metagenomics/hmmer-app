@@ -11,6 +11,11 @@ export const zArchitectureSchema = z.object({
     accessions: z.string(),
 });
 
+export const zArchitectureQuerySchema = z.object({
+    page: z.number().optional().default(1),
+    page_size: z.number().optional().default(50),
+});
+
 export const zArchitectureAggregationSchema = z.object({
     count: z.number(),
     architecture: zArchitectureSchema,
@@ -19,6 +24,7 @@ export const zArchitectureAggregationSchema = z.object({
 export const zArchitectureResponseSchema = z.object({
     status: z.string(),
     architectures: z.union([z.array(zArchitectureAggregationSchema), z.null()]),
+    page_count: z.union([z.number(), z.null()]),
 });
 
 export const zAnnotation = z.object({
@@ -225,7 +231,7 @@ export const zDatabaseResponseSchema = z.object({
     type: z.string().max(16).optional().default("seq"),
     name: z.string().max(32),
     version: z.string().max(32),
-    release_date: z.string().date().optional().default("2025-04-11"),
+    release_date: z.string().date().optional(),
 });
 
 export const zJobDetailsResponseSchema = z.object({

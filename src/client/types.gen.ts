@@ -9,6 +9,11 @@ export type ArchitectureSchema = {
     accessions: string;
 };
 
+export type ArchitectureQuerySchema = {
+    page?: number;
+    page_size?: number;
+};
+
 export type ArchitectureAggregationSchema = {
     count: number;
     architecture: ArchitectureSchema;
@@ -17,6 +22,7 @@ export type ArchitectureAggregationSchema = {
 export type ArchitectureResponseSchema = {
     status: string;
     architectures: Array<ArchitectureAggregationSchema> | null;
+    page_count: number | null;
 };
 
 export type Annotation = {
@@ -353,7 +359,10 @@ export type ArchitectureApiGetDomainArchitecturesData = {
     path: {
         id: string;
     };
-    query?: never;
+    query?: {
+        page?: number;
+        page_size?: number;
+    };
     url: "/api/v1/architecture/{id}";
 };
 
