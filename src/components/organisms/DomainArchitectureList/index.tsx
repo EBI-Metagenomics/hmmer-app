@@ -174,7 +174,7 @@ export const DomainArchitectureList: React.FC<DomainArchitectureListProps> = ({ 
                                             <td colSpan={row.getVisibleCells().length} className="domain-cell">
                                                 <DomainGraphicsList
                                                     id={id}
-                                                    architectureName={row.original.architecture.names}
+                                                    architectureAccessions={row.original.architecture.accessions}
                                                 />
                                             </td>
                                         </tr>
@@ -321,12 +321,12 @@ const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName,
 
 interface DomainGraphicsListProps {
     id: string;
-    architectureName: string;
+    architectureAccessions: string;
 }
 
-const DomainGraphicsList: React.FC<DomainGraphicsListProps> = ({ id, architectureName }) => {
+const DomainGraphicsList: React.FC<DomainGraphicsListProps> = ({ id, architectureAccessions }) => {
     const { data, status } = useQuery({
-        ...architectureApiGetAllArchitecturesOptions({ path: { id: id!, name: architectureName } }),
+        ...architectureApiGetAllArchitecturesOptions({ path: { id: id!, accessions: architectureAccessions } }),
         refetchInterval(query) {
             if (query.state.data?.status === "SUCCESS") return false;
             if (query.state.data?.status === "FAILURE") return false;

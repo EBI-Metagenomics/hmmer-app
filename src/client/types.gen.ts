@@ -21,8 +21,8 @@ export type ArchitectureAggregationSchema = {
 
 export type ArchitectureResponseSchema = {
     status: string;
-    architectures: Array<ArchitectureAggregationSchema> | null;
-    page_count: number | null;
+    architectures?: Array<ArchitectureAggregationSchema> | null;
+    page_count?: number | null;
 };
 
 export type Annotation = {
@@ -399,10 +399,10 @@ export type ArchitectureApiGetAllArchitecturesData = {
     body?: never;
     path: {
         id: string;
-        name: string;
+        accessions: string;
     };
     query?: never;
-    url: "/api/v1/architecture/{id}/{name}";
+    url: "/api/v1/architecture/{id}/{accessions}";
 };
 
 export type ArchitectureApiGetAllArchitecturesResponses = {

@@ -23,8 +23,8 @@ export const zArchitectureAggregationSchema = z.object({
 
 export const zArchitectureResponseSchema = z.object({
     status: z.string(),
-    architectures: z.union([z.array(zArchitectureAggregationSchema), z.null()]),
-    page_count: z.union([z.number(), z.null()]),
+    architectures: z.union([z.array(zArchitectureAggregationSchema), z.null()]).optional(),
+    page_count: z.union([z.number(), z.null()]).optional(),
 });
 
 export const zAnnotation = z.object({

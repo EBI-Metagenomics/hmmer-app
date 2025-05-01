@@ -85,7 +85,7 @@ export const architectureApiGetAllArchitectures = <ThrowOnError extends boolean 
 ) => {
     return (options?.client ?? client).get<ArchitectureApiGetAllArchitecturesResponse, unknown, ThrowOnError>({
         ...options,
-        url: "/api/v1/architecture/{id}/{name}",
+        url: "/api/v1/architecture/{id}/{accessions}",
     });
 };
 

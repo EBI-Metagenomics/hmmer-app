@@ -112,7 +112,7 @@ export const ArchitectureResponseSchemaSchema = {
             title: "Page Count",
         },
     },
-    required: ["status", "architectures", "page_count"],
+    required: ["status"],
     title: "ArchitectureResponseSchema",
     type: "object",
 } as const;
