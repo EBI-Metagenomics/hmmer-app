@@ -34,7 +34,7 @@ export const ArchitectureSchemaSchema = {
         },
         graphics: {
             title: "Graphics",
-            type: "string",
+            type: "object",
         },
         accessions: {
             title: "Accessions",
@@ -968,6 +968,28 @@ export const P7HitSchema = {
         evalue: {
             title: "Evalue",
             type: "number",
+        },
+        architecture_md5: {
+            anyOf: [
+                {
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Architecture Md5",
+        },
+        architecture_score: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Architecture Score",
         },
         metadata: {
             anyOf: [
