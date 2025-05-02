@@ -35,8 +35,8 @@ export const AlignmentView: React.FC<AlignmentViewProps> = ({ id, index }) => {
 
     return (
         <div className="vf-stack vf-stack--200">
-            {_.map(data?.domains ?? [], (domain) => (
-                <AlignmentTable domain={domain} />
+            {_.map(data?.domains ?? [], (domain, index) => (
+                <AlignmentTable key={`${id}-${index}`} domain={domain} />
             ))}
         </div>
     );
@@ -170,7 +170,7 @@ export const AlignmentTable: React.FC<AlignmentTableProps> = ({ domain }) => {
                             </tr>
                             <tr>
                                 <td className="vf-table__cell" colSpan={999}>
-                                    <Alignment alignment={row.original.alignment_display} algorithm="phmmer" />
+                                    <Alignment alignment={row.original.alignment_display} algorithm="phmmer" included={domain.is_included}/>
                                 </td>
                             </tr>
                         </Fragment>

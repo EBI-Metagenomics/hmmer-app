@@ -281,7 +281,7 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                 : stats?.database === "pdb"
                   ? _.reject(columns, ["id", "structures"])
                   : columns,
-        getRowCanExpand: (row) => row.original.nincluded > 0,
+        getRowCanExpand: (row) => row.original.nreported > 0,
         getCoreRowModel: getCoreRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
         getRowId: (row) => (row.metadata?.accession as string) ?? "-1",
