@@ -78,6 +78,7 @@ export const zRegion = z.object({
 export const zArchitectureListResponseSchema = z.object({
     status: z.string(),
     architectures: z.union([z.array(zArchitectureSchema), z.null()]),
+    page_count: z.union([z.number(), z.null()]).optional(),
 });
 
 export const zResultQuerySchema = z.object({

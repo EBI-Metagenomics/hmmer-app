@@ -325,8 +325,15 @@ interface DomainGraphicsListProps {
 }
 
 const DomainGraphicsList: React.FC<DomainGraphicsListProps> = ({ id, architectureAccessions }) => {
+    const [page, setPage] = useState<number>(1);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const topRef = useRef<HTMLDivElement>(null);
+
     const { data, status } = useQuery({
-        ...architectureApiGetAllArchitecturesOptions({ path: { id: id!, accessions: architectureAccessions } }),
+        ...architectureApiGetAllArchitecturesOptions({
+            path: { id: id!, accessions: architectureAccessions },
+            query: { page, page_size: 30 },
+        }),
         refetchInterval(query) {
             if (query.state.data?.status === "SUCCESS") return false;
             if (query.state.data?.status === "FAILURE") return false;
@@ -335,6 +342,12 @@ const DomainGraphicsList: React.FC<DomainGraphicsListProps> = ({ id, architectur
         },
         refetchIntervalInBackground: true,
     });
+
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollIntoView({ behavior: "smooth"})
+        }
+    }, [page]);
 
     if (status === "pending" || data?.status !== "SUCCESS")
         return (
@@ -347,10 +360,17 @@ const DomainGraphicsList: React.FC<DomainGraphicsListProps> = ({ id, architectur
         );
 
     return (
-        <div className="vf-stack vf-stack--200">
-            {_.map(data.architectures, (architecture, index) => (
-                <DomainGraphics key={index} architecture={architecture} />
-            ))}
+        <div ref={containerRef} className="vf-stack vf-stack--200" style={{scrollMarginTop: 140}}>
+            {_.map(data.architectures, (architecture, index) =>
+                index === 0 ? (
+                    <div ref={topRef}>
+                        <DomainGraphics key={index} architecture={architecture} />
+                    </div>
+                ) : (
+                    <DomainGraphics key={index} architecture={architecture} />
+                ),
+            )}
+            <Pagination currentPage={page} pageCount={data?.page_count ?? 1} onPageChange={(page) => setPage(page)} />
         </div>
     );
 };

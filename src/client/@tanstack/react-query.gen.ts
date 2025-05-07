@@ -14,6 +14,7 @@ import type {
     ArchitectureApiGetDomainArchitecturesResponse,
     ArchitectureApiGetAnnotationsData,
     ArchitectureApiGetAllArchitecturesData,
+    ArchitectureApiGetAllArchitecturesResponse,
     ResultApiGetResultData,
     ResultApiGetResultResponse,
     ResultApiGetDomainsData,
@@ -244,6 +245,52 @@ export const architectureApiGetAllArchitecturesOptions = (options: Options<Archi
         },
         queryKey: architectureApiGetAllArchitecturesQueryKey(options),
     });
+};
+
+export const architectureApiGetAllArchitecturesInfiniteQueryKey = (
+    options: Options<ArchitectureApiGetAllArchitecturesData>,
+): QueryKey<Options<ArchitectureApiGetAllArchitecturesData>> => [
+    createQueryKey("architectureApiGetAllArchitectures", options, true),
+];
+
+export const architectureApiGetAllArchitecturesInfiniteOptions = (
+    options: Options<ArchitectureApiGetAllArchitecturesData>,
+) => {
+    return infiniteQueryOptions<
+        ArchitectureApiGetAllArchitecturesResponse,
+        DefaultError,
+        InfiniteData<ArchitectureApiGetAllArchitecturesResponse>,
+        QueryKey<Options<ArchitectureApiGetAllArchitecturesData>>,
+        | number
+        | Pick<QueryKey<Options<ArchitectureApiGetAllArchitecturesData>>[0], "body" | "headers" | "path" | "query">
+    >(
+        // @ts-ignore
+        {
+            queryFn: async ({ pageParam, queryKey, signal }) => {
+                // @ts-ignore
+                const page: Pick<
+                    QueryKey<Options<ArchitectureApiGetAllArchitecturesData>>[0],
+                    "body" | "headers" | "path" | "query"
+                > =
+                    typeof pageParam === "object"
+                        ? pageParam
+                        : {
+                              query: {
+                                  page: pageParam,
+                              },
+                          };
+                const params = createInfiniteParams(queryKey, page);
+                const { data } = await architectureApiGetAllArchitectures({
+                    ...options,
+                    ...params,
+                    signal,
+                    throwOnError: true,
+                });
+                return data;
+            },
+            queryKey: architectureApiGetAllArchitecturesInfiniteQueryKey(options),
+        },
+    );
 };
 
 export const resultApiGetResultQueryKey = (options: Options<ResultApiGetResultData>) => [

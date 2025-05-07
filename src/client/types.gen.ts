@@ -59,6 +59,7 @@ export type Region = {
 export type ArchitectureListResponseSchema = {
     status: string;
     architectures: Array<ArchitectureSchema> | null;
+    page_count?: number | null;
 };
 
 export type ResultQuerySchema = {
@@ -401,7 +402,10 @@ export type ArchitectureApiGetAllArchitecturesData = {
         id: string;
         accessions: string;
     };
-    query?: never;
+    query?: {
+        page?: number;
+        page_size?: number;
+    };
     url: "/api/v1/architecture/{id}/{accessions}";
 };
 

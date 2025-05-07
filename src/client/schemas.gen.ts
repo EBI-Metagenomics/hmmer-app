@@ -262,6 +262,17 @@ export const ArchitectureListResponseSchemaSchema = {
             ],
             title: "Architectures",
         },
+        page_count: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Page Count",
+        },
     },
     required: ["status", "architectures"],
     title: "ArchitectureListResponseSchema",
