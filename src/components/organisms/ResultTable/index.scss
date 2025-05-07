@@ -46,3 +46,24 @@
     right: 0;
     bottom: 0;
 }
+
+.first-below-threshold {
+    border-top: 4px solid red; 
+}
+
+.insignificant {
+    background-color: #fcffea;
+}
+
+.insignificant.vf-table__row:nth-of-type(even){
+    background-color: #eff2df;
+}
+
+.significant-no-hits {
+    background-color: #ffefef;
+}
+
+.significant-no-hits.vf-table__row:nth-of-type(even) {
+    background-color: #f2e4e4;
+}
+

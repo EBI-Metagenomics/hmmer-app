@@ -356,9 +356,15 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                 </p>
             </div>
         );
-    
+
     if (!data) {
-        return <NotFound title="Results not found" lede="We’re sorry - we can’t find the results you requested." message="It may have been removed or be temporarily unavailable."/>
+        return (
+            <NotFound
+                title="Results not found"
+                lede="We’re sorry - we can’t find the results you requested."
+                message="It may have been removed or be temporarily unavailable."
+            />
+        );
     }
 
     return (
@@ -369,7 +375,7 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                 {algo !== "hmmscan" && <ResultFilter />}
                 <div className="vf-stack vf-stack--200">
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <SearchDetails id={id}/>
+                        <SearchDetails id={id} />
                         <Customization
                             open={customsationOpen}
                             onClick={() => setCustomsationOpen(!customsationOpen)}
@@ -413,10 +419,18 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                             </thead>
                             <tbody className="vf-table__body">
                                 {table.getRowModel().rows.map((row, index) => {
+                                    const isInsignificant = !row.original.is_included;
+                                    const hasPreviousRow = row.index > 0;
+                                    const isFirstBelowThreshold =
+                                        isInsignificant &&
+                                        hasPreviousRow &&
+                                        table.getRowModel().rows[row.index - 1].original.is_included;
+                                    const significantNoHits = row.original.is_included && row.original.nincluded === 0;
+
                                     return (
                                         <Fragment key={row.original.index}>
                                             <tr
-                                                className="vf-table__row"
+                                                className={`vf-table__row ${isFirstBelowThreshold ? "first-below-threshold" : ""} ${isInsignificant ? "insignificant" : ""} ${significantNoHits ? "significant-no-hits" : ""}`}
                                                 ref={(element) => (rowsRef.current[index] = element)}
                                             >
                                                 {/* first row is a normal row */}
