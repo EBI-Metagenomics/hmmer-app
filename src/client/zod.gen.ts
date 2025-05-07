@@ -7,7 +7,7 @@ export const zArchitectureSchema = z.object({
     sequence_external_link: z.union([z.string(), z.null()]).optional(),
     names: z.string(),
     score: z.number(),
-    graphics: z.object({}),
+    graphics: z.string(),
     accessions: z.string(),
 });
 
@@ -202,8 +202,6 @@ export const zP7Hit = z.object({
     acc: z.union([z.string(), z.null()]),
     desc: z.union([z.string(), z.null()]),
     evalue: z.number().optional(),
-    architecture_md5: z.union([z.string(), z.null()]).optional(),
-    architecture_score: z.union([z.number(), z.null()]).optional(),
     metadata: z.union([z.object({}), z.null()]).optional(),
     domains: z.union([z.array(zP7Domain), z.null()]),
 });

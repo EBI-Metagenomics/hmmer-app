@@ -5,9 +5,7 @@ export type ArchitectureSchema = {
     sequence_external_link?: string | null;
     names: string;
     score: number;
-    graphics: {
-        [key: string]: unknown;
-    };
+    graphics: string;
     accessions: string;
 };
 
@@ -185,8 +183,6 @@ export type P7Hit = {
     acc: string | null;
     desc: string | null;
     evalue?: number;
-    architecture_md5?: string | null;
-    architecture_score?: number | null;
     metadata?: {
         [key: string]: unknown;
     } | null;

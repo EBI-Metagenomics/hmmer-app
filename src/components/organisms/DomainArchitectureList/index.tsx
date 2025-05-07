@@ -200,6 +200,28 @@ export const DomainArchitectureList: React.FC<DomainArchitectureListProps> = ({ 
     );
 };
 
+const parseGraphics = (graphicsString: string) => {
+    try {
+        return JSON.parse(graphicsString);
+    } catch (e1) {
+        try {
+            let processedString = graphicsString;
+
+            if (processedString.startsWith('"') && processedString.endsWith('"')) {
+                processedString = processedString.substring(1, processedString.length - 1);
+            }
+
+            // Replace each double quote with a single quote
+            processedString = processedString.replace(/""/g, '"');
+
+            // Parse the cleaned string
+            return JSON.parse(processedString);
+        } catch (e2) {
+            return null;
+        }
+    }
+};
+
 interface DomainGraphicsProps {
     architecture: ArchitectureSchema;
     showName?: boolean;
@@ -210,15 +232,16 @@ const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName,
     const graphicsContainerRef = useRef<HTMLDivElement>(null);
     const graphicsRef = useRef<HTMLDivElement>(null);
     const [shouldNudge, setShouldNudge] = useState<boolean>(false);
+    const graphics = parseGraphics(architecture.graphics);
 
     useEffect(() => {
         const graphicsElement = new DomainGraphic({
-            data: architecture.graphics,
+            data: graphics,
             parent: graphicsRef.current,
         });
 
         return graphicsElement.delete;
-    }, [architecture]);
+    }, [graphics]);
 
     useEffect(() => {
         if (graphicsContainerRef.current) {
@@ -289,7 +312,7 @@ const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName,
             >
                 <div ref={graphicsRef} />
                 <div>
-                    <span className="vf-text-body vf-text-body--5">{(architecture.graphics.length as number)}</span>
+                    <span className="vf-text-body vf-text-body--5">{graphics.length}</span>
                 </div>
             </div>
         </div>
