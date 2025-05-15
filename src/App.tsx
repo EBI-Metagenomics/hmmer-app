@@ -46,7 +46,7 @@ function App() {
         <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
             <CustomizationProvider>
                 <StatsProvider>
-                    <div className="vf-body vf-stack vf-stack--200">
+                    <div className="vf-body vf-stack vf-stack--200" style={{minHeight: "80vh"}}>
                         <BrowserRouter basename={import.meta.env.BASE_URL}>
                             <Hero />
 
