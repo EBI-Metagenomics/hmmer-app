@@ -19,7 +19,6 @@ import NotFoundPage from "./components/pages/404";
 
 import { CustomizationProvider, StatsProvider } from "./context";
 
-import "@visual-framework/ebi-header-footer/ebi-header-footer--header.precompiled.js";
 import "./App.scss";
 
 const queryClient = new QueryClient({
