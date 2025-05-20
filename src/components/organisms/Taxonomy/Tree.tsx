@@ -19,7 +19,7 @@ export const TaxonomyTree: React.FC<TaxonomyTreeProps> = ({ tree, onFocusChange 
             // @ts-ignore
             visualization.data = tree;
             // @ts-ignore
-            visualization.fisheye = true;
+            visualization._visualisation.fisheye = true;
         }
     }, [tree]);
 
