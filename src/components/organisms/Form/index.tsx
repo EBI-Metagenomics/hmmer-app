@@ -32,6 +32,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
         () => ({
             ..._.mapValues(SearchRequestSchemaSchema.properties, "default"),
             input: "",
+            database: algo === "hmmscan" ? "pfam" : "refprot",
             threshold: algo === "hmmscan" ? "cut_ga" : "evalue",
         }),
         [algo],
