@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { useEffect, useRef } from "react";
 
 import { TaxonomyTree as TaxonomyTreeType  } from "@/client";
@@ -17,6 +18,8 @@ export const TaxonomyTree: React.FC<TaxonomyTreeProps> = ({ tree, onFocusChange 
         if (visualization) {
             // @ts-ignore
             visualization.data = tree;
+            // @ts-ignore
+            visualization.fisheye = true;
         }
     }, [tree]);
 
@@ -34,7 +37,7 @@ export const TaxonomyTree: React.FC<TaxonomyTreeProps> = ({ tree, onFocusChange 
                 <taxonomy-visualisation
                     ref={visualizationRef}
                     focus-id="focus-root"
-                    initial-max-nodes="4"
+                    initial-max-nodes="6"
                 />
             </div>
             <div id="focus-root" style={{ height: "5rem" }} />
