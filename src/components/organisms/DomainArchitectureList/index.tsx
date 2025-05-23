@@ -289,7 +289,7 @@ const DomainGraphics: React.FC<DomainGraphicsProps> = ({ architecture, showName,
             >
                 <div ref={graphicsRef} />
                 <div>
-                    <span className="vf-text-body vf-text-body--5">{architecture.graphics.length}</span>
+                    <span className="vf-text-body vf-text-body--5">{architecture.graphics?.length ?? ""}</span>
                 </div>
             </div>
         </div>
