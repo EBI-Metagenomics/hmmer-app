@@ -2,45 +2,37 @@ import _ from "lodash";
 import { useEffect, useRef } from "react";
 
 import { TaxonomyTree as TaxonomyTreeType  } from "@/client";
-import "taxonomy-visualisation/dist/taxonomy-visualisation-ce.js";
-
+// import "taxonomy-visualisation/dist/taxonomy-visualisation-ce.js";
+// @ts-ignore
+import TaxonomyVisualisation from 'taxonomy-visualisation';
 interface TaxonomyTreeProps {
     tree: TaxonomyTreeType,
     onFocusChange: (e: FocusEvent) => void,
 }
 
 export const TaxonomyTree: React.FC<TaxonomyTreeProps> = ({ tree, onFocusChange }) => {
-    const visualizationRef = useRef<HTMLElement>(null);
+    const treeRef = useRef<SVGSVGElement>(null);
+    const focusRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const visualization = visualizationRef.current;
+        if (tree) {
+            const visualization = new TaxonomyVisualisation(tree, {
+                tree: treeRef.current,
+                focus: focusRef.current,
+                fisheye: true,
+            })
 
-        if (visualization) {
             // @ts-ignore
-            visualization.data = tree;
+            visualization.addEventListener("focus", onFocusChange);
             // @ts-ignore
-            visualization._visualisation.fisheye = true;
+            return () => visualization.removeEventListener("focus", onFocusChange);
         }
     }, [tree]);
 
-    useEffect(() => {
-        // @ts-ignore
-        visualizationRef.current?._visualisation.addEventListener("focus", onFocusChange);
-        // @ts-ignore
-        return () => visualizationRef.current?._visualisation.removeEventListener("focus", onFocusChange);
-    }, []);
-
     return (
         <div>
-            <div style={{ height: "20rem" }}>
-                {/* @ts-ignore */}
-                <taxonomy-visualisation
-                    ref={visualizationRef}
-                    focus-id="focus-root"
-                    initial-max-nodes="6"
-                />
-            </div>
-            <div id="focus-root" style={{ height: "5rem" }} />
+            <svg ref={treeRef} style={{ height: "20rem", width: "100%" }} />
+            <div ref={focusRef} style={{ height: "5rem" }} />
         </div>
     );
 };

@@ -169,6 +169,11 @@ export const DistributionGraph: React.FC<DistributionGraphProps> = ({ id }) => {
                         // Show tooltip
                         d3.select("#" + tooltipId).style("display", "block");
                         d3.select(`#target-${i}`).style("opacity", 0.1);
+
+                        const [mouseX, mouseY] = d3.mouse(d3.select("body").node());
+                        d3.select("#" + tooltipId)
+                            .style("left", (mouseX + 10) + "px")
+                            .style("top", (mouseY + 10) + "px");
                     })
                     .on("mouseout", () => {
                         // Hide tooltip
