@@ -605,16 +605,26 @@ const Customization: React.FC<CustomizationProps> = ({
                             .value()}
                     </fieldset>
                 </div>
-                <div className="vf-u-margin__top--800" style={{ display: "flex", justifyContent: "flex-end" }}>
+                <div className="vf-u-margin__top--800" style={{ display: "flex", justifyContent: "space-between" }}>
                     <button
                         onClick={(e) => {
                             e.preventDefault();
                             onDefaultClick();
                         }}
-                        className="vf-button vf-button--sm vf-button--primary"
+                        className="vf-button vf-button--sm vf-button--secondary"
                         type="button"
                     >
                         Restore Defaults
+                    </button>
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            onClick();
+                        }}
+                        className="vf-button vf-button--sm vf-button--primary"
+                        type="button"
+                    >
+                        Close
                     </button>
                 </div>
             </ReactModal>
