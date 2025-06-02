@@ -22,6 +22,7 @@ import type {
     SearchApiGetJobDetailsData,
     SearchApiGetJobQueryData,
     SearchApiSearchData,
+    SearchApiSearchError,
     SearchApiSearchResponse,
     SearchApiGetJobsData,
     TaxonomyApiGetData,
@@ -446,7 +447,11 @@ export const searchApiSearchOptions = (options: Options<SearchApiSearchData>) =>
 };
 
 export const searchApiSearchMutation = (options?: Partial<Options<SearchApiSearchData>>) => {
-    const mutationOptions: UseMutationOptions<SearchApiSearchResponse, DefaultError, Options<SearchApiSearchData>> = {
+    const mutationOptions: UseMutationOptions<
+        SearchApiSearchResponse,
+        SearchApiSearchError,
+        Options<SearchApiSearchData>
+    > = {
         mutationFn: async (localOptions) => {
             const { data } = await searchApiSearch({
                 ...options,

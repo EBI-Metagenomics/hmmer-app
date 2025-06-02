@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
-import { ToastContainer } from "react-toastify";
 import ReactModal from "react-modal";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -69,7 +68,6 @@ function App() {
                         </BrowserRouter>
                     </div>
                     <EBIFooter />
-                    <ToastContainer position="bottom-right" />
                     <ReactQueryDevtools initialIsOpen={false} />
                 </StatsProvider>
             </CustomizationProvider>

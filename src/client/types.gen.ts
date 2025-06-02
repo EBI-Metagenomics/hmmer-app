@@ -5,7 +5,9 @@ export type ArchitectureSchema = {
     sequence_external_link?: string | null;
     names: string;
     score: number;
-    graphics: string;
+    graphics: {
+        [key: string]: unknown;
+    };
     accessions: string;
 };
 
@@ -216,6 +218,7 @@ export type DatabaseResponseSchema = {
     name: string;
     version: string;
     release_date?: Date;
+    order?: number;
 };
 
 export type JobDetailsResponseSchema = {
@@ -264,6 +267,16 @@ export const AlgoChoices = {
 
 export type SearchResponseSchema = {
     id: string;
+};
+
+export type ValidationErrorDetailSchema = {
+    type: string;
+    loc: Array<string>;
+    msg: string;
+};
+
+export type ValidationErrorSchema = {
+    detail: Array<ValidationErrorDetailSchema>;
 };
 
 export type SearchRequestSchema = {
@@ -521,6 +534,15 @@ export type SearchApiSearchData = {
     query?: never;
     url: "/api/v1/search/{algo}";
 };
+
+export type SearchApiSearchErrors = {
+    /**
+     * Unprocessable Content
+     */
+    422: ValidationErrorSchema;
+};
+
+export type SearchApiSearchError = SearchApiSearchErrors[keyof SearchApiSearchErrors];
 
 export type SearchApiSearchResponses = {
     /**

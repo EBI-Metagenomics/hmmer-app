@@ -10,7 +10,7 @@ interface DatabaseInputProps {
 }
 
 export const DatabaseInput: React.FC<DatabaseInputProps> = ({ type }) => {
-    const { register, setValue } = useFormContext();
+    const { register, setValue, formState: { errors } } = useFormContext();
 
     const { data: databases } = useQuery({
         ...searchApiGetDatabasesOptions(),
@@ -40,6 +40,7 @@ export const DatabaseInput: React.FC<DatabaseInputProps> = ({ type }) => {
                     ))
                     .value()}
             </select>
+            {errors.database && <p className="vf-form__helper vf-form__helper--error">{errors.database.message as string}</p>}
         </div>
     );
 };

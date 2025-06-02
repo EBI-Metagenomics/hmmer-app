@@ -34,7 +34,7 @@ export const ArchitectureSchemaSchema = {
         },
         graphics: {
             title: "Graphics",
-            type: "string",
+            type: "object",
         },
         accessions: {
             title: "Accessions",
@@ -1163,6 +1163,11 @@ export const DatabaseResponseSchemaSchema = {
             title: "Release Date",
             type: "string",
         },
+        order: {
+            default: -1,
+            title: "Order",
+            type: "integer",
+        },
     },
     required: ["name", "version"],
     title: "DatabaseResponseSchema",
@@ -1387,6 +1392,44 @@ export const SearchResponseSchemaSchema = {
     },
     required: ["id"],
     title: "SearchResponseSchema",
+    type: "object",
+} as const;
+
+export const ValidationErrorDetailSchemaSchema = {
+    properties: {
+        type: {
+            title: "Type",
+            type: "string",
+        },
+        loc: {
+            items: {
+                type: "string",
+            },
+            title: "Loc",
+            type: "array",
+        },
+        msg: {
+            title: "Msg",
+            type: "string",
+        },
+    },
+    required: ["type", "loc", "msg"],
+    title: "ValidationErrorDetailSchema",
+    type: "object",
+} as const;
+
+export const ValidationErrorSchemaSchema = {
+    properties: {
+        detail: {
+            items: {
+                $ref: "#/components/schemas/ValidationErrorDetailSchema",
+            },
+            title: "Detail",
+            type: "array",
+        },
+    },
+    required: ["detail"],
+    title: "ValidationErrorSchema",
     type: "object",
 } as const;
 

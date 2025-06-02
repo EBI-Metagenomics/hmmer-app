@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
 import { zSearchRequestSchema } from "@/client/zod.gen";
 
 import { SearchRequestSchemaSchema } from "@/client/schemas.gen";
@@ -18,7 +17,6 @@ import {
     FilterInput,
     DatabaseInput,
     Input,
-    Toast,
 } from "@components/molecules";
 
 interface FormProps {
@@ -44,7 +42,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
         mode: "onChange",
     });
 
-    const { resetField, formState, getFieldState } = methods;
+    const { resetField, formState, getFieldState, setError } = methods;
     const seqFieldState = getFieldState("input", formState);
     const submitDisabled = seqFieldState.invalid || !seqFieldState.isDirty || formState.isSubmitting;
     const resetDisabled = formState.isSubmitting || !seqFieldState.isDirty;
@@ -56,10 +54,11 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
 
     useEffect(() => {
         if (error) {
-            // @ts-ignore
-            _.each(error.detail, (e) => {
-                toast.error(e.msg);
-            });
+            _.each(error.detail, ({loc, type, msg}) => {
+                const errorSource = _.last(loc);
+                // @ts-ignore
+                setError(errorSource, {type: type, message: msg});
+            })
         }
     }, [error]);
 

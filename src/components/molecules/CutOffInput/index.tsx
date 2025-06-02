@@ -6,7 +6,7 @@ interface CutOffInputProps {
 }
 
 export const CutOffInput: React.FC<CutOffInputProps> = ({ algo }) => {
-    const { register, watch, setValue } = useFormContext();
+    const { register, watch, setValue, formState: { errors } } = useFormContext();
     const threshold = watch("threshold");
 
     useEffect(() => {
@@ -70,12 +70,13 @@ export const CutOffInput: React.FC<CutOffInputProps> = ({ algo }) => {
             )}
             {threshold === "evalue" && <EvalueInput />}
             {threshold === "bitscore" && <BitscoreInput />}
+            {errors.threshold && <p className="vf-form__helper vf-form__helper--error">{errors.threshold.message as string}</p>}
         </div>
     );
 };
 
 const EvalueInput = () => {
-    const { register } = useFormContext();
+    const { register, formState: { errors } } = useFormContext();
 
     return (
         <div className="vf-stack vf-stack--200">
@@ -95,6 +96,7 @@ const EvalueInput = () => {
                             step="any"
                             id="incE"
                         />
+                        {errors.incE && <p className="vf-form__helper vf-form__helper--error">{errors.incE.message as string}</p>}
                     </div>
                     <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="incdomE" className="vf-form__label">
@@ -107,6 +109,7 @@ const EvalueInput = () => {
                             step="any"
                             id="incdomE"
                         />
+                        {errors.incdomE && <p className="vf-form__helper vf-form__helper--error">{errors.incdomE.message as string}</p>}
                     </div>
                 </div>
             </div>
@@ -126,6 +129,7 @@ const EvalueInput = () => {
                             step="any"
                             id="E"
                         />
+                        {errors.E && <p className="vf-form__helper vf-form__helper--error">{errors.E.message as string}</p>}
                     </div>
                     <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="domE" className="vf-form__label">
@@ -138,6 +142,7 @@ const EvalueInput = () => {
                             step="any"
                             id="domE"
                         />
+                        {errors.domE && <p className="vf-form__helper vf-form__helper--error">{errors.domE.message as string}</p>}
                     </div>
                 </div>
             </div>
@@ -146,7 +151,7 @@ const EvalueInput = () => {
 };
 
 const BitscoreInput = () => {
-    const { register } = useFormContext();
+    const { register, formState: { errors } } = useFormContext();
     return (
         <div className="vf-stack vf-stack--200">
             <div className="vf-form__item vf-cluster vf-cluster--200">
@@ -165,6 +170,7 @@ const BitscoreInput = () => {
                             step="any"
                             id="incT"
                         />
+                        {errors.incT && <p className="vf-form__helper vf-form__helper--error">{errors.incT.message as string}</p>}
                     </div>
                     <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="incdomT" className="vf-form__label">
@@ -177,6 +183,7 @@ const BitscoreInput = () => {
                             step="any"
                             id="incdomT"
                         />
+                        {errors.incdomT && <p className="vf-form__helper vf-form__helper--error">{errors.incdomT.message as string}</p>}
                     </div>
                 </div>
             </div>
@@ -196,6 +203,7 @@ const BitscoreInput = () => {
                             step="any"
                             id="T"
                         />
+                        {errors.T && <p className="vf-form__helper vf-form__helper--error">{errors.T.message as string}</p>}
                     </div>
                     <div className="vf-form__item" style={{ flex: "25% 1 0" }}>
                         <label htmlFor="domT" className="vf-form__label">
@@ -208,6 +216,7 @@ const BitscoreInput = () => {
                             step="any"
                             id="domT"
                         />
+                        {errors.domT && <p className="vf-form__helper vf-form__helper--error">{errors.domT.message as string}</p>}
                     </div>
                 </div>
             </div>

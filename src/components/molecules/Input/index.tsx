@@ -51,7 +51,7 @@ export const Input: React.FC<InputProps> = ({ mode }) => {
         setValue,
         watch,
         resetField,
-        formState: { isSubmitted, isSubmitting },
+        formState: { isSubmitted, isSubmitting, errors },
     } = useFormContext();
 
     useEffect(() => {
@@ -94,6 +94,7 @@ export const Input: React.FC<InputProps> = ({ mode }) => {
     });
 
     return (
+        <>
         <div {...getRootProps({ className: "input-wrapper" })}>
             <textarea
                 rows={10}
@@ -173,5 +174,7 @@ export const Input: React.FC<InputProps> = ({ mode }) => {
 
             {file && !isSubmitting && <div className="filename-container">{file.name}</div>}
         </div>
+        {errors.input && <p className="vf-form__helper vf-form__helper--error">{errors.input.message as string}</p>}
+        </>
     );
 };

@@ -7,7 +7,7 @@ export const zArchitectureSchema = z.object({
     sequence_external_link: z.union([z.string(), z.null()]).optional(),
     names: z.string(),
     score: z.number(),
-    graphics: z.string(),
+    graphics: z.object({}),
     accessions: z.string(),
 });
 
@@ -233,6 +233,7 @@ export const zDatabaseResponseSchema = z.object({
     name: z.string().max(32),
     version: z.string().max(32),
     release_date: z.string().date().optional(),
+    order: z.number().optional().default(-1),
 });
 
 export const zJobDetailsResponseSchema = z.object({
@@ -269,6 +270,16 @@ export const zAlgoChoices = z.enum(["phmmer", "hmmsearch", "hmmscan", "jackhmmer
 
 export const zSearchResponseSchema = z.object({
     id: z.string(),
+});
+
+export const zValidationErrorDetailSchema = z.object({
+    type: z.string(),
+    loc: z.array(z.string()),
+    msg: z.string(),
+});
+
+export const zValidationErrorSchema = z.object({
+    detail: z.array(zValidationErrorDetailSchema),
 });
 
 export const zSearchRequestSchema = z.object({

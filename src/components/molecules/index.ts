@@ -9,5 +9,4 @@ export { Input } from "./Input";
 export { JobStatus } from "./JobStatus";
 export { Pagination } from "./Pagination";
 export { TaxonomyFilterInput } from "./TaxonomyFilterInput";
-export { Toast } from "./Toast";
 export { Typeahead } from "./Typeahead";

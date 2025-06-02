@@ -20,6 +20,7 @@ import type {
     SearchApiGetJobDetailsResponse,
     SearchApiGetJobQueryData,
     SearchApiSearchData,
+    SearchApiSearchError,
     SearchApiSearchResponse,
     SearchApiGetJobsData,
     SearchApiGetJobsResponse,
@@ -155,7 +156,7 @@ export const searchApiGetJobQuery = <ThrowOnError extends boolean = false>(
 export const searchApiSearch = <ThrowOnError extends boolean = false>(
     options: Options<SearchApiSearchData, ThrowOnError>,
 ) => {
-    return (options?.client ?? client).post<SearchApiSearchResponse, unknown, ThrowOnError>({
+    return (options?.client ?? client).post<SearchApiSearchResponse, SearchApiSearchError, ThrowOnError>({
         ...options,
         headers: {
             "Content-Type": "application/json",

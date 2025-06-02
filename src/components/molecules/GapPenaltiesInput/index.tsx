@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 
 export const GapPenaltiesInput: React.FC = () => {
-    const { register } = useFormContext();
+    const { register, formState: { errors } } = useFormContext();
 
     return (
         <div className="vf-stack vf-stack--200">
@@ -16,6 +16,7 @@ export const GapPenaltiesInput: React.FC = () => {
                     step="any"
                     id="popen"
                 />
+                {errors.popen && <p className="vf-form__helper vf-form__helper--error">{errors.popen.message as string}</p>}
             </div>
             <div className="vf-form__item">
                 <label htmlFor="pextend" className="vf-form__label">
@@ -28,6 +29,7 @@ export const GapPenaltiesInput: React.FC = () => {
                     step="any"
                     id="pextend"
                 />
+                {errors.pextend && <p className="vf-form__helper vf-form__helper--error">{errors.pextend.message as string}</p>}
             </div>
             <div className="vf-form__item">
                 <label className="vf-form__label" htmlFor="mx">
@@ -53,6 +55,7 @@ export const GapPenaltiesInput: React.FC = () => {
                         PAM250
                     </option>
                 </select>
+                {errors.mx && <p className="vf-form__helper vf-form__helper--error">{errors.mx.message as string}</p>}
             </div>
         </div>
     );
