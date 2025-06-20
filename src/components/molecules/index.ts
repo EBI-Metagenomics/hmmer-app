@@ -6,6 +6,7 @@ export { GapPenaltiesInput } from "./GapPenaltiesInput";
 export { Hero } from "./Hero";
 export { DatabaseInput } from "./DatabaseInput";
 export { Input } from "./Input";
+export { IterationsInput } from "./IterationsInput";
 export { JobStatus } from "./JobStatus";
 export { Pagination } from "./Pagination";
 export { TaxonomyFilterInput } from "./TaxonomyFilterInput";

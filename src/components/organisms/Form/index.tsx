@@ -16,6 +16,7 @@ import {
     GapPenaltiesInput,
     FilterInput,
     DatabaseInput,
+    IterationsInput,
     Input,
 } from "@components/molecules";
 
@@ -54,11 +55,11 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
 
     useEffect(() => {
         if (error) {
-            _.each(error.detail, ({loc, type, msg}) => {
+            _.each(error.detail, ({ loc, type, msg }) => {
                 const errorSource = _.last(loc);
                 // @ts-ignore
-                setError(errorSource, {type: type, message: msg});
-            })
+                setError(errorSource, { type: type, message: msg });
+            });
         }
     }, [error]);
 
@@ -72,6 +73,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                 {algo === "phmmer" && "protein sequence vs protein sequence database"}
                 {algo === "hmmscan" && "protein sequence vs profile-HMM database"}
                 {algo === "hmmsearch" && "protein alignment/profile-HMM vs protein sequence database"}
+                {algo === "jackhmmer" && "iterative search vs protein sequence database"}
             </h3>
             <FormProvider {...methods}>
                 <form
@@ -90,9 +92,17 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                     })}
                 >
                     <div className="vf-stack vf-stack--800">
-                        <MenuSection title={algo === "hmmsearch" ? "Alignment/HMM" : "Sequence"}>
+                        <MenuSection title={algo === "jackhmmer" ? "Sequence/Alignment/Hmm": algo === "hmmsearch" ? "Alignment/HMM" : "Sequence"}>
                             <div className="vf-stack vf-stack--200">
-                                <Input mode={algo === "hmmsearch" ? "hmm" : "sequence"} />
+                                <Input
+                                    mode={
+                                        algo === "jackhmmer"
+                                            ? ["alignment", "hmm", "sequence"]
+                                            : algo === "hmmsearch"
+                                              ? ["alignment", "hmm"]
+                                              : ["sequence"]
+                                    }
+                                />
                                 <div>
                                     <button
                                         className="vf-button vf-button--primary vf-button--sm"
@@ -128,12 +138,12 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                         </MenuSection>
                         {algo !== "hmmscan" && (
                             <MenuSection title="Sequence database">
-                                <DatabaseInput type="seq"/>
+                                <DatabaseInput type="seq" />
                             </MenuSection>
                         )}
                         {algo === "hmmscan" && (
                             <MenuSection title="HMM database">
-                                <DatabaseInput type="hmm"/>
+                                <DatabaseInput type="hmm" />
                             </MenuSection>
                         )}
                         <MenuSection title="Cut off">
@@ -147,6 +157,11 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                         <MenuSection title="Filter">
                             <FilterInput />
                         </MenuSection>
+                        {algo === "jackhmmer" && (
+                            <MenuSection title="Number of iterations">
+                                <IterationsInput />
+                            </MenuSection>
+                        )}
                         {/* <MenuSection title="Taxonomy filter">
               <TaxonomyFilterInput />
             </MenuSection> */}

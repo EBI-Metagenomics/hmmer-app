@@ -1,0 +1,21 @@
+.run-container {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    align-items: end;
+}
+
+.navigation-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.warning-text {
+    color: var(--vf-color--red);
+}
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}

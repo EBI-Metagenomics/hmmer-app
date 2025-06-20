@@ -4,6 +4,8 @@ export { DomainArchitectureList } from "./DomainArchitectureList";
 export { DownloadList } from "./DownloadList";
 export { DistributionGraph } from "./DistributionGraph";
 export { Form } from "./Form";
+export { JackhmmerNavigation } from "./JackhmmerNavigation";
+export { JackhmmerTable } from "./JackhmmerTable";
 export { ResultTable } from "./ResultTable";
 export { ResultFilter } from "./ResultFilter";
 export { SearchDetails } from "./SearchDetails";

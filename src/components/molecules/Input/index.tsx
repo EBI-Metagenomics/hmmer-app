@@ -37,7 +37,7 @@ O62275_CAEEL/594-924              TFVFIITD.DSITT.LHQRYKMIEKDTKMIVQDMKLSKALSV....
 //`;
 
 interface InputProps {
-    mode: "sequence" | "hmm";
+    mode: ("sequence" | "hmm" | "alignment")[];
 }
 
 export const Input: React.FC<InputProps> = ({ mode }) => {
@@ -95,86 +95,92 @@ export const Input: React.FC<InputProps> = ({ mode }) => {
 
     return (
         <>
-        <div {...getRootProps({ className: "input-wrapper" })}>
-            <textarea
-                rows={10}
-                className="vf-form__textarea vf-font-plex-mono"
-                {...register("input")}
-                readOnly={isLoading}
-            />
-            <input {...getInputProps()} />
+            <div {...getRootProps({ className: "input-wrapper" })}>
+                <textarea
+                    rows={10}
+                    className="vf-form__textarea vf-font-plex-mono"
+                    {...register("input")}
+                    readOnly={isLoading}
+                />
+                <input {...getInputProps()} />
 
-            {isDragActive && (
-                <div className="input-helper-text vf-text-body vf-text-body--3 disable-parent">
-                    <span>Drop the files here ...</span>
-                </div>
-            )}
+                {isDragActive && (
+                    <div className="input-helper-text vf-text-body vf-text-body--3 disable-parent">
+                        <span>Drop the files here ...</span>
+                    </div>
+                )}
 
-            {isLoading && (
-                <div
-                    className="input-helper-text vf-text-body vf-text-body--3 disable-parent"
-                    hidden={!isEmpty || isSubmitted}
-                >
-                    Processing {file?.name}... <ProgressIndicator width={"80%"} />
-                </div>
-            )}
-
-            {fileError && (
-                <div className="input-helper-text vf-text-body vf-text-body--3 disable-parent">
-                    <p className="vf-text--error">Error with file {file?.name}</p>
-                    <p className="vf-text--error">{fileError.message}</p>
-                    <a
-                        onClick={(e) => {
-                            e.preventDefault();
-                            resetInput();
-                        }}
-                        className="vf-link"
+                {isLoading && (
+                    <div
+                        className="input-helper-text vf-text-body vf-text-body--3 disable-parent"
+                        hidden={!isEmpty || isSubmitted}
                     >
-                        Start over
-                    </a>
-                </div>
-            )}
+                        Processing {file?.name}... <ProgressIndicator width={"80%"} />
+                    </div>
+                )}
 
-            {isEmpty && !isLoading && (
-                <div className="input-helper-text vf-text-body vf-text-body--3">
-                    <span>
-                        {" "}
-                        Paste in your {`${mode === "sequence" ? "sequence" : "alignment or HMM"}`}, use the{" "}
+                {fileError && (
+                    <div className="input-helper-text vf-text-body vf-text-body--3 disable-parent">
+                        <p className="vf-text--error">Error with file {file?.name}</p>
+                        <p className="vf-text--error">{fileError.message}</p>
                         <a
                             onClick={(e) => {
                                 e.preventDefault();
-                                setValue("input", mode === "sequence" ? EXAMPLE_SEQUENCE : EXAMPLE_ALIGNMENT, {
-                                    shouldDirty: true,
-                                });
+                                resetInput();
                             }}
                             className="vf-link"
                         >
-                            example
+                            Start over
                         </a>
-                        , drag a file over or{" "}
-                        <a
-                            onClick={(e) => {
-                                e.preventDefault();
-                                open();
-                            }}
-                            className="vf-link"
-                        >
-                            choose a file to upload
-                        </a>
-                    </span>
-                </div>
-            )}
+                    </div>
+                )}
 
-            {isSubmitting && (
-                <div className="input-helper-text disable-parent">
-                    <span>Submitting your search...</span>
-                    <ProgressIndicator width={"80%"} />
-                </div>
-            )}
+                {isEmpty && !isLoading && (
+                    <div className="input-helper-text vf-text-body vf-text-body--3">
+                        <span>
+                            {" "}
+                            Paste in your{" "}
+                            {`${mode.length > 1 ? _.join([_(mode).initial().join(", "), _.last(mode)], " or ") : mode[0]}`}
+                            , use the{" "}
+                            <a
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setValue(
+                                        "input",
+                                        _.includes(mode, "alignment") ? EXAMPLE_ALIGNMENT : EXAMPLE_SEQUENCE,
+                                        {
+                                            shouldDirty: true,
+                                        },
+                                    );
+                                }}
+                                className="vf-link"
+                            >
+                                example
+                            </a>
+                            , drag a file over or{" "}
+                            <a
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    open();
+                                }}
+                                className="vf-link"
+                            >
+                                choose a file to upload
+                            </a>
+                        </span>
+                    </div>
+                )}
 
-            {file && !isSubmitting && <div className="filename-container">{file.name}</div>}
-        </div>
-        {errors.input && <p className="vf-form__helper vf-form__helper--error">{errors.input.message as string}</p>}
+                {isSubmitting && (
+                    <div className="input-helper-text disable-parent">
+                        <span>Submitting your search...</span>
+                        <ProgressIndicator width={"80%"} />
+                    </div>
+                )}
+
+                {file && !isSubmitting && <div className="filename-container">{file.name}</div>}
+            </div>
+            {errors.input && <p className="vf-form__helper vf-form__helper--error">{errors.input.message as string}</p>}
         </>
     );
 };

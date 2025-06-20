@@ -27,7 +27,7 @@ import "./index.scss";
 
 declare module "@tanstack/table-core" {
     interface TableMeta<TData extends RowData> {
-        resultId: string;
+        resultId?: string;
     }
 }
 

@@ -1,6 +1,9 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import _ from "lodash";
-import { useSearchParams } from "react-router";
+import { useSearchParams, useNavigate } from "react-router";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { searchApiSearchMutation, searchApiGetJobDetailsOptions } from "@/client/@tanstack/react-query.gen";
+
 import ReactModal from "react-modal";
 import {
     createColumnHelper,
@@ -9,21 +12,50 @@ import {
     getExpandedRowModel,
     useReactTable,
     Row,
+    RowData,
     Table,
 } from "@tanstack/react-table";
 
 import { TreeToggleButton, HitPosition, Alignment, ProgressIndicator, NotFound } from "@components/atoms";
 import { Pagination } from "@components/molecules";
-import { Annotations, AlignmentView, ResultFilter, DistributionGraph, SearchDetails } from "@components/organisms";
-import { P7Hit } from "@/client/types.gen";
+import {
+    Annotations,
+    AlignmentView,
+    ResultFilter,
+    DistributionGraph,
+    SearchDetails,
+    JackhmmerNavigation,
+} from "@components/organisms";
+import { P7Hit, ResultResponseSchema } from "@/client/types.gen";
 import { useResult } from "@/hooks/useResult";
-import { useColumns, usePageSize, useStats, defaultColumns, defaultPageSize } from "@/context";
+import { useColumns, usePageSize, useStats, defaultColumns, defaultPageSize, useJackhmmer } from "@/context";
 import { pending, failed } from "@/utils/taskStates";
 import "./index.scss";
+import { jobConverged } from "@/utils/jackhmmer";
+
+declare module "@tanstack/table-core" {
+    interface TableMeta<TData extends RowData> {
+        excludeAll: boolean;
+        include?: number[];
+        exclude?: number[];
+    }
+}
+
+const isChecked = (
+    sequenceIndex: number,
+    aboveThreshold: boolean,
+    include: number[],
+    exclude: number[],
+    excludeAll: boolean,
+) => {
+    if (excludeAll || !aboveThreshold) return _.includes(include, sequenceIndex);
+
+    return !_.includes(exclude, sequenceIndex);
+};
 
 const columnHelper = createColumnHelper<P7Hit>();
 
-const columns = [
+const columns = (onHitChange: (index: number, aboveThreshold: boolean, isChecked: boolean) => void) => [
     {
         id: "expander",
         header: () => null,
@@ -124,6 +156,32 @@ const columns = [
         enableHiding: false,
         minSize: 150,
     }),
+    {
+        id: "rowCheck",
+        header: "",
+        maxSize: 10,
+        enableHiding: false,
+        cell: ({ row, table }: { row: Row<P7Hit>; table: Table<P7Hit> }) => (
+            <div className="vf-form__item vf-form__item--checkbox">
+                <input
+                    type="checkbox"
+                    checked={isChecked(
+                        row.original.seqidx,
+                        row.original.is_included ?? false,
+                        table.options.meta?.include ?? [],
+                        table.options.meta?.exclude ?? [],
+                        table.options.meta?.excludeAll ?? false,
+                    )}
+                    id={`rowCheck-${row.original.seqidx}`}
+                    className="vf-form__checkbox"
+                    onChange={(e) =>
+                        onHitChange(row.original.seqidx!, row.original.is_included ?? false, e.target.checked)
+                    }
+                />
+                <label htmlFor={`rowCheck-${row.original.seqidx}`} className="vf-form__label" />
+            </div>
+        ),
+    },
 ];
 
 const hmmscanColumns = [
@@ -250,10 +308,13 @@ interface ResultTableProps {
 }
 
 export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
+    const navigate = useNavigate();
     const [customsationOpen, setCustomsationOpen] = useState<boolean>(false);
+    const [sequenceSelection, setSequenceSelection] = useState<"above" | "none" | "some">("above");
     const [storePageSize, setStoredPageSize] = usePageSize();
     const [storedColumns, setStoredColumns] = useColumns();
     const [stats, setStats] = useStats();
+    const [changes, setChanges] = useJackhmmer();
 
     const [searchParams, setSearchParams] = useSearchParams({
         page: _.toString(1),
@@ -267,20 +328,97 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
     const taxonomyIds = searchParams.getAll("taxonomyIds").map(_.toInteger);
     const architecture = searchParams.get("architectures") || undefined;
 
-    const { data, isPending } = useResult(id!, page, pageSize, storedColumns.hitPositions, taxonomyIds, architecture);
+    const { data, isPending } = useResult(
+        id!,
+        page,
+        pageSize,
+        storedColumns.hitPositions,
+        taxonomyIds,
+        architecture,
+    ) as { data: ResultResponseSchema; isPending: boolean };
+
+    const { data: jobDetails } = useQuery({
+        ...searchApiGetJobDetailsOptions({ path: { id: id! } }),
+        refetchIntervalInBackground: true,
+    });
 
     const algo = data?.result?.stats.algo ?? "unknown";
 
     const defaultData = useMemo(() => [], []);
 
+    const { mutateAsync } = useMutation({
+        ...searchApiSearchMutation(),
+    });
+
+    const handleNextIteration = (id: string) => {
+        mutateAsync(
+            {
+                path: { algo: "jackhmmer" },
+                body: {
+                    input: id,
+                    include: changes?.include,
+                    exclude: changes?.exclude,
+                    exclude_all: changes.excludeAll,
+                    with_architecture: true,
+                    with_taxonomy: true,
+                },
+            },
+            {
+                onSuccess: (data) => {
+                    navigate(`/results/${data.id}`);
+                },
+            },
+        );
+    };
+
+    const handleJumpToHit = (index: number) => {
+        const page = _.floor(index / pageSize) + 1;
+        const row = (index % pageSize) + 1;
+
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.set("page", _.toString(page));
+        newSearchParams.set("pageSize", _.toString(pageSize));
+        newSearchParams.set("row", _.toString(row));
+
+        navigate({
+            pathname: `/results/${id}/score`,
+            search: newSearchParams.toString(),
+        });
+    };
+
+    const handleCheckChange = (index: number, aboveThreshold: boolean, isChecked: boolean) => {
+        let newChanges = changes;
+
+        if (changes.excludeAll || !aboveThreshold) {
+            if (isChecked) newChanges = { ...changes, include: [...changes.include, index] };
+            else newChanges = { ...changes, include: _.without(changes.include, index) };
+        } else {
+            if (isChecked) newChanges = { ...changes, exclude: _.without(changes.exclude, index) };
+            else newChanges = { ...changes, exclude: [...changes.exclude, index] };
+        }
+
+        setChanges(newChanges);
+
+        if (newChanges.excludeAll && newChanges.include.length === 0) setSequenceSelection("none");
+        if (!newChanges.excludeAll && newChanges.include.length === 0 && newChanges.exclude.length === 0)
+            setSequenceSelection("above");
+        if (newChanges.include.length !== 0 || newChanges.exclude.length !== 0) setSequenceSelection("some");
+    };
+
+    const getColumns = () => {
+        if (algo === "hmmscan") return hmmscanColumns;
+
+        let columnsToReturn = columns(handleCheckChange);
+
+        if (stats?.database === "pdb") columnsToReturn = _.reject(columnsToReturn, ["id", "structures"]);
+        if (stats?.algo !== "jackhmmer" || jobConverged(stats)) columnsToReturn = _.reject(columnsToReturn, ["id", "rowCheck"]);
+
+        return columnsToReturn;
+    };
+
     const table = useReactTable({
         data: data?.result?.hits ?? defaultData,
-        columns:
-            algo === "hmmscan"
-                ? hmmscanColumns
-                : stats?.database === "pdb"
-                  ? _.reject(columns, ["id", "structures"])
-                  : columns,
+        columns: getColumns(),
         getRowCanExpand: (row) => row.original.nreported > 0,
         getCoreRowModel: getCoreRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
@@ -294,6 +432,11 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
         defaultColumn: {
             minSize: 100,
         },
+        meta: {
+            include: changes.include,
+            exclude: changes.exclude,
+            excludeAll: changes.excludeAll,
+        },
     });
 
     useEffect(() => {
@@ -303,6 +446,20 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
             }
         }
     }, [data]);
+
+    useEffect(() => {
+        if (jobDetails) {
+            setChanges({
+                include: jobDetails.include ?? [],
+                exclude: jobDetails.exclude ?? [],
+                excludeAll: jobDetails.exclude_all ?? false,
+            });
+            if (jobDetails.exclude_all && jobDetails.include.length === 0) setSequenceSelection("none");
+            if (!jobDetails.exclude_all && jobDetails.include.length === 0 && jobDetails.exclude.length === 0)
+                setSequenceSelection("above");
+            if (jobDetails.include.length !== 0 || jobDetails.exclude.length !== 0) setSequenceSelection("some");
+        }
+    }, [jobDetails]);
 
     useEffect(() => {
         if (row > 0) {
@@ -329,6 +486,16 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
             }
         }
     }, [row, data]);
+
+    useEffect(() => {
+        if (sequenceSelection === "above") {
+            setChanges({ include: [], exclude: [], excludeAll: false });
+        }
+
+        if (sequenceSelection === "none") {
+            setChanges({ include: [], exclude: [], excludeAll: true });
+        }
+    }, [sequenceSelection]);
 
     if (isPending)
         return (
@@ -369,7 +536,18 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
 
     return (
         <div className="vf-stack vf-stack--800">
-            {algo !== "hmmsearch" && <Annotations id={id} />}
+            {algo === "jackhmmer" && jobDetails && (
+                <JackhmmerNavigation
+                    jobDetails={jobDetails}
+                    stats={data.result?.stats}
+                    sequenceSelection={sequenceSelection}
+                    nextIterationEnabled={!changes.excludeAll || changes.include.length > 0}
+                    onRunNextIteration={handleNextIteration}
+                    onJumpToHit={handleJumpToHit}
+                    onSequenceSelectionChange={setSequenceSelection}
+                />
+            )}
+            {algo !== "hmmsearch" && algo !== "jackhmmer" && <Annotations id={id} />}
             {taxonomyIds.length === 0 && !architecture && algo !== "hmmscan" && <DistributionGraph id={id} />}
             <div className="vf-stack vf-stack--400">
                 {algo !== "hmmscan" && <ResultFilter />}
@@ -427,10 +605,13 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                                         table.getRowModel().rows[row.index - 1].original.is_included;
                                     const significantNoHits = row.original.is_included && row.original.nincluded === 0;
 
+                                    const isNew = row.original.is_new ?? false;
+                                    const isDropped = row.original.is_dropped ?? false;
+
                                     return (
                                         <Fragment key={row.original.index}>
                                             <tr
-                                                className={`vf-table__row ${isFirstBelowThreshold ? "first-below-threshold" : ""} ${isInsignificant ? "insignificant" : ""} ${significantNoHits ? "significant-no-hits" : ""}`}
+                                                className={`vf-table__row ${isFirstBelowThreshold ? "first-below-threshold" : ""} ${isInsignificant ? "insignificant" : ""} ${significantNoHits ? "significant-no-hits" : ""} ${isNew ? "is-new" : ""} ${isDropped ? "is-dropped" : ""}`}
                                                 ref={(element) => (rowsRef.current[index] = element)}
                                             >
                                                 {/* first row is a normal row */}
@@ -438,7 +619,7 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                                                     return (
                                                         <td
                                                             key={cell.id}
-                                                            className="vf-table__cell"
+                                                            className={`vf-table__cell ${cell.column.id === "accession" ? "accession-cell" : ""}`}
                                                             width={cell.column.getSize()}
                                                         >
                                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}

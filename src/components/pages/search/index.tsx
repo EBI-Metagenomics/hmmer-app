@@ -49,6 +49,17 @@ const SearchPage: React.FC = () => {
                                 hmmsearch
                             </a>
                         </li>
+                        <li className="vf-tabs__item">
+                            <a
+                                role="tab"
+                                // aria-selected={activeTab === tab.id}
+                                // aria-controls={`${tab.id}-tab`}
+                                onClick={() => navigate("/search/jackhmmer")}
+                                className={`vf-tabs__link ${algo === "jackhmmer" ? "is-active" : ""}`}
+                            >
+                                jackhmmer
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -56,6 +67,7 @@ const SearchPage: React.FC = () => {
                 <Route path="phmmer" element={<Form algo="phmmer" />} />
                 <Route path="hmmscan" element={<Form algo="hmmscan" />} />
                 <Route path="hmmsearch" element={<Form algo="hmmsearch" />} />
+                <Route path="jackhmmer" element={<Form algo="jackhmmer" />} />
                 <Route
                     path="*"
                     element={

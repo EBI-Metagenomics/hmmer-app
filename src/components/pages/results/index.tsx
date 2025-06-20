@@ -14,14 +14,14 @@ const columns = [
             <span
                 style={{
                     color:
-                        row.original.task.status === "SUCCESS"
+                        row.original.task?.status === "SUCCESS"
                             ? "#18974c"
-                            : row.original.task.status === "FAILURE"
+                            : row.original.task?.status === "FAILURE"
                               ? "#d32f2f"
                               : "",
                 }}
             >
-                {row.original.task.status}
+                {row.original.task?.status}
             </span>
         ),
     }),
@@ -34,16 +34,10 @@ const columns = [
     columnHelper.accessor("algo", {
         header: "Algorithm",
     }),
-    columnHelper.accessor("task.date_created", {
-        header: "Started",
+    columnHelper.accessor("date_submitted", {
+        header: "Submitted on",
         cell: ({ row }: { row: Row<JobsResponseSchema> }) => (
-            <span>{new Date(row.original.task.date_created).toLocaleString()}</span>
-        ),
-    }),
-    columnHelper.accessor("task.date_done", {
-        header: "Finished",
-        cell: ({ row }: { row: Row<JobsResponseSchema> }) => (
-            <span>{new Date(row.original.task.date_done).toLocaleString()}</span>
+            row.original.date_submitted ? <span>{new Date(row.original.date_submitted).toLocaleString()}</span> : ""
         ),
     }),
 ];

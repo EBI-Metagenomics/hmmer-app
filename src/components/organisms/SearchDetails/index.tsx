@@ -122,9 +122,9 @@ export const SearchDetails: React.FC<SearchDetailsProps> = ({ id }) => {
                     </div>
                     <div className="search-details-container">
                         <div>Started on</div>
-                        <pre>{new Date(data.task.date_created).toLocaleString()}</pre>
+                        <pre>{data.task ? new Date(data.task.date_created).toLocaleString() : ""}</pre>
                         <div>Finished on</div>
-                        <pre>{new Date(data.task.date_done).toLocaleString()}</pre>
+                        <pre>{data.task ? new Date(data.task.date_done).toLocaleString() : ""}</pre>
                         <div>Command</div>
                         <pre>{makeCmdString(data)}</pre>
                         <div>Database</div>
