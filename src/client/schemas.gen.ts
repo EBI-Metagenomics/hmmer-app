@@ -413,6 +413,50 @@ export const HmmdSearchStatsSchema = {
             title: "Nincluded",
             type: "integer",
         },
+        ngained: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Ngained",
+        },
+        nlost: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Nlost",
+        },
+        ndropped: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Ndropped",
+        },
+        first_gained_index: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "First Gained Index",
+        },
         hit_offsets: {
             anyOf: [
                 {
@@ -452,6 +496,41 @@ export const HmmdSearchStatsSchema = {
         "hit_offsets",
     ],
     title: "HmmdSearchStats",
+    type: "object",
+} as const;
+
+export const JackhmmerResponseSchemaSchema = {
+    properties: {
+        id: {
+            format: "uuid4",
+            title: "Id",
+            type: "string",
+        },
+        status: {
+            title: "Status",
+            type: "string",
+        },
+        iteration: {
+            title: "Iteration",
+            type: "integer",
+        },
+        convergence_stats: {
+            anyOf: [
+                {
+                    additionalProperties: {
+                        type: "integer",
+                    },
+                    type: "object",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Convergence Stats",
+        },
+    },
+    required: ["id", "status", "iteration", "convergence_stats"],
+    title: "JackhmmerResponseSchema",
     type: "object",
 } as const;
 
@@ -1177,10 +1256,78 @@ export const DatabaseResponseSchemaSchema = {
 export const JobDetailsResponseSchemaSchema = {
     properties: {
         task: {
-            $ref: "#/components/schemas/TaskResultSchema",
+            anyOf: [
+                {
+                    $ref: "#/components/schemas/TaskResultSchema",
+                },
+                {
+                    type: "null",
+                },
+            ],
         },
         database: {
             $ref: "#/components/schemas/DatabaseResponseSchema",
+        },
+        iteration: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Iteration",
+        },
+        next_job_id: {
+            anyOf: [
+                {
+                    format: "uuid4",
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Next Job Id",
+        },
+        previous_job_id: {
+            anyOf: [
+                {
+                    format: "uuid4",
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Previous Job Id",
+        },
+        parent_job_id: {
+            anyOf: [
+                {
+                    format: "uuid4",
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Parent Job Id",
+        },
+        include: {
+            items: {
+                type: "integer",
+            },
+            title: "Include",
+            type: "array",
+        },
+        exclude: {
+            items: {
+                type: "integer",
+            },
+            title: "Exclude",
+            type: "array",
         },
         id: {
             anyOf: [
@@ -1201,8 +1348,32 @@ export const JobDetailsResponseSchemaSchema = {
             type: "string",
         },
         input: {
+            anyOf: [
+                {
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
             title: "Input",
+        },
+        input_type: {
+            default: "sequence",
+            maxLength: 16,
+            title: "Input Type",
             type: "string",
+        },
+        calculated_input: {
+            anyOf: [
+                {
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Calculated Input",
         },
         threshold: {
             default: "evalue",
@@ -1343,8 +1514,56 @@ export const JobDetailsResponseSchemaSchema = {
             default: "BLOSUM62",
             title: "Mx",
         },
+        exclude_all: {
+            default: false,
+            title: "Exclude All",
+            type: "boolean",
+        },
+        iterations: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Iterations",
+        },
+        date_submitted: {
+            anyOf: [
+                {
+                    format: "date-time",
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Date Submitted",
+        },
+        number_of_hits: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Number Of Hits",
+        },
     },
-    required: ["task", "database", "input"],
+    required: [
+        "task",
+        "database",
+        "iteration",
+        "next_job_id",
+        "previous_job_id",
+        "parent_job_id",
+        "include",
+        "exclude",
+    ],
     title: "JobDetailsResponseSchema",
     type: "object",
 } as const;
@@ -1435,19 +1654,82 @@ export const ValidationErrorSchemaSchema = {
 
 export const SearchRequestSchemaSchema = {
     properties: {
-        database: {
-            title: "Database",
-            type: "string",
-        },
         input: {
+            anyOf: [
+                {
+                    type: "string",
+                },
+                {
+                    format: "uuid4",
+                    type: "string",
+                },
+            ],
             title: "Input",
-            type: "string",
+        },
+        input_type: {
+            anyOf: [
+                {
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Input Type",
+        },
+        database: {
+            anyOf: [
+                {
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Database",
+        },
+        include: {
+            anyOf: [
+                {
+                    items: {
+                        type: "integer",
+                    },
+                    type: "array",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: [],
+            title: "Include",
+        },
+        exclude: {
+            anyOf: [
+                {
+                    items: {
+                        type: "integer",
+                    },
+                    type: "array",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: [],
+            title: "Exclude",
         },
         threshold: {
+            anyOf: [
+                {
+                    maxLength: 16,
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
             default: "evalue",
-            maxLength: 16,
             title: "Threshold",
-            type: "string",
         },
         E: {
             anyOf: [
@@ -1583,17 +1865,54 @@ export const SearchRequestSchemaSchema = {
             title: "Mx",
         },
         with_taxonomy: {
+            anyOf: [
+                {
+                    type: "boolean",
+                },
+                {
+                    type: "null",
+                },
+            ],
             default: false,
             title: "With Taxonomy",
-            type: "boolean",
         },
         with_architecture: {
+            anyOf: [
+                {
+                    type: "boolean",
+                },
+                {
+                    type: "null",
+                },
+            ],
             default: false,
             title: "With Architecture",
-            type: "boolean",
+        },
+        iterations: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Iterations",
+        },
+        exclude_all: {
+            anyOf: [
+                {
+                    type: "boolean",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: false,
+            title: "Exclude All",
         },
     },
-    required: ["database", "input"],
+    required: ["input"],
     title: "SearchRequestSchema",
     type: "object",
 } as const;
@@ -1601,7 +1920,14 @@ export const SearchRequestSchemaSchema = {
 export const JobsResponseSchemaSchema = {
     properties: {
         task: {
-            $ref: "#/components/schemas/TaskResultSchema",
+            anyOf: [
+                {
+                    $ref: "#/components/schemas/TaskResultSchema",
+                },
+                {
+                    type: "null",
+                },
+            ],
         },
         id: {
             anyOf: [
@@ -1620,6 +1946,18 @@ export const JobsResponseSchemaSchema = {
             maxLength: 16,
             title: "Algo",
             type: "string",
+        },
+        date_submitted: {
+            anyOf: [
+                {
+                    format: "date-time",
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Date Submitted",
         },
     },
     required: ["task"],

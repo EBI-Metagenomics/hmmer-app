@@ -92,8 +92,21 @@ export type HmmdSearchStats = {
     nhits: number;
     nreported: number;
     nincluded: number;
+    ngained?: number | null;
+    nlost?: number | null;
+    ndropped?: number | null;
+    first_gained_index?: number | null;
     hit_offsets: Array<number> | null;
     size?: number;
+};
+
+export type JackhmmerResponseSchema = {
+    id: string;
+    status: string;
+    iteration: number;
+    convergence_stats: {
+        [key: string]: number;
+    } | null;
 };
 
 export type P7AlignmentDisplay = {
@@ -222,11 +235,19 @@ export type DatabaseResponseSchema = {
 };
 
 export type JobDetailsResponseSchema = {
-    task: TaskResultSchema;
+    task: TaskResultSchema | null;
     database: DatabaseResponseSchema;
+    iteration: number | null;
+    next_job_id: string | null;
+    previous_job_id: string | null;
+    parent_job_id: string | null;
+    include: Array<number>;
+    exclude: Array<number>;
     id?: string | null;
     algo?: string;
-    input: string;
+    input?: string | null;
+    input_type?: string;
+    calculated_input?: string | null;
     threshold?: string;
     E?: number | null;
     domE?: number | null;
@@ -239,6 +260,10 @@ export type JobDetailsResponseSchema = {
     popen?: number | null;
     pextend?: number | null;
     mx?: string | null;
+    exclude_all?: boolean;
+    iterations?: number | null;
+    date_submitted?: Date | null;
+    number_of_hits?: number | null;
 };
 
 export type TaskResultSchema = {
@@ -280,9 +305,12 @@ export type ValidationErrorSchema = {
 };
 
 export type SearchRequestSchema = {
-    database: string;
     input: string;
-    threshold?: string;
+    input_type?: string | null;
+    database?: string | null;
+    include?: Array<number> | null;
+    exclude?: Array<number> | null;
+    threshold?: string | null;
     E?: number | null;
     domE?: number | null;
     T?: number | null;
@@ -294,14 +322,17 @@ export type SearchRequestSchema = {
     popen?: number | null;
     pextend?: number | null;
     mx?: string | null;
-    with_taxonomy?: boolean;
-    with_architecture?: boolean;
+    with_taxonomy?: boolean | null;
+    with_architecture?: boolean | null;
+    iterations?: number | null;
+    exclude_all?: boolean | null;
 };
 
 export type JobsResponseSchema = {
-    task: TaskResultSchema;
+    task: TaskResultSchema | null;
     id?: string | null;
     algo?: string;
+    date_submitted?: Date | null;
 };
 
 export type TaxonomyResponseSchema = {
@@ -451,7 +482,7 @@ export type ResultApiGetResultResponses = {
     /**
      * OK
      */
-    200: ResultResponseSchema;
+    200: ResultResponseSchema | Array<JackhmmerResponseSchema>;
 };
 
 export type ResultApiGetResultResponse = ResultApiGetResultResponses[keyof ResultApiGetResultResponses];

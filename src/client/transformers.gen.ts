@@ -30,6 +30,9 @@ const taskResultSchemaSchemaResponseTransformer = (data: any) => {
 const jobDetailsResponseSchemaSchemaResponseTransformer = (data: any) => {
     data.task = taskResultSchemaSchemaResponseTransformer(data.task);
     data.database = databaseResponseSchemaSchemaResponseTransformer(data.database);
+    if (data.date_submitted) {
+        data.date_submitted = new Date(data.date_submitted);
+    }
     return data;
 };
 
@@ -40,6 +43,9 @@ export const searchApiGetJobDetailsResponseTransformer = async (data: any): Prom
 
 const jobsResponseSchemaSchemaResponseTransformer = (data: any) => {
     data.task = taskResultSchemaSchemaResponseTransformer(data.task);
+    if (data.date_submitted) {
+        data.date_submitted = new Date(data.date_submitted);
+    }
     return data;
 };
 

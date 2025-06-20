@@ -109,8 +109,19 @@ export const zHmmdSearchStats = z.object({
     nhits: z.number(),
     nreported: z.number(),
     nincluded: z.number(),
+    ngained: z.union([z.number(), z.null()]).optional(),
+    nlost: z.union([z.number(), z.null()]).optional(),
+    ndropped: z.union([z.number(), z.null()]).optional(),
+    first_gained_index: z.union([z.number(), z.null()]).optional(),
     hit_offsets: z.union([z.array(z.number()), z.null()]),
     size: z.number().optional(),
+});
+
+export const zJackhmmerResponseSchema = z.object({
+    id: z.string(),
+    status: z.string(),
+    iteration: z.number(),
+    convergence_stats: z.union([z.object({}), z.null()]),
 });
 
 export const zP7AlignmentDisplay = z.object({
@@ -237,15 +248,26 @@ export const zDatabaseResponseSchema = z.object({
 });
 
 export const zJobDetailsResponseSchema = z.object({
-    task: z.object({
-        status: z.string().max(50).optional().default("PENDING"),
-        date_created: z.string().datetime(),
-        date_done: z.string().datetime(),
-    }),
+    task: z.union([
+        z.object({
+            status: z.string().max(50).optional().default("PENDING"),
+            date_created: z.string().datetime(),
+            date_done: z.string().datetime(),
+        }),
+        z.null(),
+    ]),
     database: zDatabaseResponseSchema,
+    iteration: z.union([z.number(), z.null()]),
+    next_job_id: z.union([z.string(), z.null()]),
+    previous_job_id: z.union([z.string(), z.null()]),
+    parent_job_id: z.union([z.string(), z.null()]),
+    include: z.array(z.number()),
+    exclude: z.array(z.number()),
     id: z.union([z.string().uuid(), z.null()]).optional(),
     algo: z.string().max(16).optional().default("phmmer"),
-    input: z.string(),
+    input: z.union([z.string(), z.null()]).optional(),
+    input_type: z.string().max(16).optional().default("sequence"),
+    calculated_input: z.union([z.string(), z.null()]).optional(),
     threshold: z.string().max(16).optional().default("evalue"),
     E: z.union([z.number(), z.null()]).optional(),
     domE: z.union([z.number(), z.null()]).optional(),
@@ -258,6 +280,10 @@ export const zJobDetailsResponseSchema = z.object({
     popen: z.union([z.number(), z.null()]).optional(),
     pextend: z.union([z.number(), z.null()]).optional(),
     mx: z.union([z.string().max(16), z.null()]).optional(),
+    exclude_all: z.boolean().optional().default(false),
+    iterations: z.union([z.number(), z.null()]).optional(),
+    date_submitted: z.union([z.string().datetime(), z.null()]).optional(),
+    number_of_hits: z.union([z.number(), z.null()]).optional(),
 });
 
 export const zTaskResultSchema = z.object({
@@ -283,9 +309,12 @@ export const zValidationErrorSchema = z.object({
 });
 
 export const zSearchRequestSchema = z.object({
-    database: z.string(),
-    input: z.string(),
-    threshold: z.string().max(16).optional().default("evalue"),
+    input: z.unknown(),
+    input_type: z.union([z.string(), z.null()]).optional(),
+    database: z.union([z.string(), z.null()]).optional(),
+    include: z.union([z.array(z.number()), z.null()]).optional(),
+    exclude: z.union([z.array(z.number()), z.null()]).optional(),
+    threshold: z.union([z.string().max(16), z.null()]).optional(),
     E: z.union([z.number(), z.null()]).optional(),
     domE: z.union([z.number(), z.null()]).optional(),
     T: z.union([z.number(), z.null()]).optional(),
@@ -297,14 +326,17 @@ export const zSearchRequestSchema = z.object({
     popen: z.union([z.number(), z.null()]).optional(),
     pextend: z.union([z.number(), z.null()]).optional(),
     mx: z.union([z.string().max(16), z.null()]).optional(),
-    with_taxonomy: z.boolean().optional().default(false),
-    with_architecture: z.boolean().optional().default(false),
+    with_taxonomy: z.union([z.boolean(), z.null()]).optional(),
+    with_architecture: z.union([z.boolean(), z.null()]).optional(),
+    iterations: z.union([z.number(), z.null()]).optional(),
+    exclude_all: z.union([z.boolean(), z.null()]).optional(),
 });
 
 export const zJobsResponseSchema = z.object({
-    task: zTaskResultSchema,
+    task: z.union([zTaskResultSchema, z.null()]),
     id: z.union([z.string().uuid(), z.null()]).optional(),
     algo: z.string().max(16).optional().default("phmmer"),
+    date_submitted: z.union([z.string().datetime(), z.null()]).optional(),
 });
 
 export const zTaxonomyResponseSchema = z.object({
@@ -367,7 +399,7 @@ export const zArchitectureApiGetAnnotationsResponse = zArchitectureAnnotationsRe
 
 export const zArchitectureApiGetAllArchitecturesResponse = zArchitectureListResponseSchema;
 
-export const zResultApiGetResultResponse = zResultResponseSchema;
+export const zResultApiGetResultResponse = z.union([zResultResponseSchema, z.array(zJackhmmerResponseSchema)]);
 
 export const zResultApiGetDomainsResponse = zAlignmentResponseSchema;
 
