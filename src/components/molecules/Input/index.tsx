@@ -147,7 +147,7 @@ export const Input: React.FC<InputProps> = ({ mode }) => {
                                     e.preventDefault();
                                     setValue(
                                         "input",
-                                        _.includes(mode, "alignment") ? EXAMPLE_ALIGNMENT : EXAMPLE_SEQUENCE,
+                                        _.includes(mode, "sequence") ? EXAMPLE_SEQUENCE : EXAMPLE_ALIGNMENT,
                                         {
                                             shouldDirty: true,
                                         },
