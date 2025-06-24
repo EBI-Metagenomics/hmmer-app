@@ -37,7 +37,9 @@ export const JackhmmerNavigation: React.FC<JackhmmerNavigationProps> = ({
                         Iteration <b>{jobDetails.iteration}</b> {jobConverged(stats) && "Converged"}
                     </span>
                     {jobConverged(stats) && (
-                        <p className="vf-text-body vf-text-body--2">Your jackhmmer search has reached convergence. No further iterations will be performed.</p>
+                        <p className="vf-text-body vf-text-body--2">
+                            Your jackhmmer search has reached convergence. No further iterations will be performed.
+                        </p>
                     )}
                 </div>
                 <div className="vf-stack vf-stack--200 vf-text-body vf-text-body--2">
@@ -152,8 +154,8 @@ export const JackhmmerNavigation: React.FC<JackhmmerNavigationProps> = ({
                     </div>
                     {sequenceSelection === "some" && (
                         <p className="vf-form__helper vf-form__helper--error">
-                            The above default selection has been manually modified. If you switch the default selection
-                            again, your current selection will be lost.
+                            The sequence selection has been manually modified. If you select one of the options
+                            above again, your current selection will be lost.
                         </p>
                     )}
                 </fieldset>
