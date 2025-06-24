@@ -95,11 +95,32 @@ export const JackhmmerTable: React.FC<JackhmmerTableProps> = ({ id }) => {
 
     if (isPending)
         return (
-            <div className="vf-stack vf-stack--400 | vf-u-padding__top--400">
-                <p className="vf-text-body vf-text-body--2">Fetching your Jackhmmer results...</p>
-                <ProgressIndicator />
+            <div className="vf-stack vf-stack--800">
+                <div className="vf-u-padding__top--400">
+                    <h2 className="vf-text vf-text-heading--2">Jackhmmer Summary</h2>
+                </div>
+
+                <div className="vf-stack vf-stack--400 | vf-u-padding__top--400">
+                    <p className="vf-text-body vf-text-body--2">Fetching your Jackhmmer results...</p>
+                    <ProgressIndicator />
+                </div>
             </div>
         );
+
+    if (((data ?? []) as JackhmmerResponseSchema[]).length === 0) {
+        return (
+            <div className="vf-stack vf-stack--800">
+                <div className="vf-u-padding__top--400">
+                    <h2 className="vf-text vf-text-heading--2">Jackhmmer Summary</h2>
+                </div>
+
+                <div className="vf-stack vf-stack--400 | vf-u-padding__top--400">
+                    <p className="vf-text-body vf-text-body--2">First iteration has not started yet...</p>
+                    <ProgressIndicator />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="vf-stack vf-stack--800">
@@ -112,7 +133,7 @@ export const JackhmmerTable: React.FC<JackhmmerTableProps> = ({ id }) => {
                         {table.getHeaderGroups().map((headerGroup) => (
                             <tr key={headerGroup.id} className="vf-table__row">
                                 {headerGroup.headers.map((header) => (
-                                    <th key={header.id} className="vf-table__heading">
+                                    <th key={header.id} colSpan={header.colSpan} className="vf-table__heading">
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(header.column.columnDef.header, header.getContext())}
