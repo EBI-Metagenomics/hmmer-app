@@ -18,6 +18,9 @@ import type {
     SearchApiGetDatabasesResponse,
     SearchApiGetJobDetailsData,
     SearchApiGetJobDetailsResponse,
+    SearchApiUpdateSearchData,
+    SearchApiUpdateSearchError,
+    SearchApiUpdateSearchResponse,
     SearchApiGetJobQueryData,
     SearchApiSearchData,
     SearchApiSearchError,
@@ -134,6 +137,22 @@ export const searchApiGetJobDetails = <ThrowOnError extends boolean = false>(
 ) => {
     return (options?.client ?? client).get<SearchApiGetJobDetailsResponse, unknown, ThrowOnError>({
         ...options,
+        url: "/api/v1/search/{id}",
+    });
+};
+
+/**
+ * Update Search
+ */
+export const searchApiUpdateSearch = <ThrowOnError extends boolean = false>(
+    options: Options<SearchApiUpdateSearchData, ThrowOnError>,
+) => {
+    return (options?.client ?? client).patch<SearchApiUpdateSearchResponse, SearchApiUpdateSearchError, ThrowOnError>({
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...options?.headers,
+        },
         url: "/api/v1/search/{id}",
     });
 };

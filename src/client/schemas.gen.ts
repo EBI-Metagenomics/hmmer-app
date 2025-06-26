@@ -1553,6 +1553,18 @@ export const JobDetailsResponseSchemaSchema = {
             ],
             title: "Number Of Hits",
         },
+        email_address: {
+            anyOf: [
+                {
+                    maxLength: 254,
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Email Address",
+        },
     },
     required: [
         "task",
@@ -1595,25 +1607,6 @@ export const TaskResultSchemaSchema = {
     type: "object",
 } as const;
 
-export const AlgoChoicesSchema = {
-    enum: ["phmmer", "hmmsearch", "hmmscan", "jackhmmer"],
-    title: "AlgoChoices",
-    type: "string",
-} as const;
-
-export const SearchResponseSchemaSchema = {
-    properties: {
-        id: {
-            format: "uuid4",
-            title: "Id",
-            type: "string",
-        },
-    },
-    required: ["id"],
-    title: "SearchResponseSchema",
-    type: "object",
-} as const;
-
 export const ValidationErrorDetailSchemaSchema = {
     properties: {
         type: {
@@ -1649,6 +1642,44 @@ export const ValidationErrorSchemaSchema = {
     },
     required: ["detail"],
     title: "ValidationErrorSchema",
+    type: "object",
+} as const;
+
+export const SearchPatchSchemaSchema = {
+    properties: {
+        email_address: {
+            anyOf: [
+                {
+                    format: "email",
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Email Address",
+        },
+    },
+    title: "SearchPatchSchema",
+    type: "object",
+} as const;
+
+export const AlgoChoicesSchema = {
+    enum: ["phmmer", "hmmsearch", "hmmscan", "jackhmmer"],
+    title: "AlgoChoices",
+    type: "string",
+} as const;
+
+export const SearchResponseSchemaSchema = {
+    properties: {
+        id: {
+            format: "uuid4",
+            title: "Id",
+            type: "string",
+        },
+    },
+    required: ["id"],
+    title: "SearchResponseSchema",
     type: "object",
 } as const;
 

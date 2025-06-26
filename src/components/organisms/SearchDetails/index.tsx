@@ -1,7 +1,5 @@
 import _ from "lodash";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { searchApiGetJobDetailsOptions } from "@/client/@tanstack/react-query.gen";
 import { JobDetailsResponseSchema } from "@/client";
 import ReactModal from "react-modal";
 
@@ -10,10 +8,10 @@ import { ProgressIndicator } from "@/components/atoms";
 import "./index.scss";
 
 interface SearchDetailsProps {
-    id: string;
+    data?: JobDetailsResponseSchema;
 }
 
-export const SearchDetails: React.FC<SearchDetailsProps> = ({ id }) => {
+export const SearchDetails: React.FC<SearchDetailsProps> = ({ data }) => {
     const [open, setOpen] = useState<boolean>(false);
 
     const customStyles = {
@@ -32,11 +30,6 @@ export const SearchDetails: React.FC<SearchDetailsProps> = ({ id }) => {
             zIndex: 99999,
         },
     };
-
-    const { data } = useQuery({
-        ...searchApiGetJobDetailsOptions({ path: { id: id! } }),
-        refetchIntervalInBackground: true,
-    });
 
     const makeCmdString = (job: JobDetailsResponseSchema) => {
         const paramKeys = ["E", "domE", "T", "domT", "incE", "incdomE", "incT", "incdomT", "popen", "pextend", "mx"];

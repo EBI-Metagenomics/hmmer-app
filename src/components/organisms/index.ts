@@ -6,6 +6,7 @@ export { DistributionGraph } from "./DistributionGraph";
 export { Form } from "./Form";
 export { JackhmmerNavigation } from "./JackhmmerNavigation";
 export { JackhmmerTable } from "./JackhmmerTable";
+export { NotificationPrompt } from "./NotificationPrompt";
 export { ResultTable } from "./ResultTable";
 export { ResultFilter } from "./ResultFilter";
 export { SearchDetails } from "./SearchDetails";

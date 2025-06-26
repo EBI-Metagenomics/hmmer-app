@@ -264,6 +264,7 @@ export type JobDetailsResponseSchema = {
     iterations?: number | null;
     date_submitted?: Date | null;
     number_of_hits?: number | null;
+    email_address?: string | null;
 };
 
 export type TaskResultSchema = {
@@ -281,6 +282,20 @@ export type TaskResultSchema = {
     date_done: Date;
 };
 
+export type ValidationErrorDetailSchema = {
+    type: string;
+    loc: Array<string>;
+    msg: string;
+};
+
+export type ValidationErrorSchema = {
+    detail: Array<ValidationErrorDetailSchema>;
+};
+
+export type SearchPatchSchema = {
+    email_address?: string | null;
+};
+
 export type AlgoChoices = "phmmer" | "hmmsearch" | "hmmscan" | "jackhmmer";
 
 export const AlgoChoices = {
@@ -292,16 +307,6 @@ export const AlgoChoices = {
 
 export type SearchResponseSchema = {
     id: string;
-};
-
-export type ValidationErrorDetailSchema = {
-    type: string;
-    loc: Array<string>;
-    msg: string;
-};
-
-export type ValidationErrorSchema = {
-    detail: Array<ValidationErrorDetailSchema>;
 };
 
 export type SearchRequestSchema = {
@@ -540,6 +545,33 @@ export type SearchApiGetJobDetailsResponses = {
 };
 
 export type SearchApiGetJobDetailsResponse = SearchApiGetJobDetailsResponses[keyof SearchApiGetJobDetailsResponses];
+
+export type SearchApiUpdateSearchData = {
+    body: SearchPatchSchema;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: "/api/v1/search/{id}";
+};
+
+export type SearchApiUpdateSearchErrors = {
+    /**
+     * Unprocessable Content
+     */
+    422: ValidationErrorSchema;
+};
+
+export type SearchApiUpdateSearchError = SearchApiUpdateSearchErrors[keyof SearchApiUpdateSearchErrors];
+
+export type SearchApiUpdateSearchResponses = {
+    /**
+     * No Content
+     */
+    204: void;
+};
+
+export type SearchApiUpdateSearchResponse = SearchApiUpdateSearchResponses[keyof SearchApiUpdateSearchResponses];
 
 export type SearchApiGetJobQueryData = {
     body?: never;

@@ -284,18 +284,13 @@ export const zJobDetailsResponseSchema = z.object({
     iterations: z.union([z.number(), z.null()]).optional(),
     date_submitted: z.union([z.string().datetime(), z.null()]).optional(),
     number_of_hits: z.union([z.number(), z.null()]).optional(),
+    email_address: z.union([z.string().max(254), z.null()]).optional(),
 });
 
 export const zTaskResultSchema = z.object({
     status: z.string().max(50).optional().default("PENDING"),
     date_created: z.string().datetime(),
     date_done: z.string().datetime(),
-});
-
-export const zAlgoChoices = z.enum(["phmmer", "hmmsearch", "hmmscan", "jackhmmer"]);
-
-export const zSearchResponseSchema = z.object({
-    id: z.string(),
 });
 
 export const zValidationErrorDetailSchema = z.object({
@@ -306,6 +301,16 @@ export const zValidationErrorDetailSchema = z.object({
 
 export const zValidationErrorSchema = z.object({
     detail: z.array(zValidationErrorDetailSchema),
+});
+
+export const zSearchPatchSchema = z.object({
+    email_address: z.union([z.string().email(), z.null()]).optional(),
+});
+
+export const zAlgoChoices = z.enum(["phmmer", "hmmsearch", "hmmscan", "jackhmmer"]);
+
+export const zSearchResponseSchema = z.object({
+    id: z.string(),
 });
 
 export const zSearchRequestSchema = z.object({
@@ -406,6 +411,8 @@ export const zResultApiGetDomainsResponse = zAlignmentResponseSchema;
 export const zSearchApiGetDatabasesResponse = z.array(zDatabaseResponseSchema);
 
 export const zSearchApiGetJobDetailsResponse = zJobDetailsResponseSchema;
+
+export const zSearchApiUpdateSearchResponse = z.void();
 
 export const zSearchApiSearchResponse = zSearchResponseSchema;
 

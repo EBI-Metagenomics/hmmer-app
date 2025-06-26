@@ -20,6 +20,9 @@ import type {
     ResultApiGetDomainsData,
     SearchApiGetDatabasesData,
     SearchApiGetJobDetailsData,
+    SearchApiUpdateSearchData,
+    SearchApiUpdateSearchError,
+    SearchApiUpdateSearchResponse,
     SearchApiGetJobQueryData,
     SearchApiSearchData,
     SearchApiSearchError,
@@ -45,6 +48,7 @@ import {
     resultApiGetDomains,
     searchApiGetDatabases,
     searchApiGetJobDetails,
+    searchApiUpdateSearch,
     searchApiGetJobQuery,
     searchApiSearch,
     searchApiGetJobs,
@@ -406,6 +410,24 @@ export const searchApiGetJobDetailsOptions = (options: Options<SearchApiGetJobDe
         },
         queryKey: searchApiGetJobDetailsQueryKey(options),
     });
+};
+
+export const searchApiUpdateSearchMutation = (options?: Partial<Options<SearchApiUpdateSearchData>>) => {
+    const mutationOptions: UseMutationOptions<
+        SearchApiUpdateSearchResponse,
+        SearchApiUpdateSearchError,
+        Options<SearchApiUpdateSearchData>
+    > = {
+        mutationFn: async (localOptions) => {
+            const { data } = await searchApiUpdateSearch({
+                ...options,
+                ...localOptions,
+                throwOnError: true,
+            });
+            return data;
+        },
+    };
+    return mutationOptions;
 };
 
 export const searchApiGetJobQueryQueryKey = (options: Options<SearchApiGetJobQueryData>) => [

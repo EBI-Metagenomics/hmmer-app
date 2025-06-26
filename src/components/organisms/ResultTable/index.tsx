@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import _ from "lodash";
+import { differenceInSeconds } from "date-fns";
 import { useSearchParams, useNavigate } from "react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { searchApiSearchMutation, searchApiGetJobDetailsOptions } from "@/client/@tanstack/react-query.gen";
@@ -25,13 +26,15 @@ import {
     DistributionGraph,
     SearchDetails,
     JackhmmerNavigation,
+    NotificationPrompt,
 } from "@components/organisms";
 import { P7Hit, ResultResponseSchema } from "@/client/types.gen";
 import { useResult } from "@/hooks/useResult";
 import { useColumns, usePageSize, useStats, defaultColumns, defaultPageSize, useJackhmmer } from "@/context";
 import { pending, failed } from "@/utils/taskStates";
-import "./index.scss";
 import { jobConverged } from "@/utils/jackhmmer";
+
+import "./index.scss";
 
 declare module "@tanstack/table-core" {
     interface TableMeta<TData extends RowData> {
@@ -309,8 +312,9 @@ interface ResultTableProps {
 
 export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
     const navigate = useNavigate();
-    const [customsationOpen, setCustomsationOpen] = useState<boolean>(false);
+    const [customsationOpen, setCustomsationOpen] = useState(false);
     const [sequenceSelection, setSequenceSelection] = useState<"above" | "none" | "some">("above");
+    const [promptPeriodPassed, setPromptPeriodPassed] = useState(false);
     const [storePageSize, setStoredPageSize] = usePageSize();
     const [storedColumns, setStoredColumns] = useColumns();
     const [stats, setStats] = useStats();
@@ -411,7 +415,8 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
         let columnsToReturn = columns(handleCheckChange);
 
         if (stats?.database === "pdb") columnsToReturn = _.reject(columnsToReturn, ["id", "structures"]);
-        if (stats?.algo !== "jackhmmer" || jobConverged(stats)) columnsToReturn = _.reject(columnsToReturn, ["id", "rowCheck"]);
+        if (stats?.algo !== "jackhmmer" || jobConverged(stats))
+            columnsToReturn = _.reject(columnsToReturn, ["id", "rowCheck"]);
 
         return columnsToReturn;
     };
@@ -497,6 +502,24 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
         }
     }, [sequenceSelection]);
 
+    useEffect(() => {
+        const secondsSinceSubmitted = (date: Date) => differenceInSeconds(new Date(), date);
+
+        const checkPromptPeriod = () => {
+            if (!jobDetails) return;
+            if (!jobDetails.date_submitted) return;
+
+            if (pending(jobDetails.task) && secondsSinceSubmitted(jobDetails.date_submitted) > 3 * 60)
+                setPromptPeriodPassed(true);
+        };
+
+        checkPromptPeriod();
+
+        const interval = setInterval(checkPromptPeriod, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     if (isPending)
         return (
             <div className="vf-stack vf-stack--400 | vf-u-padding__top--400">
@@ -512,6 +535,9 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                     Your job <b>{id}</b> is still running...
                 </p>
                 <ProgressIndicator />
+                {promptPeriodPassed && (
+                    <NotificationPrompt id={id} email_address={jobDetails?.email_address ?? undefined} />
+                )}
             </div>
         );
 
@@ -553,7 +579,7 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                 {algo !== "hmmscan" && <ResultFilter />}
                 <div className="vf-stack vf-stack--200">
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <SearchDetails id={id} />
+                        <SearchDetails data={jobDetails} />
                         <Customization
                             open={customsationOpen}
                             onClick={() => setCustomsationOpen(!customsationOpen)}
