@@ -4,26 +4,14 @@ import _ from "lodash";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, Row } from "@tanstack/react-table";
 import { JobsResponseSchema } from "@/client/types.gen";
 import { searchApiGetJobsOptions } from "@/client/@tanstack/react-query.gen";
+import { JobStatus } from "@/components/atoms";
 
 const columnHelper = createColumnHelper<JobsResponseSchema>();
 
 const columns = [
     columnHelper.accessor("task.status", {
         header: "Status",
-        cell: ({ row }: { row: Row<JobsResponseSchema> }) => (
-            <span
-                style={{
-                    color:
-                        row.original.task?.status === "SUCCESS"
-                            ? "#18974c"
-                            : row.original.task?.status === "FAILURE"
-                              ? "#d32f2f"
-                              : "",
-                }}
-            >
-                {row.original.task?.status}
-            </span>
-        ),
+        cell: ({ row }: { row: Row<JobsResponseSchema> }) => <JobStatus status={row.original.task?.status}/>
     }),
     columnHelper.accessor("id", {
         header: "ID",

@@ -1,11 +1,13 @@
-import { NavLink } from "react-router";
-import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, Row } from "@tanstack/react-table";
 import { JackhmmerResponseSchema } from "@/client/types.gen";
-import { resultApiGetResultOptions } from "@/client/@tanstack/react-query.gen";
+import { resultApiGetResultOptions, searchApiSearchMutation } from "@/client/@tanstack/react-query.gen";
 
-import { ProgressIndicator } from "@/components/atoms";
+import { JobStatus, ProgressIndicator } from "@/components/atoms";
+import { pending } from "@/utils/taskStates";
 
 const columnHelper = createColumnHelper<JackhmmerResponseSchema>();
 
@@ -14,10 +16,16 @@ const columns = [
         header: "Iteration",
         cell: ({ row }: { row: Row<JackhmmerResponseSchema> }) => row.original.iteration,
     }),
+    columnHelper.accessor("status", {
+        header: "Status",
+        cell: ({ row }: { row: Row<JackhmmerResponseSchema> }) => <JobStatus status={row.original.status} />,
+    }),
     columnHelper.accessor("id", {
         header: "Results",
         cell: ({ row }: { row: Row<JackhmmerResponseSchema> }) =>
-            row.original.status === "SUCCESS" ? (
+            pending(row.original) ? (
+                <ProgressIndicator width={380} />
+            ) : row.original.status === "SUCCESS" ? (
                 <NavLink to={`/results/${row.original.id}/score`}>{row.original.id}</NavLink>
             ) : (
                 <span>{row.original.id}</span>
@@ -71,7 +79,10 @@ interface JackhmmerTableProps {
 }
 
 export const JackhmmerTable: React.FC<JackhmmerTableProps> = ({ id }) => {
-    const { data, isPending } = useQuery({
+    const [nextIterationEnabled, setNextIterationEnabled] = useState(false);
+    const [lastIterationId, setLastIterationId] = useState<string>();
+
+    const { data, isPending, refetch } = useQuery({
         ...resultApiGetResultOptions({ path: { id } }),
         refetchInterval(query) {
             if (
@@ -87,11 +98,54 @@ export const JackhmmerTable: React.FC<JackhmmerTableProps> = ({ id }) => {
         refetchIntervalInBackground: true,
     });
 
+    const { mutateAsync } = useMutation({
+        ...searchApiSearchMutation(),
+    });
+
     const table = useReactTable({
         data: (data ?? []) as JackhmmerResponseSchema[],
         columns,
         getCoreRowModel: getCoreRowModel(),
     });
+
+    useEffect(() => {
+        if (!data) {
+            setNextIterationEnabled(false);
+
+            return;
+        }
+
+        if ((data as JackhmmerResponseSchema[]).length === 0 || (data as JackhmmerResponseSchema[]).length === 9) {
+            setNextIterationEnabled(false);
+
+            return;
+        }
+
+        if (
+            _.some((data ?? []) as JackhmmerResponseSchema[], (jackhmmerIteration) => {
+                return jackhmmerIteration.status !== "SUCCESS";
+            })
+        ) {
+            setNextIterationEnabled(false);
+
+            return;
+        }
+
+        const lastIteration = _.last(data as JackhmmerResponseSchema[]);
+
+        if (
+            (lastIteration?.convergence_stats?.gained ?? 0) === 0 &&
+            (lastIteration?.convergence_stats?.dropped ?? 0) === 0 &&
+            (lastIteration?.convergence_stats?.lost ?? 0) === 0
+        ) {
+            setNextIterationEnabled(false);
+
+            return;
+        }
+
+        setLastIterationId(lastIteration?.id);
+        setNextIterationEnabled(true);
+    }, [data]);
 
     if (isPending)
         return (
@@ -159,6 +213,32 @@ export const JackhmmerTable: React.FC<JackhmmerTableProps> = ({ id }) => {
                         })}
                     </tbody>
                 </table>
+            </div>
+            <div>
+                <button
+                    className={`vf-button vf-button--sm ${!nextIterationEnabled ? "disabled vf-button--tertiary" : "vf-button--primary"}`}
+                    onClick={() =>
+                        nextIterationEnabled &&
+                        mutateAsync(
+                            {
+                                path: { algo: "jackhmmer" },
+                                body: {
+                                    input: lastIterationId!,
+                                    include: [],
+                                    exclude: [],
+                                    exclude_all: false,
+                                    with_architecture: true,
+                                    with_taxonomy: true,
+                                },
+                            },
+                            {
+                                onSuccess: () => refetch(),
+                            },
+                        )
+                    }
+                >
+                    Run next iteration
+                </button>
             </div>
         </div>
     );

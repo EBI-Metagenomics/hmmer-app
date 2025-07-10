@@ -2,6 +2,7 @@ export { Alignment } from "./Alignment";
 export { Checkbox } from "./Checkbox";
 export { FetchWrapper } from "./FetchWrapper";
 export { HitPosition } from "./HitPosition";
+export { JobStatus } from "./JobStatus";
 export { MenuSection } from "./MenuSection";
 export { NotFound } from "./NotFound";
 export { ProgressIndicator } from "./ProgressIndicator";
