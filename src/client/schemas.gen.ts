@@ -335,6 +335,27 @@ export const ResultQuerySchemaSchema = {
     type: "object",
 } as const;
 
+export const BatchResponseSchemaSchema = {
+    properties: {
+        id: {
+            format: "uuid4",
+            title: "Id",
+            type: "string",
+        },
+        query_name: {
+            title: "Query Name",
+            type: "string",
+        },
+        status: {
+            title: "Status",
+            type: "string",
+        },
+    },
+    required: ["id", "query_name", "status"],
+    title: "BatchResponseSchema",
+    type: "object",
+} as const;
+
 export const HmmdSearchStatsSchema = {
     properties: {
         id: {
@@ -1553,6 +1574,61 @@ export const JobDetailsResponseSchemaSchema = {
             ],
             title: "Number Of Hits",
         },
+        number_of_included: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Number Of Included",
+        },
+        number_of_gained: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Number Of Gained",
+        },
+        number_of_dropped: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Number Of Dropped",
+        },
+        number_of_lost: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Number Of Lost",
+        },
+        first_gained_index: {
+            anyOf: [
+                {
+                    type: "integer",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "First Gained Index",
+        },
         email_address: {
             anyOf: [
                 {
@@ -1942,6 +2018,18 @@ export const SearchRequestSchemaSchema = {
             default: false,
             title: "Exclude All",
         },
+        email_address: {
+            anyOf: [
+                {
+                    maxLength: 254,
+                    type: "string",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            title: "Email Address",
+        },
     },
     required: ["input"],
     title: "SearchRequestSchema",
@@ -1959,6 +2047,10 @@ export const JobsResponseSchemaSchema = {
                     type: "null",
                 },
             ],
+        },
+        query_name: {
+            title: "Query Name",
+            type: "string",
         },
         id: {
             anyOf: [
@@ -1991,7 +2083,7 @@ export const JobsResponseSchemaSchema = {
             title: "Date Submitted",
         },
     },
-    required: ["task"],
+    required: ["task", "query_name"],
     title: "JobsResponseSchema",
     type: "object",
 } as const;

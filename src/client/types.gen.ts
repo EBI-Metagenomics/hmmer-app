@@ -72,6 +72,12 @@ export type ResultQuerySchema = {
     with_domains?: boolean | null;
 };
 
+export type BatchResponseSchema = {
+    id: string;
+    query_name: string;
+    status: string;
+};
+
 export type HmmdSearchStats = {
     id?: string;
     algo?: string;
@@ -264,6 +270,11 @@ export type JobDetailsResponseSchema = {
     iterations?: number | null;
     date_submitted?: Date | null;
     number_of_hits?: number | null;
+    number_of_included?: number | null;
+    number_of_gained?: number | null;
+    number_of_dropped?: number | null;
+    number_of_lost?: number | null;
+    first_gained_index?: number | null;
     email_address?: string | null;
 };
 
@@ -331,10 +342,12 @@ export type SearchRequestSchema = {
     with_architecture?: boolean | null;
     iterations?: number | null;
     exclude_all?: boolean | null;
+    email_address?: string | null;
 };
 
 export type JobsResponseSchema = {
     task: TaskResultSchema | null;
+    query_name: string;
     id?: string | null;
     algo?: string;
     date_submitted?: Date | null;
@@ -487,7 +500,7 @@ export type ResultApiGetResultResponses = {
     /**
      * OK
      */
-    200: ResultResponseSchema | Array<JackhmmerResponseSchema>;
+    200: ResultResponseSchema | Array<JackhmmerResponseSchema> | Array<BatchResponseSchema>;
 };
 
 export type ResultApiGetResultResponse = ResultApiGetResultResponses[keyof ResultApiGetResultResponses];

@@ -89,6 +89,12 @@ export const zResultQuerySchema = z.object({
     with_domains: z.union([z.boolean(), z.null()]).optional(),
 });
 
+export const zBatchResponseSchema = z.object({
+    id: z.string(),
+    query_name: z.string(),
+    status: z.string(),
+});
+
 export const zHmmdSearchStats = z.object({
     id: z.string().optional(),
     algo: z.string().optional(),
@@ -284,6 +290,11 @@ export const zJobDetailsResponseSchema = z.object({
     iterations: z.union([z.number(), z.null()]).optional(),
     date_submitted: z.union([z.string().datetime(), z.null()]).optional(),
     number_of_hits: z.union([z.number(), z.null()]).optional(),
+    number_of_included: z.union([z.number(), z.null()]).optional(),
+    number_of_gained: z.union([z.number(), z.null()]).optional(),
+    number_of_dropped: z.union([z.number(), z.null()]).optional(),
+    number_of_lost: z.union([z.number(), z.null()]).optional(),
+    first_gained_index: z.union([z.number(), z.null()]).optional(),
     email_address: z.union([z.string().max(254), z.null()]).optional(),
 });
 
@@ -335,10 +346,12 @@ export const zSearchRequestSchema = z.object({
     with_architecture: z.union([z.boolean(), z.null()]).optional(),
     iterations: z.union([z.number(), z.null()]).optional(),
     exclude_all: z.union([z.boolean(), z.null()]).optional(),
+    email_address: z.union([z.string().max(254), z.null()]).optional(),
 });
 
 export const zJobsResponseSchema = z.object({
     task: z.union([zTaskResultSchema, z.null()]),
+    query_name: z.string(),
     id: z.union([z.string().uuid(), z.null()]).optional(),
     algo: z.string().max(16).optional().default("phmmer"),
     date_submitted: z.union([z.string().datetime(), z.null()]).optional(),
@@ -404,7 +417,11 @@ export const zArchitectureApiGetAnnotationsResponse = zArchitectureAnnotationsRe
 
 export const zArchitectureApiGetAllArchitecturesResponse = zArchitectureListResponseSchema;
 
-export const zResultApiGetResultResponse = z.union([zResultResponseSchema, z.array(zJackhmmerResponseSchema)]);
+export const zResultApiGetResultResponse = z.union([
+    zResultResponseSchema,
+    z.array(zJackhmmerResponseSchema),
+    z.array(zBatchResponseSchema),
+]);
 
 export const zResultApiGetDomainsResponse = zAlignmentResponseSchema;
 
