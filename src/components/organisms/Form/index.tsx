@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { useForm, FormProvider } from "react-hook-form";
@@ -17,6 +17,7 @@ import {
     FilterInput,
     DatabaseInput,
     IterationsInput,
+    EmailInput,
     Input,
 } from "@components/molecules";
 
@@ -26,6 +27,7 @@ interface FormProps {
 
 export const Form: React.FC<FormProps> = ({ algo }) => {
     const navigate = useNavigate();
+    const [isBatch, setIsBatch] = useState(false);
 
     const defaultValues = useMemo(
         () => ({
@@ -43,11 +45,13 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
         mode: "onChange",
     });
 
-    const { resetField, formState, getFieldState, setError } = methods;
+    const { resetField, formState, getFieldState, setError, watch } = methods;
     const seqFieldState = getFieldState("input", formState);
     const submitDisabled = seqFieldState.invalid || !seqFieldState.isDirty || formState.isSubmitting;
     const resetDisabled = formState.isSubmitting || !seqFieldState.isDirty;
     const cleanDisabled = formState.isSubmitting || !seqFieldState.isDirty;
+
+    const iterations = watch("iterations");
 
     const { mutateAsync, error } = useMutation({
         ...searchApiSearchMutation(),
@@ -65,7 +69,21 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
 
     useEffect(() => {
         resetField("input");
+        setIsBatch(false);
     }, [algo]);
+
+    useEffect(() => {
+        const subscription = watch(({ input }, { name, type }) => {
+            if (name === "input" && type === "change") {
+                const multipleFastaRegex = /^>.*[\r\n]+[\s\S]*?[\r\n]+>.*[\r\n]+[\s\S]*$/m;
+
+                if (multipleFastaRegex.test(input ?? "")) setIsBatch(true);
+                else setIsBatch(false);
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [watch]);
 
     return (
         <div className="vf-stack vf-stack--1200 | vf-u-padding__top--400">
@@ -92,7 +110,15 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                     })}
                 >
                     <div className="vf-stack vf-stack--800">
-                        <MenuSection title={algo === "jackhmmer" ? "Sequence/Alignment/Hmm": algo === "hmmsearch" ? "Alignment/HMM" : "Sequence"}>
+                        <MenuSection
+                            title={
+                                algo === "jackhmmer"
+                                    ? "Sequence/Alignment/Hmm"
+                                    : algo === "hmmsearch"
+                                      ? "Alignment/HMM"
+                                      : "Sequence"
+                            }
+                        >
                             <div className="vf-stack vf-stack--200">
                                 <Input
                                     mode={
@@ -141,6 +167,21 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                                 <DatabaseInput type="seq" />
                             </MenuSection>
                         )}
+                        {algo === "jackhmmer" && (
+                            <MenuSection title="Number of iterations">
+                                <IterationsInput />
+                            </MenuSection>
+                        )}
+                        {((algo === "jackhmmer" && (iterations ?? 1) > 1) || (algo !== "jackhmmer" && isBatch)) && (
+                            <MenuSection title="Email address">
+                                <EmailInput />
+                                <p className="vf-form__helper">
+                                    {algo === "jackhmmer"
+                                        ? "Get notified when your search converges or reaches desired number of iterations"
+                                        : "Get notified when the results are ready"}
+                                </p>
+                            </MenuSection>
+                        )}
                         {algo === "hmmscan" && (
                             <MenuSection title="HMM database">
                                 <DatabaseInput type="hmm" />
@@ -157,11 +198,6 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                         <MenuSection title="Filter">
                             <FilterInput />
                         </MenuSection>
-                        {algo === "jackhmmer" && (
-                            <MenuSection title="Number of iterations">
-                                <IterationsInput />
-                            </MenuSection>
-                        )}
                         {/* <MenuSection title="Taxonomy filter">
               <TaxonomyFilterInput />
             </MenuSection> */}

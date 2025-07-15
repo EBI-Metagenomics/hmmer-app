@@ -1,5 +1,6 @@
 export { Annotations } from "./Annotations";
 export { AlignmentView } from "./AlignmentView";
+export { BatchTable } from "./BatchTable";
 export { DomainArchitectureList } from "./DomainArchitectureList";
 export { DownloadList } from "./DownloadList";
 export { DistributionGraph } from "./DistributionGraph";

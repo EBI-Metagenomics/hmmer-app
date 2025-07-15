@@ -14,6 +14,7 @@ import {
     DomainArchitectureList,
     DownloadList,
     JackhmmerTable,
+    BatchTable,
 } from "@components/organisms";
 import { useStats, JackhmmerProvider } from "@/context";
 
@@ -41,6 +42,8 @@ const ResultsPage: React.FC = () => {
         );
 
     if (data?.algo == "jackhmmer" && data.iteration === 0) return <JackhmmerTable id={id!} />;
+
+    if (_.startsWith(data?.input_type ?? "", "multi")) return <BatchTable id={id!} />;
 
     return (
         <JackhmmerProvider>

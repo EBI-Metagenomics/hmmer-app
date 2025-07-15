@@ -13,6 +13,10 @@ const columns = [
         header: "Status",
         cell: ({ row }: { row: Row<JobsResponseSchema> }) => <JobStatus status={row.original.task?.status}/>
     }),
+    columnHelper.accessor("query_name", {
+        header: "Query name",
+        cell: ({ row }: { row: Row<JobsResponseSchema> }) => <span>{row.original.query_name}</span>
+    }),
     columnHelper.accessor("id", {
         header: "ID",
         cell: ({ row }: { row: Row<JobsResponseSchema> }) => (

@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import _ from "lodash";
 import { differenceInSeconds } from "date-fns";
-import { useSearchParams, useNavigate } from "react-router";
+import { useSearchParams, useNavigate, NavLink } from "react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { searchApiSearchMutation, searchApiGetJobDetailsOptions } from "@/client/@tanstack/react-query.gen";
 
@@ -572,6 +572,14 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                     onJumpToHit={handleJumpToHit}
                     onSequenceSelectionChange={setSequenceSelection}
                 />
+            )}
+            {algo === "phmmer" && jobDetails?.parent_job_id && (
+                <NavLink
+                    className="vf-button vf-button--secondary vf-button--sm"
+                    to={`/results/${jobDetails.parent_job_id}/score`}
+                >
+                    Go to Batch job summary
+                </NavLink>
             )}
             {algo !== "hmmsearch" && algo !== "jackhmmer" && <Annotations id={id} />}
             {taxonomyIds.length === 0 && !architecture && algo !== "hmmscan" && <DistributionGraph id={id} />}
