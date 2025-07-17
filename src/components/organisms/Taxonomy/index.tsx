@@ -37,7 +37,7 @@ export const TaxonomyElement: React.FC<TaxonomyElementProps> = ({ id }) => {
         return _.orderBy(rows, "count", "desc");
     };
 
-    const onFocusChange = (e: FocusEvent) => {
+    const onFocusChange = (e: CustomEvent) => {
         setFocusedNode(e.detail as unknown as Node);
     };
 
