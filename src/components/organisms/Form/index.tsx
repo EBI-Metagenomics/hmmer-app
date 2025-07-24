@@ -11,7 +11,7 @@ import { SearchRequestSchema } from "@/client/types.gen";
 import { searchApiSearchMutation } from "@/client/@tanstack/react-query.gen";
 import { MenuSection } from "@components/atoms";
 import {
-    // TaxonomyFilterInput,
+    TaxonomyFilterInput,
     CutOffInput,
     GapPenaltiesInput,
     FilterInput,
@@ -71,7 +71,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
         resetField("input");
         setIsBatch(false);
     }, [algo]);
-
+    console.log(formState.errors);
     useEffect(() => {
         const subscription = watch(({ input }, { name, type }) => {
             if (name === "input" && type === "change") {
@@ -96,6 +96,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
             <FormProvider {...methods}>
                 <form
                     onSubmit={methods.handleSubmit((data) => {
+                        console.log(data);
                         mutateAsync(
                             {
                                 path: { algo },
@@ -185,6 +186,11 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                         {algo === "hmmscan" && (
                             <MenuSection title="HMM database">
                                 <DatabaseInput type="hmm" />
+                            </MenuSection>
+                        )}
+                        {algo !== "hmmscan" && (
+                            <MenuSection title="Taxonomy restriction">
+                                <TaxonomyFilterInput />
                             </MenuSection>
                         )}
                         <MenuSection title="Cut off">

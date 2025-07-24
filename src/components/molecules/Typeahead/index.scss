@@ -1,0 +1,30 @@
+.input-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.input-with-clear {
+    width: 100%;
+    padding-right: 30px; /* Make space for the X button */
+    padding: 8px 30px 8px 12px;
+}
+
+.clear-button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-55%);
+    background: none;
+    border: none;
+    font-size: 2.4rem;
+    cursor: pointer;
+    color: #707372;
+    padding: 0;
+    width: 2rem;
+    height: 3rem;
+}
+
+.clear-button:hover {
+    color: #54585a;
+}

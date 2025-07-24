@@ -1498,6 +1498,10 @@ export const JobDetailsResponseSchemaSchema = {
             default: 22,
             title: "incdomT",
         },
+        taxonomy_ids: {
+            title: "Taxonomy Ids",
+            type: "object",
+        },
         popen: {
             anyOf: [
                 {
@@ -1794,6 +1798,21 @@ export const SearchRequestSchemaSchema = {
                 },
             ],
             title: "Database",
+        },
+        taxonomy_ids: {
+            anyOf: [
+                {
+                    items: {
+                        type: "integer",
+                    },
+                    type: "array",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: [],
+            title: "Taxonomy Ids",
         },
         include: {
             anyOf: [

@@ -1,8 +1,55 @@
-.tree {
-  border: 2px solid var(--vf-color--grey);
-  box-sizing: border-box;
+.taxonomy-item{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.1rem;
+    width: 300px;
 }
 
-.tree--row {
-  padding-left: 0.5rem;
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #3b6fb6;
+  color: #ffffff;
+  padding: 0.6rem 0.7rem;
+  max-width: 300px;
+  gap: 0.8rem;
+}
+
+.chip-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chip-title {
+  font-weight: bold;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.chip-subtitle {
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chip-close {
+  background: none;
+  color: #ffffff;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  margin-left: auto;
+}
+
+.chip-close:hover {
+  color: #d0d0ce;
 }

@@ -263,6 +263,9 @@ export type JobDetailsResponseSchema = {
     incdomE?: number | null;
     incT?: number | null;
     incdomT?: number | null;
+    taxonomy_ids?: {
+        [key: string]: unknown;
+    };
     popen?: number | null;
     pextend?: number | null;
     mx?: string | null;
@@ -324,6 +327,7 @@ export type SearchRequestSchema = {
     input: string;
     input_type?: string | null;
     database?: string | null;
+    taxonomy_ids?: Array<number> | null;
     include?: Array<number> | null;
     exclude?: Array<number> | null;
     threshold?: string | null;
@@ -664,6 +668,7 @@ export type TaxonomyApiSearchTaxonomyData = {
     path?: never;
     query: {
         q: string;
+        database: string;
     };
     url: "/api/v1/taxonomy/search";
 };
