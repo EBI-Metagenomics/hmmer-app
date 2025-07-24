@@ -1,10 +1,11 @@
-import _ from "lodash";
+import _, { max } from "lodash";
 import { useCallback, useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
-
+import pluralize from "pluralize";
 import { useFileContent } from "@hooks/useFileContent";
 
+import { SearchRequestSchema } from "@/client/types.gen";
 import { ProgressIndicator } from "@components/atoms/ProgressIndicator";
 
 import "./index.scss";
@@ -38,11 +39,13 @@ O62275_CAEEL/594-924              TFVFIITD.DSITT.LHQRYKMIEKDTKMIVQDMKLSKALSV....
 
 interface InputProps {
     mode: ("sequence" | "hmm" | "alignment")[];
+    onBatchModeChange: (isBatch: boolean) => void;
 }
 
-export const Input: React.FC<InputProps> = ({ mode }) => {
+export const Input: React.FC<InputProps> = ({ mode, onBatchModeChange }) => {
     const [file, setFile] = useState<File | null>(null);
     const [isEmpty, setIsEmpty] = useState(true);
+    const [helperMessage, setHelperMessage] = useState("");
 
     const { content, error: fileError, isLoading } = useFileContent(file);
 
@@ -52,7 +55,7 @@ export const Input: React.FC<InputProps> = ({ mode }) => {
         watch,
         resetField,
         formState: { isSubmitted, isSubmitting, errors },
-    } = useFormContext();
+    } = useFormContext<SearchRequestSchema>();
 
     useEffect(() => {
         if (content) {
@@ -65,8 +68,57 @@ export const Input: React.FC<InputProps> = ({ mode }) => {
             if (name === "input") {
                 setIsEmpty(value.input === "");
 
-                if (value.input === "") {
+                if (!value.input || !value.input.trim()) {
                     setFile(null);
+                    onBatchModeChange(false);
+                    setHelperMessage("");
+
+                    return;
+                }
+
+                const singleFastaRegex = />[^\n\r]*\r?\n(?:[A-Za-z*-]+\r?\n?)+/g;
+                const fastaMatches = value.input.match(singleFastaRegex);
+
+                if (fastaMatches) {
+                    const biggestBasePairCount = _(fastaMatches)
+                        .map((match) => {
+                            return _(match)
+                                .trim()
+                                .split(/\r?\n/)
+                                .filter((line) => !_.startsWith(line, ">"))
+                                .join("")
+                                .replace(/[^A-Za-z]/, "").length;
+                        })
+                        .max();
+
+                    if (fastaMatches.length > 1) {
+                        onBatchModeChange(true);
+                        setHelperMessage(
+                            `${fastaMatches.length} sequences with the longest having ${biggestBasePairCount} base ${pluralize("pair", biggestBasePairCount)}`,
+                        );
+                    } else {
+                        onBatchModeChange(false);
+                        setHelperMessage(
+                            `1 sequence of ${biggestBasePairCount} base ${pluralize("pair", biggestBasePairCount)}`,
+                        );
+                    }
+
+                    return;
+                }
+
+                const singneHMMRegex = /\bHMMER.*?^\/\/$/gms;
+                const hmmMatches = value.input.match(singneHMMRegex);
+
+                if (hmmMatches) {
+                    if (hmmMatches.length > 1) {
+                        onBatchModeChange(true);
+                        setHelperMessage(`${hmmMatches.length} HMMs`);
+                    } else {
+                        onBatchModeChange(false);
+                        setHelperMessage("");
+                    }
+
+                    return;
                 }
             }
         });
@@ -84,6 +136,7 @@ export const Input: React.FC<InputProps> = ({ mode }) => {
         if (file) {
             setFile(file);
         }
+        setHelperMessage("");
     }, []);
 
     const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
@@ -180,6 +233,7 @@ export const Input: React.FC<InputProps> = ({ mode }) => {
 
                 {file && !isSubmitting && <div className="filename-container">{file.name}</div>}
             </div>
+            {helperMessage && <p className="vf-form__helper">{helperMessage}</p>}
             {errors.input && <p className="vf-form__helper vf-form__helper--error">{errors.input.message as string}</p>}
         </>
     );

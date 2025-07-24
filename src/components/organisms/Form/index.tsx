@@ -72,19 +72,6 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
         setIsBatch(false);
     }, [algo]);
 
-    useEffect(() => {
-        const subscription = watch(({ input }, { name, type }) => {
-            if (name === "input" && type === "change") {
-                const multipleFastaRegex = /^>.*[\r\n]+[\s\S]*?[\r\n]+>.*[\r\n]+[\s\S]*$/m;
-
-                if (multipleFastaRegex.test(input ?? "")) setIsBatch(true);
-                else setIsBatch(false);
-            }
-        });
-
-        return () => subscription.unsubscribe();
-    }, [watch]);
-
     return (
         <div className="vf-stack vf-stack--1200 | vf-u-padding__top--400">
             <h3 className="vf-text vf-text-heading--3 vf-u-text-color--grey">
@@ -115,8 +102,8 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                                 algo === "jackhmmer"
                                     ? "Sequence/Alignment/Hmm"
                                     : algo === "hmmsearch"
-                                      ? "Alignment/HMM"
-                                      : "Sequence"
+                                      ? "Alignment/HMM(s)"
+                                      : "Sequence(s)"
                             }
                         >
                             <div className="vf-stack vf-stack--200">
@@ -128,6 +115,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                                               ? ["alignment", "hmm"]
                                               : ["sequence"]
                                     }
+                                    onBatchModeChange={setIsBatch}
                                 />
                                 <div>
                                     <button
