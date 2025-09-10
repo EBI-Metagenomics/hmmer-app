@@ -28,7 +28,9 @@ const taskResultSchemaSchemaResponseTransformer = (data: any) => {
 };
 
 const jobDetailsResponseSchemaSchemaResponseTransformer = (data: any) => {
-    data.task = taskResultSchemaSchemaResponseTransformer(data.task);
+    if (data.task) {
+        data.task = taskResultSchemaSchemaResponseTransformer(data.task);
+    }
     data.database = databaseResponseSchemaSchemaResponseTransformer(data.database);
     if (data.date_submitted) {
         data.date_submitted = new Date(data.date_submitted);
@@ -42,7 +44,9 @@ export const searchApiGetJobDetailsResponseTransformer = async (data: any): Prom
 };
 
 const jobsResponseSchemaSchemaResponseTransformer = (data: any) => {
-    data.task = taskResultSchemaSchemaResponseTransformer(data.task);
+    if (data.task) {
+        data.task = taskResultSchemaSchemaResponseTransformer(data.task);
+    }
     if (data.date_submitted) {
         data.date_submitted = new Date(data.date_submitted);
     }
@@ -57,9 +61,11 @@ export const searchApiGetJobsResponseTransformer = async (data: any): Promise<Se
 };
 
 const taxonomyTreeSchemaResponseTransformer = (data: any) => {
-    data.children = data.children.map((item: any) => {
-        return taxonomyTreeSchemaResponseTransformer(item);
-    });
+    if (data.children) {
+        data.children = data.children.map((item: any) => {
+            return taxonomyTreeSchemaResponseTransformer(item);
+        });
+    }
     return data;
 };
 

@@ -2,7 +2,7 @@ import _ from "lodash";
 import { NodeRendererProps, Tree, NodeApi } from "react-arborist";
 import { Suspense, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { createClient } from "@hey-api/client-fetch";
+import { createClient } from "@/client/client";
 
 import { taxonomyApiGetOptions } from "@/client/@tanstack/react-query.gen";
 

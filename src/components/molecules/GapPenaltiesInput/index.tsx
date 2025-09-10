@@ -11,7 +11,7 @@ export const GapPenaltiesInput: React.FC = () => {
                 </label>
                 <input
                     {...register("popen", { valueAsNumber: true })}
-                    className="vf-form__input"
+                    className={`vf-form__input ${errors.popen && "vf-form__input--invalid"}`}
                     type="number"
                     step="any"
                     id="popen"
@@ -24,7 +24,7 @@ export const GapPenaltiesInput: React.FC = () => {
                 </label>
                 <input
                     {...register("pextend", { valueAsNumber: true })}
-                    className="vf-form__input"
+                    className={`vf-form__input ${errors.pextend && "vf-form__input--invalid"}`}
                     type="number"
                     step="any"
                     id="pextend"
