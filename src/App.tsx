@@ -6,7 +6,7 @@ import ReactModal from "react-modal";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { client } from "@/client/client.gen";
-import { Hero, EBIFooter } from "./components/molecules";
+import { Hero, EBIFooter, CookieBanner } from "./components/molecules";
 import Navigation from "./components/Navigation";
 import Home from "./components/pages/home";
 import SearchPage from "./components/pages/search";
@@ -67,6 +67,7 @@ function App() {
                             </Routes>
                         </BrowserRouter>
                     </div>
+                    <CookieBanner />
                     <EBIFooter />
                     <ReactQueryDevtools initialIsOpen={false} />
                 </StatsProvider>

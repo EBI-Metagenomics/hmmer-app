@@ -1,4 +1,5 @@
 export { ColumnSelection } from "./ColumnSelection";
+export { CookieBanner } from "./CookieBanner";
 export { CutOffInput } from "./CutOffInput";
 export { EBIFooter } from "./EBIFooter";
 export { EmailInput } from "./EmailInput";
