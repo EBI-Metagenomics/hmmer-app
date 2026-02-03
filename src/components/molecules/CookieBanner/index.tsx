@@ -2,12 +2,24 @@ import { useState } from "react";
 import { addYears } from "date-fns";
 
 export const CookieBanner: React.FC = () => {
-    const [display, setDisplay] = useState(document && !(document.cookie.match(/cookies-accepted=(true)/i) || [])[1]);
+    const [display, setDisplay] = useState(document && !document.cookie.match(/cookies-accepted=(true|false)/i));
 
-    const handleClick = () => {
+    const handleAccept = () => {
         const expires = addYears(new Date(), 1);
 
         document.cookie = `cookies-accepted=true;expires=${expires.toUTCString()};path=${import.meta.env.BASE_URL}`;
+
+        if (window._paq) {
+            window._paq.push(["setConsentGiven"]);
+        }
+
+        setDisplay(false);
+    };
+
+    const handleReject = () => {
+        const expires = addYears(new Date(), 1);
+
+        document.cookie = `cookies-accepted=false;expires=${expires.toUTCString()};path=${import.meta.env.BASE_URL}`;
 
         setDisplay(false);
     };
@@ -18,23 +30,24 @@ export const CookieBanner: React.FC = () => {
         <div className="vf-banner vf-banner--fixed vf-banner--bottom vf-banner--notice">
             <div className="vf-banner__content | vf-grid">
                 <p className="vf-banner__text vf-banner__text--lg">
-                    This website uses cookies, and the limiting processing of your personal data to function. By using
-                    the site you are agreeing to this as outlined in our{" "}
-                    <a
-                        className="vf-banner__link"
-                        href="https://www.ebi.ac.uk/data-protection/privacy-notice/embl-ebi-public-website"
-                    >
+                    This site uses cookies. We use essential cookies for site functionality and Matomo analytics to help
+                    improve the service. No data is shared with third parties for advertising. See our{" "}
+                    <a className="vf-banner__link" href="/privacy-notice.pdf">
                         Privacy Notice
                     </a>{" "}
                     and{" "}
-                    <a className="vf-banner__link" href="https://www.ebi.ac.uk/about/terms-of-use">
+                    <a className="vf-banner__link" href="//www.ebi.ac.uk/about/terms-of-use">
                         Terms Of Use
                     </a>
                     .
                 </p>
 
-                <button className="vf-button vf-button--primary" onClick={handleClick} type="button">
-                    I agree, dismiss this banner
+                <button className="vf-button vf-button--primary" onClick={handleAccept} type="button">
+                    Accept all
+                </button>
+
+                <button className="vf-button vf-button--secondary" onClick={handleReject} type="button">
+                    Reject non-essential
                 </button>
             </div>
         </div>
