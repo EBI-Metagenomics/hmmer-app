@@ -11,13 +11,7 @@ export type ArchitectureSchema = {
     /**
      * Sequence Accession
      */
-    /**
-     * Sequence Accession
-     */
     sequence_accession?: string | null;
-    /**
-     * Sequence External Link
-     */
     /**
      * Sequence External Link
      */
@@ -25,20 +19,11 @@ export type ArchitectureSchema = {
     /**
      * Names
      */
-    /**
-     * Names
-     */
     names: string;
     /**
      * Score
      */
-    /**
-     * Score
-     */
     score: number;
-    /**
-     * Graphics
-     */
     /**
      * Graphics
      */
@@ -48,15 +33,9 @@ export type ArchitectureSchema = {
     /**
      * Accessions
      */
-    /**
-     * Accessions
-     */
     accessions: string;
 };
 
-/**
- * ArchitectureQuerySchema
- */
 /**
  * ArchitectureQuerySchema
  */
@@ -64,13 +43,7 @@ export type ArchitectureQuerySchema = {
     /**
      * Page
      */
-    /**
-     * Page
-     */
     page?: number;
-    /**
-     * Page Size
-     */
     /**
      * Page Size
      */
@@ -80,13 +53,7 @@ export type ArchitectureQuerySchema = {
 /**
  * ArchitectureAggregationSchema
  */
-/**
- * ArchitectureAggregationSchema
- */
 export type ArchitectureAggregationSchema = {
-    /**
-     * Count
-     */
     /**
      * Count
      */
@@ -97,13 +64,7 @@ export type ArchitectureAggregationSchema = {
 /**
  * ArchitectureResponseSchema
  */
-/**
- * ArchitectureResponseSchema
- */
 export type ArchitectureResponseSchema = {
-    /**
-     * Status
-     */
     /**
      * Status
      */
@@ -111,13 +72,7 @@ export type ArchitectureResponseSchema = {
     /**
      * Architectures
      */
-    /**
-     * Architectures
-     */
     architectures?: Array<ArchitectureAggregationSchema> | null;
-    /**
-     * Page Count
-     */
     /**
      * Page Count
      */
@@ -127,20 +82,11 @@ export type ArchitectureResponseSchema = {
 /**
  * Annotation
  */
-/**
- * Annotation
- */
 export type Annotation = {
     /**
      * Length
      */
-    /**
-     * Length
-     */
     length: number;
-    /**
-     * Regions
-     */
     /**
      * Regions
      */
@@ -150,20 +96,11 @@ export type Annotation = {
 /**
  * ArchitectureAnnotationsResponseSchema
  */
-/**
- * ArchitectureAnnotationsResponseSchema
- */
 export type ArchitectureAnnotationsResponseSchema = {
     /**
      * Status
      */
-    /**
-     * Status
-     */
     status: string;
-    /**
-     * Annotations
-     */
     /**
      * Annotations
      */
@@ -173,13 +110,7 @@ export type ArchitectureAnnotationsResponseSchema = {
 /**
  * Region
  */
-/**
- * Region
- */
 export type Region = {
-    /**
-     * Color
-     */
     /**
      * Color
      */
@@ -187,13 +118,7 @@ export type Region = {
     /**
      * End Style
      */
-    /**
-     * End Style
-     */
     end_style?: string;
-    /**
-     * Start Style
-     */
     /**
      * Start Style
      */
@@ -201,13 +126,7 @@ export type Region = {
     /**
      * Display
      */
-    /**
-     * Display
-     */
     display?: boolean;
-    /**
-     * Href
-     */
     /**
      * Href
      */
@@ -215,13 +134,7 @@ export type Region = {
     /**
      * Clan
      */
-    /**
-     * Clan
-     */
     clan?: string;
-    /**
-     * Metadata
-     */
     /**
      * Metadata
      */
@@ -231,13 +144,7 @@ export type Region = {
     /**
      * Type
      */
-    /**
-     * Type
-     */
     type?: string;
-    /**
-     * Text
-     */
     /**
      * Text
      */
@@ -245,13 +152,7 @@ export type Region = {
     /**
      * Model Length
      */
-    /**
-     * Model Length
-     */
     model_length: number;
-    /**
-     * Model Start
-     */
     /**
      * Model Start
      */
@@ -259,13 +160,7 @@ export type Region = {
     /**
      * Model End
      */
-    /**
-     * Model End
-     */
     model_end: number;
-    /**
-     * Start
-     */
     /**
      * Start
      */
@@ -273,20 +168,11 @@ export type Region = {
     /**
      * End
      */
-    /**
-     * End
-     */
     end: number;
     /**
      * Ali Start
      */
-    /**
-     * Ali Start
-     */
     ali_start: number;
-    /**
-     * Ali End
-     */
     /**
      * Ali End
      */
@@ -296,13 +182,7 @@ export type Region = {
 /**
  * ArchitectureListResponseSchema
  */
-/**
- * ArchitectureListResponseSchema
- */
 export type ArchitectureListResponseSchema = {
-    /**
-     * Status
-     */
     /**
      * Status
      */
@@ -310,13 +190,7 @@ export type ArchitectureListResponseSchema = {
     /**
      * Architectures
      */
-    /**
-     * Architectures
-     */
     architectures: Array<ArchitectureSchema> | null;
-    /**
-     * Page Count
-     */
     /**
      * Page Count
      */
@@ -326,13 +200,7 @@ export type ArchitectureListResponseSchema = {
 /**
  * ResultQuerySchema
  */
-/**
- * ResultQuerySchema
- */
 export type ResultQuerySchema = {
-    /**
-     * Page
-     */
     /**
      * Page
      */
@@ -340,13 +208,7 @@ export type ResultQuerySchema = {
     /**
      * Page Size
      */
-    /**
-     * Page Size
-     */
     page_size?: number;
-    /**
-     * Taxonomy Ids
-     */
     /**
      * Taxonomy Ids
      */
@@ -354,13 +216,7 @@ export type ResultQuerySchema = {
     /**
      * Architecture
      */
-    /**
-     * Architecture
-     */
     architecture?: string | null;
-    /**
-     * With Domains
-     */
     /**
      * With Domains
      */
@@ -370,13 +226,7 @@ export type ResultQuerySchema = {
 /**
  * BatchResponseSchema
  */
-/**
- * BatchResponseSchema
- */
 export type BatchResponseSchema = {
-    /**
-     * Id
-     */
     /**
      * Id
      */
@@ -384,13 +234,7 @@ export type BatchResponseSchema = {
     /**
      * Query Name
      */
-    /**
-     * Query Name
-     */
     query_name: string;
-    /**
-     * Status
-     */
     /**
      * Status
      */
@@ -400,13 +244,7 @@ export type BatchResponseSchema = {
 /**
  * HmmdSearchStats
  */
-/**
- * HmmdSearchStats
- */
 export type HmmdSearchStats = {
-    /**
-     * Id
-     */
     /**
      * Id
      */
@@ -414,13 +252,7 @@ export type HmmdSearchStats = {
     /**
      * Algo
      */
-    /**
-     * Algo
-     */
     algo?: string;
-    /**
-     * Database
-     */
     /**
      * Database
      */
@@ -428,13 +260,7 @@ export type HmmdSearchStats = {
     /**
      * Elapsed
      */
-    /**
-     * Elapsed
-     */
     elapsed: number;
-    /**
-     * User
-     */
     /**
      * User
      */
@@ -442,13 +268,7 @@ export type HmmdSearchStats = {
     /**
      * Sys
      */
-    /**
-     * Sys
-     */
     sys: number;
-    /**
-     * Z
-     */
     /**
      * Z
      */
@@ -456,13 +276,7 @@ export type HmmdSearchStats = {
     /**
      * Domz
      */
-    /**
-     * Domz
-     */
     domZ: number;
-    /**
-     * Z Setby
-     */
     /**
      * Z Setby
      */
@@ -470,13 +284,7 @@ export type HmmdSearchStats = {
     /**
      * Domz Setby
      */
-    /**
-     * Domz Setby
-     */
     domZ_setby: number;
-    /**
-     * Nmodels
-     */
     /**
      * Nmodels
      */
@@ -484,13 +292,7 @@ export type HmmdSearchStats = {
     /**
      * Nseqs
      */
-    /**
-     * Nseqs
-     */
     nseqs: number;
-    /**
-     * N Past Msv
-     */
     /**
      * N Past Msv
      */
@@ -498,13 +300,7 @@ export type HmmdSearchStats = {
     /**
      * N Past Bias
      */
-    /**
-     * N Past Bias
-     */
     n_past_bias: number;
-    /**
-     * N Past Vit
-     */
     /**
      * N Past Vit
      */
@@ -512,13 +308,7 @@ export type HmmdSearchStats = {
     /**
      * N Past Fwd
      */
-    /**
-     * N Past Fwd
-     */
     n_past_fwd: number;
-    /**
-     * Nhits
-     */
     /**
      * Nhits
      */
@@ -526,13 +316,7 @@ export type HmmdSearchStats = {
     /**
      * Nreported
      */
-    /**
-     * Nreported
-     */
     nreported: number;
-    /**
-     * Nincluded
-     */
     /**
      * Nincluded
      */
@@ -540,13 +324,7 @@ export type HmmdSearchStats = {
     /**
      * Ngained
      */
-    /**
-     * Ngained
-     */
     ngained?: number | null;
-    /**
-     * Nlost
-     */
     /**
      * Nlost
      */
@@ -554,13 +332,7 @@ export type HmmdSearchStats = {
     /**
      * Ndropped
      */
-    /**
-     * Ndropped
-     */
     ndropped?: number | null;
-    /**
-     * First Gained Index
-     */
     /**
      * First Gained Index
      */
@@ -568,13 +340,7 @@ export type HmmdSearchStats = {
     /**
      * Hit Offsets
      */
-    /**
-     * Hit Offsets
-     */
     hit_offsets: Array<number> | null;
-    /**
-     * Size
-     */
     /**
      * Size
      */
@@ -584,13 +350,7 @@ export type HmmdSearchStats = {
 /**
  * JackhmmerResponseSchema
  */
-/**
- * JackhmmerResponseSchema
- */
 export type JackhmmerResponseSchema = {
-    /**
-     * Id
-     */
     /**
      * Id
      */
@@ -598,20 +358,11 @@ export type JackhmmerResponseSchema = {
     /**
      * Status
      */
-    /**
-     * Status
-     */
     status: string;
     /**
      * Iteration
      */
-    /**
-     * Iteration
-     */
     iteration: number;
-    /**
-     * Convergence Stats
-     */
     /**
      * Convergence Stats
      */
@@ -623,13 +374,7 @@ export type JackhmmerResponseSchema = {
 /**
  * P7AlignmentDisplay
  */
-/**
- * P7AlignmentDisplay
- */
 export type P7AlignmentDisplay = {
-    /**
-     * Size
-     */
     /**
      * Size
      */
@@ -637,13 +382,7 @@ export type P7AlignmentDisplay = {
     /**
      * N
      */
-    /**
-     * N
-     */
     n: number;
-    /**
-     * Hmmfrom
-     */
     /**
      * Hmmfrom
      */
@@ -651,13 +390,7 @@ export type P7AlignmentDisplay = {
     /**
      * Hmmto
      */
-    /**
-     * Hmmto
-     */
     hmmto: number;
-    /**
-     * M
-     */
     /**
      * M
      */
@@ -665,13 +398,7 @@ export type P7AlignmentDisplay = {
     /**
      * Sqfrom
      */
-    /**
-     * Sqfrom
-     */
     sqfrom: number;
-    /**
-     * Sqto
-     */
     /**
      * Sqto
      */
@@ -679,13 +406,7 @@ export type P7AlignmentDisplay = {
     /**
      * L
      */
-    /**
-     * L
-     */
     l: number;
-    /**
-     * String Presence Flags
-     */
     /**
      * String Presence Flags
      */
@@ -693,13 +414,7 @@ export type P7AlignmentDisplay = {
     /**
      * Rfline
      */
-    /**
-     * Rfline
-     */
     rfline: string | null;
-    /**
-     * Mmline
-     */
     /**
      * Mmline
      */
@@ -707,13 +422,7 @@ export type P7AlignmentDisplay = {
     /**
      * Csline
      */
-    /**
-     * Csline
-     */
     csline: string | null;
-    /**
-     * Model
-     */
     /**
      * Model
      */
@@ -721,13 +430,7 @@ export type P7AlignmentDisplay = {
     /**
      * Mline
      */
-    /**
-     * Mline
-     */
     mline: string;
-    /**
-     * Aseq
-     */
     /**
      * Aseq
      */
@@ -735,13 +438,7 @@ export type P7AlignmentDisplay = {
     /**
      * Ntseq
      */
-    /**
-     * Ntseq
-     */
     ntseq: string | null;
-    /**
-     * Ppline
-     */
     /**
      * Ppline
      */
@@ -749,13 +446,7 @@ export type P7AlignmentDisplay = {
     /**
      * Hmmname
      */
-    /**
-     * Hmmname
-     */
     hmmname: string;
-    /**
-     * Hmmacc
-     */
     /**
      * Hmmacc
      */
@@ -763,13 +454,7 @@ export type P7AlignmentDisplay = {
     /**
      * Hmmdesc
      */
-    /**
-     * Hmmdesc
-     */
     hmmdesc: string;
-    /**
-     * Sqname
-     */
     /**
      * Sqname
      */
@@ -777,13 +462,7 @@ export type P7AlignmentDisplay = {
     /**
      * Sqacc
      */
-    /**
-     * Sqacc
-     */
     sqacc: string;
-    /**
-     * Sqdesc
-     */
     /**
      * Sqdesc
      */
@@ -791,13 +470,7 @@ export type P7AlignmentDisplay = {
     /**
      * Identity
      */
-    /**
-     * Identity
-     */
     identity?: [number, number] | null;
-    /**
-     * Similarity
-     */
     /**
      * Similarity
      */
@@ -807,13 +480,7 @@ export type P7AlignmentDisplay = {
 /**
  * P7Domain
  */
-/**
- * P7Domain
- */
 export type P7Domain = {
-    /**
-     * Size
-     */
     /**
      * Size
      */
@@ -821,13 +488,7 @@ export type P7Domain = {
     /**
      * Ienv
      */
-    /**
-     * Ienv
-     */
     ienv: number;
-    /**
-     * Jenv
-     */
     /**
      * Jenv
      */
@@ -835,13 +496,7 @@ export type P7Domain = {
     /**
      * Iali
      */
-    /**
-     * Iali
-     */
     iali: number;
-    /**
-     * Jali
-     */
     /**
      * Jali
      */
@@ -849,13 +504,7 @@ export type P7Domain = {
     /**
      * Iorf
      */
-    /**
-     * Iorf
-     */
     iorf: number;
-    /**
-     * Jorf
-     */
     /**
      * Jorf
      */
@@ -863,13 +512,7 @@ export type P7Domain = {
     /**
      * Envsc
      */
-    /**
-     * Envsc
-     */
     envsc: number;
-    /**
-     * Domcorrection
-     */
     /**
      * Domcorrection
      */
@@ -877,13 +520,7 @@ export type P7Domain = {
     /**
      * Dombias
      */
-    /**
-     * Dombias
-     */
     dombias: number;
-    /**
-     * Oasc
-     */
     /**
      * Oasc
      */
@@ -891,13 +528,7 @@ export type P7Domain = {
     /**
      * Bitscore
      */
-    /**
-     * Bitscore
-     */
     bitscore: number;
-    /**
-     * Lnp
-     */
     /**
      * Lnp
      */
@@ -905,13 +536,7 @@ export type P7Domain = {
     /**
      * Ievalue
      */
-    /**
-     * Ievalue
-     */
     ievalue?: number;
-    /**
-     * Cevalue
-     */
     /**
      * Cevalue
      */
@@ -919,13 +544,7 @@ export type P7Domain = {
     /**
      * Is Reported
      */
-    /**
-     * Is Reported
-     */
     is_reported: boolean;
-    /**
-     * Is Included
-     */
     /**
      * Is Included
      */
@@ -933,13 +552,7 @@ export type P7Domain = {
     /**
      * Scores Per Pos Length
      */
-    /**
-     * Scores Per Pos Length
-     */
     scores_per_pos_length: number;
-    /**
-     * Scores Per Pos
-     */
     /**
      * Scores Per Pos
      */
@@ -948,13 +561,7 @@ export type P7Domain = {
     /**
      * Display
      */
-    /**
-     * Display
-     */
     display?: boolean;
-    /**
-     * Outcompeted
-     */
     /**
      * Outcompeted
      */
@@ -962,13 +569,7 @@ export type P7Domain = {
     /**
      * Significant
      */
-    /**
-     * Significant
-     */
     significant?: boolean;
-    /**
-     * Uniq
-     */
     /**
      * Uniq
      */
@@ -976,13 +577,7 @@ export type P7Domain = {
     /**
      * Segments
      */
-    /**
-     * Segments
-     */
     segments?: Array<[number, number]> | null;
-    /**
-     * Predicted Active Sites
-     */
     /**
      * Predicted Active Sites
      */
@@ -992,13 +587,7 @@ export type P7Domain = {
 /**
  * P7Hit
  */
-/**
- * P7Hit
- */
 export type P7Hit = {
-    /**
-     * Index
-     */
     /**
      * Index
      */
@@ -1006,13 +595,7 @@ export type P7Hit = {
     /**
      * Size
      */
-    /**
-     * Size
-     */
     size: number;
-    /**
-     * Window Length
-     */
     /**
      * Window Length
      */
@@ -1020,13 +603,7 @@ export type P7Hit = {
     /**
      * Sortkey
      */
-    /**
-     * Sortkey
-     */
     sortkey: number;
-    /**
-     * Score
-     */
     /**
      * Score
      */
@@ -1034,13 +611,7 @@ export type P7Hit = {
     /**
      * Pre Score
      */
-    /**
-     * Pre Score
-     */
     pre_score: number;
-    /**
-     * Sum Score
-     */
     /**
      * Sum Score
      */
@@ -1048,13 +619,7 @@ export type P7Hit = {
     /**
      * Bias
      */
-    /**
-     * Bias
-     */
     bias?: number;
-    /**
-     * Lnp
-     */
     /**
      * Lnp
      */
@@ -1062,13 +627,7 @@ export type P7Hit = {
     /**
      * Pre Lnp
      */
-    /**
-     * Pre Lnp
-     */
     pre_lnP: number;
-    /**
-     * Sum Lnp
-     */
     /**
      * Sum Lnp
      */
@@ -1076,13 +635,7 @@ export type P7Hit = {
     /**
      * Nexpected
      */
-    /**
-     * Nexpected
-     */
     nexpected: number;
-    /**
-     * Nregions
-     */
     /**
      * Nregions
      */
@@ -1090,13 +643,7 @@ export type P7Hit = {
     /**
      * Nclustered
      */
-    /**
-     * Nclustered
-     */
     nclustered: number;
-    /**
-     * Noverlaps
-     */
     /**
      * Noverlaps
      */
@@ -1104,13 +651,7 @@ export type P7Hit = {
     /**
      * Nenvelopes
      */
-    /**
-     * Nenvelopes
-     */
     nenvelopes: number;
-    /**
-     * Ndom
-     */
     /**
      * Ndom
      */
@@ -1118,13 +659,7 @@ export type P7Hit = {
     /**
      * Flags
      */
-    /**
-     * Flags
-     */
     flags: unknown;
-    /**
-     * Is Reported
-     */
     /**
      * Is Reported
      */
@@ -1132,13 +667,7 @@ export type P7Hit = {
     /**
      * Is Included
      */
-    /**
-     * Is Included
-     */
     is_included?: boolean;
-    /**
-     * Is New
-     */
     /**
      * Is New
      */
@@ -1146,13 +675,7 @@ export type P7Hit = {
     /**
      * Is Dropped
      */
-    /**
-     * Is Dropped
-     */
     is_dropped?: boolean;
-    /**
-     * Nreported
-     */
     /**
      * Nreported
      */
@@ -1160,13 +683,7 @@ export type P7Hit = {
     /**
      * Nincluded
      */
-    /**
-     * Nincluded
-     */
     nincluded: number;
-    /**
-     * Best Domain
-     */
     /**
      * Best Domain
      */
@@ -1174,13 +691,7 @@ export type P7Hit = {
     /**
      * Seqidx
      */
-    /**
-     * Seqidx
-     */
     seqidx: number;
-    /**
-     * Subseq Start
-     */
     /**
      * Subseq Start
      */
@@ -1188,13 +699,7 @@ export type P7Hit = {
     /**
      * String Presence Flags
      */
-    /**
-     * String Presence Flags
-     */
     string_presence_flags: unknown;
-    /**
-     * Name
-     */
     /**
      * Name
      */
@@ -1202,13 +707,7 @@ export type P7Hit = {
     /**
      * Acc
      */
-    /**
-     * Acc
-     */
     acc: string | null;
-    /**
-     * Desc
-     */
     /**
      * Desc
      */
@@ -1216,13 +715,7 @@ export type P7Hit = {
     /**
      * Evalue
      */
-    /**
-     * Evalue
-     */
     evalue?: number;
-    /**
-     * Metadata
-     */
     /**
      * Metadata
      */
@@ -1232,23 +725,14 @@ export type P7Hit = {
     /**
      * Domains
      */
-    /**
-     * Domains
-     */
     domains: Array<P7Domain> | null;
 };
 
 /**
  * Result
  */
-/**
- * Result
- */
 export type Result = {
     stats: HmmdSearchStats;
-    /**
-     * Hits
-     */
     /**
      * Hits
      */
@@ -1258,21 +742,12 @@ export type Result = {
 /**
  * ResultResponseSchema
  */
-/**
- * ResultResponseSchema
- */
 export type ResultResponseSchema = {
-    /**
-     * Status
-     */
     /**
      * Status
      */
     status: string;
     result?: Result | null;
-    /**
-     * Page Count
-     */
     /**
      * Page Count
      */
@@ -1282,13 +757,7 @@ export type ResultResponseSchema = {
 /**
  * AlignmentQuerySchema
  */
-/**
- * AlignmentQuerySchema
- */
 export type AlignmentQuerySchema = {
-    /**
-     * Index
-     */
     /**
      * Index
      */
@@ -1298,20 +767,11 @@ export type AlignmentQuerySchema = {
 /**
  * AlignmentResponseSchema
  */
-/**
- * AlignmentResponseSchema
- */
 export type AlignmentResponseSchema = {
     /**
      * Status
      */
-    /**
-     * Status
-     */
     status: string;
-    /**
-     * Domains
-     */
     /**
      * Domains
      */
@@ -1321,20 +781,11 @@ export type AlignmentResponseSchema = {
 /**
  * DatabaseResponseSchema
  */
-/**
- * DatabaseResponseSchema
- */
 export type DatabaseResponseSchema = {
     /**
      * Id
      */
-    /**
-     * Id
-     */
     id?: string | null;
-    /**
-     * Type
-     */
     /**
      * Type
      */
@@ -1346,20 +797,11 @@ export type DatabaseResponseSchema = {
     /**
      * Version
      */
-    /**
-     * Version
-     */
     version: string;
     /**
      * Release Date
      */
-    /**
-     * Release Date
-     */
     release_date?: Date;
-    /**
-     * Order
-     */
     /**
      * Order
      */
@@ -1369,15 +811,9 @@ export type DatabaseResponseSchema = {
 /**
  * JobDetailsResponseSchema
  */
-/**
- * JobDetailsResponseSchema
- */
 export type JobDetailsResponseSchema = {
     task: TaskResultSchema | null;
     database: DatabaseResponseSchema;
-    /**
-     * Iteration
-     */
     /**
      * Iteration
      */
@@ -1385,13 +821,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Next Job Id
      */
-    /**
-     * Next Job Id
-     */
     next_job_id: string | null;
-    /**
-     * Previous Job Id
-     */
     /**
      * Previous Job Id
      */
@@ -1399,13 +829,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Parent Job Id
      */
-    /**
-     * Parent Job Id
-     */
     parent_job_id: string | null;
-    /**
-     * Include
-     */
     /**
      * Include
      */
@@ -1413,13 +837,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Exclude
      */
-    /**
-     * Exclude
-     */
     exclude: Array<number>;
-    /**
-     * Id
-     */
     /**
      * Id
      */
@@ -1427,13 +845,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Algo
      */
-    /**
-     * Algo
-     */
     algo?: string;
-    /**
-     * Input
-     */
     /**
      * Input
      */
@@ -1441,13 +853,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Input Type
      */
-    /**
-     * Input Type
-     */
     input_type?: string;
-    /**
-     * Calculated Input
-     */
     /**
      * Calculated Input
      */
@@ -1455,13 +861,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Threshold
      */
-    /**
-     * Threshold
-     */
     threshold?: string;
-    /**
-     * E
-     */
     /**
      * E
      */
@@ -1469,13 +869,7 @@ export type JobDetailsResponseSchema = {
     /**
      * domE
      */
-    /**
-     * domE
-     */
     domE?: number | null;
-    /**
-     * T
-     */
     /**
      * T
      */
@@ -1483,13 +877,7 @@ export type JobDetailsResponseSchema = {
     /**
      * domT
      */
-    /**
-     * domT
-     */
     domT?: number | null;
-    /**
-     * incE
-     */
     /**
      * incE
      */
@@ -1497,20 +885,11 @@ export type JobDetailsResponseSchema = {
     /**
      * incdomE
      */
-    /**
-     * incdomE
-     */
     incdomE?: number | null;
     /**
      * incT
      */
-    /**
-     * incT
-     */
     incT?: number | null;
-    /**
-     * incdomT
-     */
     /**
      * incdomT
      */
@@ -1534,13 +913,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Pextend
      */
-    /**
-     * Pextend
-     */
     pextend?: number | null;
-    /**
-     * Mx
-     */
     /**
      * Mx
      */
@@ -1548,13 +921,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Exclude All
      */
-    /**
-     * Exclude All
-     */
     exclude_all?: boolean;
-    /**
-     * Iterations
-     */
     /**
      * Iterations
      */
@@ -1562,13 +929,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Date Submitted
      */
-    /**
-     * Date Submitted
-     */
     date_submitted?: Date | null;
-    /**
-     * Number Of Hits
-     */
     /**
      * Number Of Hits
      */
@@ -1576,13 +937,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Number Of Included
      */
-    /**
-     * Number Of Included
-     */
     number_of_included?: number | null;
-    /**
-     * Number Of Gained
-     */
     /**
      * Number Of Gained
      */
@@ -1590,13 +945,7 @@ export type JobDetailsResponseSchema = {
     /**
      * Number Of Dropped
      */
-    /**
-     * Number Of Dropped
-     */
     number_of_dropped?: number | null;
-    /**
-     * Number Of Lost
-     */
     /**
      * Number Of Lost
      */
@@ -1604,22 +953,13 @@ export type JobDetailsResponseSchema = {
     /**
      * First Gained Index
      */
-    /**
-     * First Gained Index
-     */
     first_gained_index?: number | null;
-    /**
-     * Email Address
-     */
     /**
      * Email Address
      */
     email_address?: string | null;
 };
 
-/**
- * TaskResultSchema
- */
 /**
  * TaskResultSchema
  */
@@ -1647,13 +987,7 @@ export type TaskResultSchema = {
 /**
  * ValidationErrorDetailSchema
  */
-/**
- * ValidationErrorDetailSchema
- */
 export type ValidationErrorDetailSchema = {
-    /**
-     * Type
-     */
     /**
      * Type
      */
@@ -1661,13 +995,7 @@ export type ValidationErrorDetailSchema = {
     /**
      * Loc
      */
-    /**
-     * Loc
-     */
     loc: Array<string>;
-    /**
-     * Msg
-     */
     /**
      * Msg
      */
@@ -1677,13 +1005,7 @@ export type ValidationErrorDetailSchema = {
 /**
  * ValidationErrorSchema
  */
-/**
- * ValidationErrorSchema
- */
 export type ValidationErrorSchema = {
-    /**
-     * Detail
-     */
     /**
      * Detail
      */
@@ -1693,22 +1015,13 @@ export type ValidationErrorSchema = {
 /**
  * SearchPatchSchema
  */
-/**
- * SearchPatchSchema
- */
 export type SearchPatchSchema = {
-    /**
-     * Email Address
-     */
     /**
      * Email Address
      */
     email_address?: string | null;
 };
 
-/**
- * AlgoChoices
- */
 /**
  * AlgoChoices
  */
@@ -1727,18 +1040,7 @@ export type AlgoChoices = (typeof AlgoChoices)[keyof typeof AlgoChoices];
 /**
  * SearchResponseSchema
  */
-/**
- * AlgoChoices
- */
-export type AlgoChoices = (typeof AlgoChoices)[keyof typeof AlgoChoices];
-
-/**
- * SearchResponseSchema
- */
 export type SearchResponseSchema = {
-    /**
-     * Id
-     */
     /**
      * Id
      */
@@ -1748,13 +1050,7 @@ export type SearchResponseSchema = {
 /**
  * SearchRequestSchema
  */
-/**
- * SearchRequestSchema
- */
 export type SearchRequestSchema = {
-    /**
-     * Input
-     */
     /**
      * Input
      */
@@ -1762,13 +1058,7 @@ export type SearchRequestSchema = {
     /**
      * Input Type
      */
-    /**
-     * Input Type
-     */
     input_type?: string | null;
-    /**
-     * Database
-     */
     /**
      * Database
      */
@@ -1777,9 +1067,6 @@ export type SearchRequestSchema = {
      * Include
      */
     include?: Array<number> | null;
-    /**
-     * Exclude
-     */
     /**
      * Exclude
      */
@@ -1799,13 +1086,7 @@ export type SearchRequestSchema = {
     /**
      * E
      */
-    /**
-     * E
-     */
     E?: number | null;
-    /**
-     * domE
-     */
     /**
      * domE
      */
@@ -1813,13 +1094,7 @@ export type SearchRequestSchema = {
     /**
      * T
      */
-    /**
-     * T
-     */
     T?: number | null;
-    /**
-     * domT
-     */
     /**
      * domT
      */
@@ -1827,13 +1102,7 @@ export type SearchRequestSchema = {
     /**
      * incE
      */
-    /**
-     * incE
-     */
     incE?: number | null;
-    /**
-     * incdomE
-     */
     /**
      * incdomE
      */
@@ -1841,13 +1110,7 @@ export type SearchRequestSchema = {
     /**
      * incT
      */
-    /**
-     * incT
-     */
     incT?: number | null;
-    /**
-     * incdomT
-     */
     /**
      * incdomT
      */
@@ -1855,13 +1118,7 @@ export type SearchRequestSchema = {
     /**
      * Popen
      */
-    /**
-     * Popen
-     */
     popen?: number | null;
-    /**
-     * Pextend
-     */
     /**
      * Pextend
      */
@@ -1869,13 +1126,7 @@ export type SearchRequestSchema = {
     /**
      * Mx
      */
-    /**
-     * Mx
-     */
     mx?: string | null;
-    /**
-     * With Taxonomy
-     */
     /**
      * With Taxonomy
      */
@@ -1883,13 +1134,7 @@ export type SearchRequestSchema = {
     /**
      * With Architecture
      */
-    /**
-     * With Architecture
-     */
     with_architecture?: boolean | null;
-    /**
-     * Iterations
-     */
     /**
      * Iterations
      */
@@ -1897,13 +1142,7 @@ export type SearchRequestSchema = {
     /**
      * Exclude All
      */
-    /**
-     * Exclude All
-     */
     exclude_all?: boolean | null;
-    /**
-     * Email Address
-     */
     /**
      * Email Address
      */
@@ -1913,14 +1152,8 @@ export type SearchRequestSchema = {
 /**
  * JobsResponseSchema
  */
-/**
- * JobsResponseSchema
- */
 export type JobsResponseSchema = {
     task: TaskResultSchema | null;
-    /**
-     * Query Name
-     */
     /**
      * Query Name
      */
@@ -1928,20 +1161,11 @@ export type JobsResponseSchema = {
     /**
      * Id
      */
-    /**
-     * Id
-     */
     id?: string | null;
     /**
      * Algo
      */
-    /**
-     * Algo
-     */
     algo?: string;
-    /**
-     * Date Submitted
-     */
     /**
      * Date Submitted
      */
@@ -1951,13 +1175,7 @@ export type JobsResponseSchema = {
 /**
  * TaxonomyResponseSchema
  */
-/**
- * TaxonomyResponseSchema
- */
 export type TaxonomyResponseSchema = {
-    /**
-     * Id
-     */
     /**
      * Id
      */
@@ -1965,13 +1183,7 @@ export type TaxonomyResponseSchema = {
     /**
      * Name
      */
-    /**
-     * Name
-     */
     name: string;
-    /**
-     * Rank
-     */
     /**
      * Rank
      */
@@ -1997,13 +1209,7 @@ export type TaxonomyTree = {
     /**
      * Id
      */
-    /**
-     * Id
-     */
     id: number;
-    /**
-     * Name
-     */
     /**
      * Name
      */
@@ -2011,20 +1217,11 @@ export type TaxonomyTree = {
     /**
      * Hitcount
      */
-    /**
-     * Hitcount
-     */
     hitcount: number | null;
     /**
      * Hitdist
      */
-    /**
-     * Hitdist
-     */
     hitdist: Array<number> | null;
-    /**
-     * Children
-     */
     /**
      * Children
      */
@@ -2034,13 +1231,7 @@ export type TaxonomyTree = {
 /**
  * TaxonomyTreeResponseSchema
  */
-/**
- * TaxonomyTreeResponseSchema
- */
 export type TaxonomyTreeResponseSchema = {
-    /**
-     * Status
-     */
     /**
      * Status
      */
@@ -2051,13 +1242,7 @@ export type TaxonomyTreeResponseSchema = {
 /**
  * TaxonomyDistributionGraph
  */
-/**
- * TaxonomyDistributionGraph
- */
 export type TaxonomyDistributionGraph = {
-    /**
-     * Data
-     */
     /**
      * Data
      */
@@ -2065,20 +1250,11 @@ export type TaxonomyDistributionGraph = {
     /**
      * Labels
      */
-    /**
-     * Labels
-     */
     labels: Array<string>;
     /**
      * Categories
      */
-    /**
-     * Categories
-     */
     categories: Array<string>;
-    /**
-     * Colors
-     */
     /**
      * Colors
      */
@@ -2088,13 +1264,7 @@ export type TaxonomyDistributionGraph = {
 /**
  * TaxonomyDistributionResponseSchema
  */
-/**
- * TaxonomyDistributionResponseSchema
- */
 export type TaxonomyDistributionResponseSchema = {
-    /**
-     * Status
-     */
     /**
      * Status
      */
@@ -2105,20 +1275,11 @@ export type TaxonomyDistributionResponseSchema = {
 /**
  * DownloadsQuerySchema
  */
-/**
- * DownloadsQuerySchema
- */
 export type DownloadsQuerySchema = {
     /**
      * Taxonomy Ids
      */
-    /**
-     * Taxonomy Ids
-     */
     taxonomy_ids?: Array<number>;
-    /**
-     * Architecture
-     */
     /**
      * Architecture
      */
@@ -2128,13 +1289,7 @@ export type DownloadsQuerySchema = {
 /**
  * DownloadsResponseSchema
  */
-/**
- * DownloadsResponseSchema
- */
 export type DownloadsResponseSchema = {
-    /**
-     * Format
-     */
     /**
      * Format
      */
@@ -2142,13 +1297,7 @@ export type DownloadsResponseSchema = {
     /**
      * Name
      */
-    /**
-     * Name
-     */
     name: string;
-    /**
-     * Description
-     */
     /**
      * Description
      */
@@ -2156,20 +1305,11 @@ export type DownloadsResponseSchema = {
     /**
      * Status
      */
-    /**
-     * Status
-     */
     status: string;
     /**
      * Url
      */
-    /**
-     * Url
-     */
     url: string | null;
-    /**
-     * Size
-     */
     /**
      * Size
      */
@@ -2179,9 +1319,6 @@ export type DownloadsResponseSchema = {
 export type ArchitectureApiGetArchitectureNameData = {
     body?: never;
     path: {
-        /**
-         * Accessions
-         */
         /**
          * Accessions
          */
@@ -2207,22 +1344,13 @@ export type ArchitectureApiGetDomainArchitecturesData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: string;
     };
     query?: {
         /**
          * Page
          */
-        /**
-         * Page
-         */
         page?: number;
-        /**
-         * Page Size
-         */
         /**
          * Page Size
          */
@@ -2244,9 +1372,6 @@ export type ArchitectureApiGetDomainArchitecturesResponse =
 export type ArchitectureApiGetAnnotationsData = {
     body?: never;
     path: {
-        /**
-         * Id
-         */
         /**
          * Id
          */
@@ -2272,13 +1397,7 @@ export type ArchitectureApiGetAllArchitecturesData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: string;
-        /**
-         * Accessions
-         */
         /**
          * Accessions
          */
@@ -2288,13 +1407,7 @@ export type ArchitectureApiGetAllArchitecturesData = {
         /**
          * Page
          */
-        /**
-         * Page
-         */
         page?: number;
-        /**
-         * Page Size
-         */
         /**
          * Page Size
          */
@@ -2319,15 +1432,9 @@ export type ResultApiGetResultData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: string;
     };
     query?: {
-        /**
-         * Page
-         */
         /**
          * Page
          */
@@ -2335,13 +1442,7 @@ export type ResultApiGetResultData = {
         /**
          * Page Size
          */
-        /**
-         * Page Size
-         */
         page_size?: number;
-        /**
-         * Taxonomy Ids
-         */
         /**
          * Taxonomy Ids
          */
@@ -2349,13 +1450,7 @@ export type ResultApiGetResultData = {
         /**
          * Architecture
          */
-        /**
-         * Architecture
-         */
         architecture?: string | null;
-        /**
-         * With Domains
-         */
         /**
          * With Domains
          */
@@ -2381,15 +1476,9 @@ export type ResultApiGetDomainsData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: string;
     };
     query?: {
-        /**
-         * Index
-         */
         /**
          * Index
          */
@@ -2431,9 +1520,6 @@ export type SearchApiGetJobDetailsData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: string;
     };
     query?: never;
@@ -2452,9 +1538,6 @@ export type SearchApiGetJobDetailsResponse = SearchApiGetJobDetailsResponses[key
 export type SearchApiUpdateSearchData = {
     body: SearchPatchSchema;
     path: {
-        /**
-         * Id
-         */
         /**
          * Id
          */
@@ -2488,9 +1571,6 @@ export type SearchApiGetJobQueryData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: string;
     };
     query?: never;
@@ -2507,9 +1587,6 @@ export type SearchApiGetJobQueryResponses = {
 export type SearchApiSearchData = {
     body: SearchRequestSchema;
     path: {
-        /**
-         * AlgoChoices
-         */
         /**
          * AlgoChoices
          */
@@ -2576,14 +1653,7 @@ export type TaxonomyApiSearchTaxonomyData = {
         /**
          * Q
          */
-        /**
-         * Q
-         */
         q: string;
-        /**
-         * Database
-         */
-        database: string;
         /**
          * Database
          */
@@ -2610,9 +1680,6 @@ export type TaxonomyApiGetTaxonomyData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: number;
     };
     query?: never;
@@ -2631,9 +1698,6 @@ export type TaxonomyApiGetTaxonomyResponse = TaxonomyApiGetTaxonomyResponses[key
 export type TaxonomyApiGetTaxonomyTreeData = {
     body?: never;
     path: {
-        /**
-         * Id
-         */
         /**
          * Id
          */
@@ -2659,9 +1723,6 @@ export type TaxonomyApiGetTaxonomyDistributionData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: string;
     };
     query?: never;
@@ -2684,13 +1745,7 @@ export type DownloadApiDownloadFileData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: string;
-        /**
-         * Format
-         */
         /**
          * Format
          */
@@ -2700,13 +1755,7 @@ export type DownloadApiDownloadFileData = {
         /**
          * Taxonomy Ids
          */
-        /**
-         * Taxonomy Ids
-         */
         taxonomy_ids?: Array<number>;
-        /**
-         * Architecture
-         */
         /**
          * Architecture
          */
@@ -2728,13 +1777,7 @@ export type DownloadApiGenerateFileData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: string;
-        /**
-         * Format
-         */
         /**
          * Format
          */
@@ -2744,13 +1787,7 @@ export type DownloadApiGenerateFileData = {
         /**
          * Taxonomy Ids
          */
-        /**
-         * Taxonomy Ids
-         */
         taxonomy_ids?: Array<number>;
-        /**
-         * Architecture
-         */
         /**
          * Architecture
          */
@@ -2774,22 +1811,13 @@ export type DownloadApiGetDownloadsData = {
         /**
          * Id
          */
-        /**
-         * Id
-         */
         id: string;
     };
     query?: {
         /**
          * Taxonomy Ids
          */
-        /**
-         * Taxonomy Ids
-         */
         taxonomy_ids?: Array<number>;
-        /**
-         * Architecture
-         */
         /**
          * Architecture
          */
@@ -2808,7 +1836,3 @@ export type DownloadApiGetDownloadsResponses = {
 };
 
 export type DownloadApiGetDownloadsResponse = DownloadApiGetDownloadsResponses[keyof DownloadApiGetDownloadsResponses];
-
-export type ClientOptions = {
-    baseUrl: string;
-};

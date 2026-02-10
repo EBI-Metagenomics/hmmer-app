@@ -1248,12 +1248,6 @@ export const DatabaseResponseSchemaSchema = {
             title: "Type",
             type: "string",
         },
-        status: {
-            default: "enabled",
-            maxLength: 16,
-            title: "Status",
-            type: "string",
-        },
         name: {
             maxLength: 32,
             title: "Name",
@@ -1808,21 +1802,6 @@ export const SearchRequestSchemaSchema = {
                 },
             ],
             title: "Database",
-        },
-        taxonomy_ids: {
-            anyOf: [
-                {
-                    items: {
-                        type: "integer",
-                    },
-                    type: "array",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            default: [],
-            title: "Taxonomy Ids",
         },
         include: {
             anyOf: [

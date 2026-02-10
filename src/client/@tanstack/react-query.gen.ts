@@ -79,7 +79,6 @@ export type QueryKey<TOptions extends Options> = [
         _id: string;
         _infinite?: boolean;
         tags?: ReadonlyArray<string>;
-        tags?: ReadonlyArray<string>;
     },
 ];
 
@@ -89,17 +88,12 @@ const createQueryKey = <TOptions extends Options>(
     infinite?: boolean,
     tags?: ReadonlyArray<string>,
 ): [QueryKey<TOptions>[0]] => {
-    tags?: ReadonlyArray<string>,
-): [QueryKey<TOptions>[0]] => {
     const params: QueryKey<TOptions>[0] = {
         _id: id,
         baseUrl: options?.baseUrl || (options?.client ?? client).getConfig().baseUrl,
     } as QueryKey<TOptions>[0];
     if (infinite) {
         params._infinite = infinite;
-    }
-    if (tags) {
-        params.tags = tags;
     }
     if (tags) {
         params.tags = tags;
@@ -117,11 +111,8 @@ const createQueryKey = <TOptions extends Options>(
         params.query = options.query;
     }
     return [params];
-    return [params];
 };
 
-export const architectureApiGetArchitectureNameQueryKey = (options: Options<ArchitectureApiGetArchitectureNameData>) =>
-    createQueryKey("architectureApiGetArchitectureName", options);
 export const architectureApiGetArchitectureNameQueryKey = (options: Options<ArchitectureApiGetArchitectureNameData>) =>
     createQueryKey("architectureApiGetArchitectureName", options);
 
@@ -150,11 +141,7 @@ export const architectureApiGetArchitectureNameOptions = (options: Options<Archi
 export const architectureApiGetDomainArchitecturesQueryKey = (
     options: Options<ArchitectureApiGetDomainArchitecturesData>,
 ) => createQueryKey("architectureApiGetDomainArchitectures", options);
-) => createQueryKey("architectureApiGetDomainArchitectures", options);
 
-/**
- * Get Domain Architectures
- */
 /**
  * Get Domain Architectures
  */
@@ -215,12 +202,7 @@ export const architectureApiGetDomainArchitecturesInfiniteQueryKey = (
     options: Options<ArchitectureApiGetDomainArchitecturesData>,
 ): QueryKey<Options<ArchitectureApiGetDomainArchitecturesData>> =>
     createQueryKey("architectureApiGetDomainArchitectures", options, true);
-): QueryKey<Options<ArchitectureApiGetDomainArchitecturesData>> =>
-    createQueryKey("architectureApiGetDomainArchitectures", options, true);
 
-/**
- * Get Domain Architectures
- */
 /**
  * Get Domain Architectures
  */
@@ -265,8 +247,6 @@ export const architectureApiGetDomainArchitecturesInfiniteOptions = (
 
 export const architectureApiGetAnnotationsQueryKey = (options: Options<ArchitectureApiGetAnnotationsData>) =>
     createQueryKey("architectureApiGetAnnotations", options);
-export const architectureApiGetAnnotationsQueryKey = (options: Options<ArchitectureApiGetAnnotationsData>) =>
-    createQueryKey("architectureApiGetAnnotations", options);
 
 /**
  * Get Annotations
@@ -290,8 +270,6 @@ export const architectureApiGetAnnotationsOptions = (options: Options<Architectu
         queryKey: architectureApiGetAnnotationsQueryKey(options),
     });
 
-export const architectureApiGetAllArchitecturesQueryKey = (options: Options<ArchitectureApiGetAllArchitecturesData>) =>
-    createQueryKey("architectureApiGetAllArchitectures", options);
 export const architectureApiGetAllArchitecturesQueryKey = (options: Options<ArchitectureApiGetAllArchitecturesData>) =>
     createQueryKey("architectureApiGetAllArchitectures", options);
 
@@ -321,12 +299,7 @@ export const architectureApiGetAllArchitecturesInfiniteQueryKey = (
     options: Options<ArchitectureApiGetAllArchitecturesData>,
 ): QueryKey<Options<ArchitectureApiGetAllArchitecturesData>> =>
     createQueryKey("architectureApiGetAllArchitectures", options, true);
-): QueryKey<Options<ArchitectureApiGetAllArchitecturesData>> =>
-    createQueryKey("architectureApiGetAllArchitectures", options, true);
 
-/**
- * Get All Architectures
- */
 /**
  * Get All Architectures
  */
@@ -371,8 +344,6 @@ export const architectureApiGetAllArchitecturesInfiniteOptions = (
 
 export const resultApiGetResultQueryKey = (options: Options<ResultApiGetResultData>) =>
     createQueryKey("resultApiGetResult", options);
-export const resultApiGetResultQueryKey = (options: Options<ResultApiGetResultData>) =>
-    createQueryKey("resultApiGetResult", options);
 
 /**
  * Get Result
@@ -398,7 +369,6 @@ export const resultApiGetResultOptions = (options: Options<ResultApiGetResultDat
 
 export const resultApiGetResultInfiniteQueryKey = (
     options: Options<ResultApiGetResultData>,
-): QueryKey<Options<ResultApiGetResultData>> => createQueryKey("resultApiGetResult", options, true);
 ): QueryKey<Options<ResultApiGetResultData>> => createQueryKey("resultApiGetResult", options, true);
 
 /**
@@ -439,8 +409,6 @@ export const resultApiGetResultInfiniteOptions = (options: Options<ResultApiGetR
 
 export const resultApiGetDomainsQueryKey = (options: Options<ResultApiGetDomainsData>) =>
     createQueryKey("resultApiGetDomains", options);
-export const resultApiGetDomainsQueryKey = (options: Options<ResultApiGetDomainsData>) =>
-    createQueryKey("resultApiGetDomains", options);
 
 /**
  * Get Domains
@@ -466,8 +434,6 @@ export const resultApiGetDomainsOptions = (options: Options<ResultApiGetDomainsD
 
 export const searchApiGetDatabasesQueryKey = (options?: Options<SearchApiGetDatabasesData>) =>
     createQueryKey("searchApiGetDatabases", options);
-export const searchApiGetDatabasesQueryKey = (options?: Options<SearchApiGetDatabasesData>) =>
-    createQueryKey("searchApiGetDatabases", options);
 
 /**
  * Get Databases
@@ -491,8 +457,6 @@ export const searchApiGetDatabasesOptions = (options?: Options<SearchApiGetDatab
         queryKey: searchApiGetDatabasesQueryKey(options),
     });
 
-export const searchApiGetJobDetailsQueryKey = (options: Options<SearchApiGetJobDetailsData>) =>
-    createQueryKey("searchApiGetJobDetails", options);
 export const searchApiGetJobDetailsQueryKey = (options: Options<SearchApiGetJobDetailsData>) =>
     createQueryKey("searchApiGetJobDetails", options);
 
@@ -534,10 +498,8 @@ export const searchApiUpdateSearchMutation = (
         Options<SearchApiUpdateSearchData>
     > = {
         mutationFn: async (fnOptions) => {
-        mutationFn: async (fnOptions) => {
             const { data } = await searchApiUpdateSearch({
                 ...options,
-                ...fnOptions,
                 ...fnOptions,
                 throwOnError: true,
             });
@@ -547,8 +509,6 @@ export const searchApiUpdateSearchMutation = (
     return mutationOptions;
 };
 
-export const searchApiGetJobQueryQueryKey = (options: Options<SearchApiGetJobQueryData>) =>
-    createQueryKey("searchApiGetJobQuery", options);
 export const searchApiGetJobQueryQueryKey = (options: Options<SearchApiGetJobQueryData>) =>
     createQueryKey("searchApiGetJobQuery", options);
 
@@ -581,10 +541,8 @@ export const searchApiSearchMutation = (
         Options<SearchApiSearchData>
     > = {
         mutationFn: async (fnOptions) => {
-        mutationFn: async (fnOptions) => {
             const { data } = await searchApiSearch({
                 ...options,
-                ...fnOptions,
                 ...fnOptions,
                 throwOnError: true,
             });
@@ -594,8 +552,6 @@ export const searchApiSearchMutation = (
     return mutationOptions;
 };
 
-export const searchApiGetJobsQueryKey = (options?: Options<SearchApiGetJobsData>) =>
-    createQueryKey("searchApiGetJobs", options);
 export const searchApiGetJobsQueryKey = (options?: Options<SearchApiGetJobsData>) =>
     createQueryKey("searchApiGetJobs", options);
 
@@ -623,8 +579,6 @@ export const searchApiGetJobsOptions = (options?: Options<SearchApiGetJobsData>)
 
 export const taxonomyApiGetQueryKey = (options?: Options<TaxonomyApiGetData>) =>
     createQueryKey("taxonomyApiGet", options);
-export const taxonomyApiGetQueryKey = (options?: Options<TaxonomyApiGetData>) =>
-    createQueryKey("taxonomyApiGet", options);
 
 /**
  * Get
@@ -643,8 +597,6 @@ export const taxonomyApiGetOptions = (options?: Options<TaxonomyApiGetData>) =>
         queryKey: taxonomyApiGetQueryKey(options),
     });
 
-export const taxonomyApiSearchTaxonomyQueryKey = (options: Options<TaxonomyApiSearchTaxonomyData>) =>
-    createQueryKey("taxonomyApiSearchTaxonomy", options);
 export const taxonomyApiSearchTaxonomyQueryKey = (options: Options<TaxonomyApiSearchTaxonomyData>) =>
     createQueryKey("taxonomyApiSearchTaxonomy", options);
 
@@ -672,8 +624,6 @@ export const taxonomyApiSearchTaxonomyOptions = (options: Options<TaxonomyApiSea
 
 export const taxonomyApiGetTaxonomyQueryKey = (options: Options<TaxonomyApiGetTaxonomyData>) =>
     createQueryKey("taxonomyApiGetTaxonomy", options);
-export const taxonomyApiGetTaxonomyQueryKey = (options: Options<TaxonomyApiGetTaxonomyData>) =>
-    createQueryKey("taxonomyApiGetTaxonomy", options);
 
 /**
  * Get Taxonomy
@@ -697,8 +647,6 @@ export const taxonomyApiGetTaxonomyOptions = (options: Options<TaxonomyApiGetTax
         queryKey: taxonomyApiGetTaxonomyQueryKey(options),
     });
 
-export const taxonomyApiGetTaxonomyTreeQueryKey = (options: Options<TaxonomyApiGetTaxonomyTreeData>) =>
-    createQueryKey("taxonomyApiGetTaxonomyTree", options);
 export const taxonomyApiGetTaxonomyTreeQueryKey = (options: Options<TaxonomyApiGetTaxonomyTreeData>) =>
     createQueryKey("taxonomyApiGetTaxonomyTree", options);
 
@@ -726,8 +674,6 @@ export const taxonomyApiGetTaxonomyTreeOptions = (options: Options<TaxonomyApiGe
 
 export const taxonomyApiGetTaxonomyDistributionQueryKey = (options: Options<TaxonomyApiGetTaxonomyDistributionData>) =>
     createQueryKey("taxonomyApiGetTaxonomyDistribution", options);
-export const taxonomyApiGetTaxonomyDistributionQueryKey = (options: Options<TaxonomyApiGetTaxonomyDistributionData>) =>
-    createQueryKey("taxonomyApiGetTaxonomyDistribution", options);
 
 /**
  * Get Taxonomy Distribution
@@ -751,8 +697,6 @@ export const taxonomyApiGetTaxonomyDistributionOptions = (options: Options<Taxon
         queryKey: taxonomyApiGetTaxonomyDistributionQueryKey(options),
     });
 
-export const downloadApiDownloadFileQueryKey = (options: Options<DownloadApiDownloadFileData>) =>
-    createQueryKey("downloadApiDownloadFile", options);
 export const downloadApiDownloadFileQueryKey = (options: Options<DownloadApiDownloadFileData>) =>
     createQueryKey("downloadApiDownloadFile", options);
 
@@ -785,10 +729,8 @@ export const downloadApiGenerateFileMutation = (
         Options<DownloadApiGenerateFileData>
     > = {
         mutationFn: async (fnOptions) => {
-        mutationFn: async (fnOptions) => {
             const { data } = await downloadApiGenerateFile({
                 ...options,
-                ...fnOptions,
                 ...fnOptions,
                 throwOnError: true,
             });
@@ -798,8 +740,6 @@ export const downloadApiGenerateFileMutation = (
     return mutationOptions;
 };
 
-export const downloadApiGetDownloadsQueryKey = (options: Options<DownloadApiGetDownloadsData>) =>
-    createQueryKey("downloadApiGetDownloads", options);
 export const downloadApiGetDownloadsQueryKey = (options: Options<DownloadApiGetDownloadsData>) =>
     createQueryKey("downloadApiGetDownloads", options);
 
