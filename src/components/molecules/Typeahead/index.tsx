@@ -22,7 +22,7 @@ export const Typeahead = <T,>({ data, placeholder, onTextChange, onValueSelected
     }, 300);
 
     return (
-        <div className="vf-form vf-form--search vf-form--search--mini | vf-sidebar vf-sidebar--end">
+        <div className="vf-form vf-form--search vf-form--search--mini | vf-sidebar vf-sidebar--end | vf-u-width__50">
             <div className="vf-sidebar__inner">
                 <div className="vf-form__item">
                     <label className="vf-form__label vf-u-sr-only | vf-search__label" htmlFor="searchitem">
@@ -31,7 +31,7 @@ export const Typeahead = <T,>({ data, placeholder, onTextChange, onValueSelected
                     <div className="input-container">
                         <input
                             type="search"
-                            placeholder={placeholder ?? "Enter your search terms"}
+                            placeholder={placeholder ?? "Enter your search terms or tax ID"}
                             id="searchitem"
                             ref={inputRef}
                             onChange={deboncedChangeHandler}
@@ -47,20 +47,22 @@ export const Typeahead = <T,>({ data, placeholder, onTextChange, onValueSelected
                             className="vf-form__input input-with-clear"
                             aria-owns="vf-form--search__results-list"
                         />
-                        <button
-                            className="clear-button"
-                            onClick={(e) => {
-                                e.preventDefault();
+                        {inputRef.current?.value && (
+                            <button
+                                className="clear-button"
+                                onClick={(e) => {
+                                    e.preventDefault();
 
-                                if (inputRef.current) {
-                                    inputRef.current.value = "";
-                                    inputRef.current.focus();
-                                    onTextChange("");
-                                }
-                            }}
-                        >
-                            &times;
-                        </button>
+                                    if (inputRef.current) {
+                                        inputRef.current.value = "";
+                                        inputRef.current.focus();
+                                        onTextChange("");
+                                    }
+                                }}
+                            >
+                                &times;
+                            </button>
+                        )}
                     </div>
                     {showOptions && !data && inputRef.current?.value && (
                         <ul
@@ -98,6 +100,10 @@ export const Typeahead = <T,>({ data, placeholder, onTextChange, onValueSelected
                                         e.preventDefault();
                                         setShowOptions(false);
                                         onValueSelected(item);
+                                        if (inputRef.current) {
+                                            inputRef.current.value = "";
+                                            onTextChange("");
+                                        }
                                     }}
                                 >
                                     {renderItem(item)}
