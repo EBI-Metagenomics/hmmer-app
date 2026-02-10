@@ -1,24 +1,24 @@
+import { zSearchRequestSchema } from "@/client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import _ from "lodash";
 import { useEffect, useMemo, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
-import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { zSearchRequestSchema } from "@/client/zod.gen";
 
+import { searchApiSearchMutation } from "@/client/@tanstack/react-query.gen";
 import { SearchRequestSchemaSchema } from "@/client/schemas.gen";
 import { SearchRequestSchema } from "@/client/types.gen";
-import { searchApiSearchMutation } from "@/client/@tanstack/react-query.gen";
 import { MenuSection } from "@components/atoms";
 import {
-    TaxonomyFilterInput,
     CutOffInput,
-    GapPenaltiesInput,
-    FilterInput,
     DatabaseInput,
-    IterationsInput,
     EmailInput,
+    FilterInput,
+    GapPenaltiesInput,
     Input,
+    IterationsInput,
+    TaxonomyFilterInput,
 } from "@components/molecules";
 
 interface FormProps {
@@ -71,7 +71,6 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
         resetField("input");
         setIsBatch(false);
     }, [algo]);
-    console.log(formState.errors);
     useEffect(() => {
         const subscription = watch(({ input }, { name, type }) => {
             if (name === "input" && type === "change") {
@@ -96,7 +95,6 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
             <FormProvider {...methods}>
                 <form
                     onSubmit={methods.handleSubmit((data) => {
-                        console.log(data);
                         mutateAsync(
                             {
                                 path: { algo },
