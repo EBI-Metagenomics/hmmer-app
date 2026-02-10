@@ -1498,8 +1498,12 @@ export const JobDetailsResponseSchemaSchema = {
             default: 22,
             title: "incdomT",
         },
-        taxonomy_ids: {
-            title: "Taxonomy Ids",
+        include_taxonomy: {
+            title: "Include Taxonomy",
+            type: "object",
+        },
+        exclude_taxonomy: {
+            title: "Exclude Taxonomy",
             type: "object",
         },
         popen: {
@@ -1799,21 +1803,6 @@ export const SearchRequestSchemaSchema = {
             ],
             title: "Database",
         },
-        taxonomy_ids: {
-            anyOf: [
-                {
-                    items: {
-                        type: "integer",
-                    },
-                    type: "array",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            default: [],
-            title: "Taxonomy Ids",
-        },
         include: {
             anyOf: [
                 {
@@ -1843,6 +1832,36 @@ export const SearchRequestSchemaSchema = {
             ],
             default: [],
             title: "Exclude",
+        },
+        include_taxonomy: {
+            anyOf: [
+                {
+                    items: {
+                        type: "integer",
+                    },
+                    type: "array",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: [],
+            title: "Include Taxonomy",
+        },
+        exclude_taxonomy: {
+            anyOf: [
+                {
+                    items: {
+                        type: "integer",
+                    },
+                    type: "array",
+                },
+                {
+                    type: "null",
+                },
+            ],
+            default: [],
+            title: "Exclude Taxonomy",
         },
         threshold: {
             anyOf: [
@@ -2130,8 +2149,20 @@ export const TaxonomyResponseSchemaSchema = {
             title: "Rank",
             type: "string",
         },
+        lft: {
+            title: "Lft",
+            type: "integer",
+        },
+        rgt: {
+            title: "Rgt",
+            type: "integer",
+        },
+        depth: {
+            title: "Depth",
+            type: "integer",
+        },
     },
-    required: ["name", "rank"],
+    required: ["name", "rank", "lft", "rgt", "depth"],
     title: "TaxonomyResponseSchema",
     type: "object",
 } as const;
