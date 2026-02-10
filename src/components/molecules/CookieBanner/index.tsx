@@ -30,7 +30,9 @@ export const CookieBanner: React.FC = () => {
         <div className="vf-banner vf-banner--fixed vf-banner--bottom vf-banner--notice">
             <div className="vf-banner__content | vf-grid">
                 <p className="vf-banner__text vf-banner__text--lg">
-                    This site uses cookies. We use essential cookies for site functionality, and non-essential cookies to help improve the service using Matomo analytics. No data is shared with third parties for advertising. See our{" "}
+                    This site uses cookies. We use essential cookies for site functionality, and non-essential cookies
+                    to help improve the service using Matomo analytics. No data is shared with third parties for
+                    advertising. See our{" "}
                     <a className="vf-banner__link" href="/privacy-notice.pdf">
                         Privacy Notice
                     </a>{" "}
