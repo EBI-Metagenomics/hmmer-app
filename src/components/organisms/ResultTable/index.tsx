@@ -573,7 +573,7 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                     onSequenceSelectionChange={setSequenceSelection}
                 />
             )}
-            {algo === "phmmer" && jobDetails?.parent_job_id && (
+            {algo !== "jackhmmer" && jobDetails?.parent_job_id && (
                 <NavLink
                     className="vf-button vf-button--secondary vf-button--sm"
                     to={`/results/${jobDetails.parent_job_id}/score`}

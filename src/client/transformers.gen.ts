@@ -29,6 +29,9 @@ const jobDetailsResponseSchemaSchemaResponseTransformer = (data: any) => {
     if (data.task) {
         data.task = taskResultSchemaSchemaResponseTransformer(data.task);
     }
+    if (data.task) {
+        data.task = taskResultSchemaSchemaResponseTransformer(data.task);
+    }
     data.database = databaseResponseSchemaSchemaResponseTransformer(data.database);
     if (data.date_submitted) {
         data.date_submitted = new Date(data.date_submitted);
@@ -42,6 +45,9 @@ export const searchApiGetJobDetailsResponseTransformer = async (data: any): Prom
 };
 
 const jobsResponseSchemaSchemaResponseTransformer = (data: any) => {
+    if (data.task) {
+        data.task = taskResultSchemaSchemaResponseTransformer(data.task);
+    }
     if (data.task) {
         data.task = taskResultSchemaSchemaResponseTransformer(data.task);
     }

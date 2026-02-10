@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable, Row } from "@tanstack/react-table";
 import { BatchResponseSchema } from "@/client/types.gen";
-import { resultApiGetResultOptions } from "@/client/@tanstack/react-query.gen";
+import { resultApiGetResultOptions, searchApiGetJobDetailsOptions } from "@/client/@tanstack/react-query.gen";
 
 import { JobStatus, ProgressIndicator } from "@/components/atoms";
 import { pending } from "@/utils/taskStates";
@@ -53,6 +53,11 @@ export const BatchTable: React.FC<BatchTableProps> = ({ id }) => {
         refetchIntervalInBackground: true,
     });
 
+    const { data: jobDetailsData } = useQuery({
+        ...searchApiGetJobDetailsOptions({ path: { id: id! } }),
+        refetchIntervalInBackground: true,
+    });
+
     const table = useReactTable({
         data: (data ?? []) as BatchResponseSchema[],
         columns,
@@ -63,7 +68,7 @@ export const BatchTable: React.FC<BatchTableProps> = ({ id }) => {
         return (
             <div className="vf-stack vf-stack--800">
                 <div className="vf-u-padding__top--400">
-                    <h2 className="vf-text vf-text-heading--2">Batch job summary</h2>
+                    <h2 className="vf-text vf-text-heading--2">Batch {_.capitalize(jobDetailsData?.algo ?? "")} job summary</h2>
                 </div>
 
                 <div className="vf-stack vf-stack--400 | vf-u-padding__top--400">
@@ -77,7 +82,7 @@ export const BatchTable: React.FC<BatchTableProps> = ({ id }) => {
         return (
             <div className="vf-stack vf-stack--800">
                 <div className="vf-u-padding__top--400">
-                    <h2 className="vf-text vf-text-heading--2">Batch job summary</h2>
+                    <h2 className="vf-text vf-text-heading--2">Batch {_.capitalize(jobDetailsData?.algo ?? "")} job summary</h2>
                 </div>
 
                 <div className="vf-stack vf-stack--400 | vf-u-padding__top--400">
@@ -91,7 +96,7 @@ export const BatchTable: React.FC<BatchTableProps> = ({ id }) => {
     return (
         <div className="vf-stack vf-stack--800">
             <div className="vf-u-padding__top--400">
-                <h2 className="vf-text vf-text-heading--2">Batch job summary</h2>
+                <h2 className="vf-text vf-text-heading--2">Batch {_.capitalize(jobDetailsData?.algo ?? "")} job summary</h2>
             </div>
             <div>
                 <table className="vf-table vf-u-width__100">

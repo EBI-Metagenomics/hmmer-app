@@ -9,6 +9,7 @@ import type {
     ArchitectureApiGetAnnotationsResponses,
     ArchitectureApiGetArchitectureNameData,
     ArchitectureApiGetArchitectureNameResponses,
+    ArchitectureApiGetArchitectureNameResponses,
     ArchitectureApiGetDomainArchitecturesData,
     ArchitectureApiGetDomainArchitecturesResponses,
     DownloadApiDownloadFileData,
@@ -22,6 +23,7 @@ import type {
     ResultApiGetResultData,
     ResultApiGetResultResponses,
     SearchApiGetDatabasesData,
+    SearchApiGetDatabasesResponses,
     SearchApiGetDatabasesResponses,
     SearchApiGetJobDetailsData,
     SearchApiGetJobDetailsResponses,
@@ -73,6 +75,7 @@ export const architectureApiGetArchitectureName = <ThrowOnError extends boolean 
     (options.client ?? client).get<ArchitectureApiGetArchitectureNameResponses, unknown, ThrowOnError>({
         url: "/api/v1/architecture/name/{accessions}",
         ...options,
+        ...options,
     });
 
 /**
@@ -95,6 +98,7 @@ export const architectureApiGetAnnotations = <ThrowOnError extends boolean = fal
     (options.client ?? client).get<ArchitectureApiGetAnnotationsResponses, unknown, ThrowOnError>({
         url: "/api/v1/architecture/{id}/annotations",
         ...options,
+        ...options,
     });
 
 /**
@@ -105,6 +109,7 @@ export const architectureApiGetAllArchitectures = <ThrowOnError extends boolean 
 ) =>
     (options.client ?? client).get<ArchitectureApiGetAllArchitecturesResponses, unknown, ThrowOnError>({
         url: "/api/v1/architecture/{id}/{accessions}",
+        ...options,
         ...options,
     });
 
@@ -117,6 +122,7 @@ export const resultApiGetResult = <ThrowOnError extends boolean = false>(
     (options.client ?? client).get<ResultApiGetResultResponses, unknown, ThrowOnError>({
         url: "/api/v1/result/{id}",
         ...options,
+        ...options,
     });
 
 /**
@@ -127,6 +133,7 @@ export const resultApiGetDomains = <ThrowOnError extends boolean = false>(
 ) =>
     (options.client ?? client).get<ResultApiGetDomainsResponses, unknown, ThrowOnError>({
         url: "/api/v1/result/{id}/domains",
+        ...options,
         ...options,
     });
 
@@ -139,6 +146,7 @@ export const searchApiGetDatabases = <ThrowOnError extends boolean = false>(
     (options?.client ?? client).get<SearchApiGetDatabasesResponses, unknown, ThrowOnError>({
         url: "/api/v1/search/databases",
         ...options,
+        ...options,
     });
 
 /**
@@ -149,6 +157,7 @@ export const searchApiGetJobDetails = <ThrowOnError extends boolean = false>(
 ) =>
     (options.client ?? client).get<SearchApiGetJobDetailsResponses, unknown, ThrowOnError>({
         url: "/api/v1/search/{id}",
+        ...options,
         ...options,
     });
 
@@ -164,6 +173,7 @@ export const searchApiUpdateSearch = <ThrowOnError extends boolean = false>(
         headers: {
             "Content-Type": "application/json",
             ...options.headers,
+            ...options.headers,
         },
     });
 
@@ -175,6 +185,7 @@ export const searchApiGetJobQuery = <ThrowOnError extends boolean = false>(
 ) =>
     (options.client ?? client).get<SearchApiGetJobQueryResponses, unknown, ThrowOnError>({
         url: "/api/v1/search/{id}/query",
+        ...options,
         ...options,
     });
 
@@ -190,6 +201,7 @@ export const searchApiSearch = <ThrowOnError extends boolean = false>(
         headers: {
             "Content-Type": "application/json",
             ...options.headers,
+            ...options.headers,
         },
     });
 
@@ -202,6 +214,7 @@ export const searchApiGetJobs = <ThrowOnError extends boolean = false>(
     (options?.client ?? client).get<SearchApiGetJobsResponses, unknown, ThrowOnError>({
         url: "/api/v1/search",
         ...options,
+        ...options,
     });
 
 /**
@@ -212,6 +225,7 @@ export const taxonomyApiGet = <ThrowOnError extends boolean = false>(
 ) =>
     (options?.client ?? client).get<TaxonomyApiGetResponses, unknown, ThrowOnError>({
         url: "/api/v1/taxonomy",
+        ...options,
         ...options,
     });
 
@@ -224,6 +238,7 @@ export const taxonomyApiSearchTaxonomy = <ThrowOnError extends boolean = false>(
     (options.client ?? client).get<TaxonomyApiSearchTaxonomyResponses, unknown, ThrowOnError>({
         url: "/api/v1/taxonomy/search",
         ...options,
+        ...options,
     });
 
 /**
@@ -234,6 +249,7 @@ export const taxonomyApiGetTaxonomy = <ThrowOnError extends boolean = false>(
 ) =>
     (options.client ?? client).get<TaxonomyApiGetTaxonomyResponses, unknown, ThrowOnError>({
         url: "/api/v1/taxonomy/{id}",
+        ...options,
         ...options,
     });
 
@@ -246,6 +262,7 @@ export const taxonomyApiGetTaxonomyTree = <ThrowOnError extends boolean = false>
     (options.client ?? client).get<TaxonomyApiGetTaxonomyTreeResponses, unknown, ThrowOnError>({
         url: "/api/v1/taxonomy/{id}/tree",
         ...options,
+        ...options,
     });
 
 /**
@@ -256,6 +273,7 @@ export const taxonomyApiGetTaxonomyDistribution = <ThrowOnError extends boolean 
 ) =>
     (options.client ?? client).get<TaxonomyApiGetTaxonomyDistributionResponses, unknown, ThrowOnError>({
         url: "/api/v1/taxonomy/{id}/distribution",
+        ...options,
         ...options,
     });
 
@@ -268,6 +286,7 @@ export const downloadApiDownloadFile = <ThrowOnError extends boolean = false>(
     (options.client ?? client).get<DownloadApiDownloadFileResponses, unknown, ThrowOnError>({
         url: "/api/v1/download/{id}/{format}",
         ...options,
+        ...options,
     });
 
 /**
@@ -279,6 +298,7 @@ export const downloadApiGenerateFile = <ThrowOnError extends boolean = false>(
     (options.client ?? client).post<DownloadApiGenerateFileResponses, unknown, ThrowOnError>({
         url: "/api/v1/download/{id}/{format}",
         ...options,
+        ...options,
     });
 
 /**
@@ -289,5 +309,6 @@ export const downloadApiGetDownloads = <ThrowOnError extends boolean = false>(
 ) =>
     (options.client ?? client).get<DownloadApiGetDownloadsResponses, unknown, ThrowOnError>({
         url: "/api/v1/download/{id}",
+        ...options,
         ...options,
     });

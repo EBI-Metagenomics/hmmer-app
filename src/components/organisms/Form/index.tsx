@@ -114,8 +114,8 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                                 algo === "jackhmmer"
                                     ? "Sequence/Alignment/Hmm"
                                     : algo === "hmmsearch"
-                                      ? "Alignment/HMM"
-                                      : "Sequence"
+                                      ? "Alignment/HMM(s)"
+                                      : "Sequence(s)"
                             }
                         >
                             <div className="vf-stack vf-stack--200">
@@ -127,6 +127,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                                               ? ["alignment", "hmm"]
                                               : ["sequence"]
                                     }
+                                    onBatchModeChange={setIsBatch}
                                 />
                                 <div>
                                     <button
