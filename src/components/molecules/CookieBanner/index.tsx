@@ -33,7 +33,7 @@ export const CookieBanner: React.FC = () => {
                     This site uses cookies. We use essential cookies for site functionality, and non-essential cookies
                     to help improve the service using Matomo analytics. No data is shared with third parties for
                     advertising. See our{" "}
-                    <a className="vf-banner__link" href="/privacy-notice.pdf">
+                    <a className="vf-banner__link" href={`${import.meta.env.BASE_URL}privacy-notice.pdf`}>
                         Privacy Notice
                     </a>{" "}
                     and{" "}
