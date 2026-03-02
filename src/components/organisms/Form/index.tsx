@@ -1,24 +1,24 @@
+import { zSearchRequestSchema } from "@/client/zod.gen";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import _ from "lodash";
 import { useEffect, useMemo, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
-import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { zSearchRequestSchema } from "@/client/zod.gen";
 
+import { searchApiSearchMutation } from "@/client/@tanstack/react-query.gen";
 import { SearchRequestSchemaSchema } from "@/client/schemas.gen";
 import { SearchRequestSchema } from "@/client/types.gen";
-import { searchApiSearchMutation } from "@/client/@tanstack/react-query.gen";
 import { MenuSection } from "@components/atoms";
 import {
-    // TaxonomyFilterInput,
     CutOffInput,
-    GapPenaltiesInput,
-    FilterInput,
     DatabaseInput,
-    IterationsInput,
     EmailInput,
+    FilterInput,
+    GapPenaltiesInput,
     Input,
+    IterationsInput,
+    TaxonomyFilterInput,
 } from "@components/molecules";
 
 interface FormProps {
@@ -71,6 +71,18 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
         resetField("input");
         setIsBatch(false);
     }, [algo]);
+    useEffect(() => {
+        const subscription = watch(({ input }, { name, type }) => {
+            if (name === "input" && type === "change") {
+                const multipleFastaRegex = /^>.*[\r\n]+[\s\S]*?[\r\n]+>.*[\r\n]+[\s\S]*$/m;
+
+                if (multipleFastaRegex.test(input ?? "")) setIsBatch(true);
+                else setIsBatch(false);
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [watch]);
 
     return (
         <div className="vf-stack vf-stack--1200 | vf-u-padding__top--400">
@@ -173,6 +185,11 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                         {algo === "hmmscan" && (
                             <MenuSection title="HMM database">
                                 <DatabaseInput type="hmm" />
+                            </MenuSection>
+                        )}
+                        {algo !== "hmmscan" && (
+                            <MenuSection title="Taxonomy restriction">
+                                <TaxonomyFilterInput />
                             </MenuSection>
                         )}
                         <MenuSection title="Cut off">

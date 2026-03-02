@@ -15,9 +15,7 @@ const databaseResponseSchemaSchemaResponseTransformer = (data: any) => {
 };
 
 export const searchApiGetDatabasesResponseTransformer = async (data: any): Promise<SearchApiGetDatabasesResponse> => {
-    data = data.map((item: any) => {
-        return databaseResponseSchemaSchemaResponseTransformer(item);
-    });
+    data = data.map((item: any) => databaseResponseSchemaSchemaResponseTransformer(item));
     return data;
 };
 
@@ -54,17 +52,13 @@ const jobsResponseSchemaSchemaResponseTransformer = (data: any) => {
 };
 
 export const searchApiGetJobsResponseTransformer = async (data: any): Promise<SearchApiGetJobsResponse> => {
-    data = data.map((item: any) => {
-        return jobsResponseSchemaSchemaResponseTransformer(item);
-    });
+    data = data.map((item: any) => jobsResponseSchemaSchemaResponseTransformer(item));
     return data;
 };
 
 const taxonomyTreeSchemaResponseTransformer = (data: any) => {
     if (data.children) {
-        data.children = data.children.map((item: any) => {
-            return taxonomyTreeSchemaResponseTransformer(item);
-        });
+        data.children = data.children.map((item: any) => taxonomyTreeSchemaResponseTransformer(item));
     }
     return data;
 };

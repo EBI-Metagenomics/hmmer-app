@@ -5,7 +5,7 @@ import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persist
 import ReactModal from "react-modal";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import { client } from "@/client/client.gen";
+import { client } from "./client/client.gen";
 import { Hero, EBIFooter, CookieBanner } from "./components/molecules";
 import Navigation from "./components/Navigation";
 import Home from "./components/pages/home";
