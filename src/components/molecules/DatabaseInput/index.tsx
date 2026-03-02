@@ -112,7 +112,7 @@ export const DatabaseInput: React.FC<DatabaseInputProps> = ({ type }) => {
                     <div className="vf-stack vf-stack--800">
                         <div>
                             <p className="warning-text vf-text-body vf-text-body--2">
-                                Warning, changing the database selection will clear you current taxonomy restriction.
+                                Warning: changing the database selection will clear your current taxonomy restriction.
                             </p>
                         </div>
                         <div className="button-container">
