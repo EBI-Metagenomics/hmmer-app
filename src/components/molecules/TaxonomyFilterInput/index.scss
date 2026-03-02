@@ -1,8 +1,42 @@
-.tree {
-  border: 2px solid var(--vf-color--grey);
-  box-sizing: border-box;
+.search-result-text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.tree--row {
-  padding-left: 0.5rem;
+.search-result-title {
+    font-weight: bold;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+}
+
+.search-result-subtitle {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tax-row-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    color: #707372;
+}
+
+.tax-row-close:hover {
+    color: black;
+}
+
+.tax-row {
+    display: flex;
+    justify-content: start;
+    align-items: center;
 }
