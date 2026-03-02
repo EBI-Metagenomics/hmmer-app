@@ -234,7 +234,7 @@ export const TaxonomyFilterInput: React.FC = () => {
                     <div className="vf-stack vf-stack--800">
                         <div>
                             <p className="warning-text vf-text-body vf-text-body--2">
-                                Warning, this will clear all your previously selected taxa.
+                                Warning: this will clear all your previously selected taxa.
                             </p>
                         </div>
                         <div className="button-container">
