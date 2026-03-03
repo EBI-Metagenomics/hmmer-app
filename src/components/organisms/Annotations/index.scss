@@ -8,3 +8,41 @@
 .container path {
     filter: none;
 }
+
+.vf-tabs__list::before {
+    z-index: 500 !important;
+}
+
+.vf-tabs__link.is-active {
+    z-index: 501 !important;
+}
+
+.domain_gfx__tooltip {
+    z-index: 1000;
+    margin: 0 !important;
+}
+
+.domain_gfx__tooltip table{
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.domain_gfx__tooltip thead {
+    color: white;
+    background-color: #707372 !important;
+}
+
+.domain_gfx__tooltip th{
+    padding: 0.4rem;
+}
+.domain_gfx__tooltip td{
+    padding: 0.2rem 0.4rem;
+}
+
+.domain_gfx__tooltip___container {
+    border-radius: 0 !important;
+    border-style: none !important;
+    border-width: 0 !important;
+    -webkit-box-shadow: 0 0.125rem 0.25rem rgba(84, 88, 90, 0.5);
+    box-shadow: 0 0.125rem 0.25rem rgba(84, 88, 90, 0.5);
+}

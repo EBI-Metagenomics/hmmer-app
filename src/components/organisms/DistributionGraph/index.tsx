@@ -216,7 +216,7 @@ export const DistributionGraph: React.FC<DistributionGraphProps> = ({ id }) => {
                     .style("position", "absolute")
                     .style("display", "none")
                     .style("pointer-events", "none")
-                    .style("font-size", "small")
+                    .style("font-size", "medium")
                     .style("z-index", 100);
 
                 tooltip.append("div").attr("class", "card-heading").text(label);
