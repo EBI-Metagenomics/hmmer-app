@@ -185,7 +185,8 @@ const columns = (onHitChange: (index: number, aboveThreshold: boolean, isChecked
                     )}
                     id={`rowCheck-${row.original.seqidx}`}
                     className="vf-form__checkbox"
-                    onChange={(e) => onHitChange(row.original.seqidx!, row.original.is_included ?? false, e.target.checked)
+                    onChange={(e) =>
+                        onHitChange(row.original.seqidx!, row.original.is_included ?? false, e.target.checked)
                     }
                 />
                 <label htmlFor={`rowCheck-${row.original.seqidx}`} className="vf-form__label" />
@@ -778,7 +779,7 @@ const Customization: React.FC<CustomizationProps> = ({
                     onClick();
                 }}
             >
-                Customise
+                <i className="icon icon-common icon-columns"></i> Customise Table
             </button>
             <ReactModal style={customStyles} contentLabel="Customization" isOpen={open} onRequestClose={onClick}>
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
