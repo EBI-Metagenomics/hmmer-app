@@ -63,7 +63,7 @@ const columns = (onHitChange: (index: number, aboveThreshold: boolean, isChecked
         id: "expander",
         header: () => null,
         cell: ({ row }: { row: Row<P7Hit> }) => {
-            return <TreeToggleButton onClick={row.getToggleExpandedHandler()} isOpen={row.getIsExpanded()} />;
+            return <TreeToggleButton isOpen={row.getIsExpanded()} />;
         },
         enableHiding: false,
         maxSize: 10,
@@ -80,7 +80,11 @@ const columns = (onHitChange: (index: number, aboveThreshold: boolean, isChecked
         enableHiding: false,
         cell: ({ row }: { row: Row<P7Hit> }) => {
             return (
-                <a href={(row.original.metadata?.external_link as string) ?? ""} className="vf-link">
+                <a
+                    href={(row.original.metadata?.external_link as string) ?? ""}
+                    className="vf-link"
+                    onClick={(e) => e.stopPropagation()}
+                >
                     {(row.original.metadata?.accession as string) ?? ""}
                 </a>
             );
@@ -108,7 +112,11 @@ const columns = (onHitChange: (index: number, aboveThreshold: boolean, isChecked
         header: "Species",
         cell: ({ row }: { row: Row<P7Hit> }) => {
             return (
-                <a href={(row.original.metadata?.taxonomy_link as string) ?? ""} className="vf-link">
+                <a
+                    href={(row.original.metadata?.taxonomy_link as string) ?? ""}
+                    className="vf-link"
+                    onClick={(e) => e.stopPropagation()}
+                >
                     {(row.original.metadata?.species as string) ?? ""}
                 </a>
             );
@@ -123,7 +131,7 @@ const columns = (onHitChange: (index: number, aboveThreshold: boolean, isChecked
                 <ul className="vf-list vf-list--default | vf-list--tight">
                     {_.map(row.original.metadata?.structures ?? [], ({ id, external_link }) => (
                         <li key={id} className="vf-list__item">
-                            <a href={external_link} className="vf-link">
+                            <a href={external_link} className="vf-link" onClick={(e) => e.stopPropagation()}>
                                 {id}
                             </a>
                         </li>
@@ -165,7 +173,7 @@ const columns = (onHitChange: (index: number, aboveThreshold: boolean, isChecked
         maxSize: 10,
         enableHiding: false,
         cell: ({ row, table }: { row: Row<P7Hit>; table: Table<P7Hit> }) => (
-            <div className="vf-form__item vf-form__item--checkbox">
+            <div className="vf-form__item vf-form__item--checkbox" onClick={(e) => e.stopPropagation()}>
                 <input
                     type="checkbox"
                     checked={isChecked(
@@ -177,8 +185,7 @@ const columns = (onHitChange: (index: number, aboveThreshold: boolean, isChecked
                     )}
                     id={`rowCheck-${row.original.seqidx}`}
                     className="vf-form__checkbox"
-                    onChange={(e) =>
-                        onHitChange(row.original.seqidx!, row.original.is_included ?? false, e.target.checked)
+                    onChange={(e) => onHitChange(row.original.seqidx!, row.original.is_included ?? false, e.target.checked)
                     }
                 />
                 <label htmlFor={`rowCheck-${row.original.seqidx}`} className="vf-form__label" />
@@ -192,7 +199,7 @@ const hmmscanColumns = [
         id: "expander",
         header: () => null,
         cell: ({ row }: { row: Row<P7Hit> }) => {
-            return <TreeToggleButton onClick={row.getToggleExpandedHandler()} isOpen={row.getIsExpanded()} />;
+            return <TreeToggleButton isOpen={row.getIsExpanded()} />;
         },
         enableHiding: false,
         maxSize: 10,
@@ -210,7 +217,11 @@ const hmmscanColumns = [
                 enableHiding: false,
                 cell: ({ row }: { row: Row<P7Hit> }) => {
                     return (
-                        <a href={(row.original.metadata?.external_link as string) ?? ""} className="vf-link">
+                        <a
+                            href={(row.original.metadata?.external_link as string) ?? ""}
+                            className="vf-link"
+                            onClick={(e) => e.stopPropagation()}
+                        >
                             {(row.original.metadata?.accession as string) ?? ""}
                         </a>
                     );
@@ -223,7 +234,11 @@ const hmmscanColumns = [
         header: "Clan",
         cell: ({ row }: { row: Row<P7Hit> }) => {
             return (
-                <a href={(row.original.metadata?.clan_link as string) ?? ""} className="vf-link">
+                <a
+                    href={(row.original.metadata?.clan_link as string) ?? ""}
+                    className="vf-link"
+                    onClick={(e) => e.stopPropagation()}
+                >
                     {(row.original.metadata?.clan as string) ?? ""}
                 </a>
             );
@@ -645,8 +660,9 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                                     return (
                                         <Fragment key={row.original.index}>
                                             <tr
-                                                className={`vf-table__row ${isFirstBelowThreshold ? "first-below-threshold" : ""} ${isInsignificant ? "insignificant" : ""} ${significantNoHits ? "significant-no-hits" : ""} ${isNew ? "is-new" : ""} ${isDropped ? "is-dropped" : ""}`}
+                                                className={`vf-table__row expandable-row ${isFirstBelowThreshold ? "first-below-threshold" : ""} ${isInsignificant ? "insignificant" : ""} ${significantNoHits ? "significant-no-hits" : ""} ${isNew ? "is-new" : ""} ${isDropped ? "is-dropped" : ""}`}
                                                 ref={(element) => (rowsRef.current[index] = element)}
+                                                onClick={row.getToggleExpandedHandler()}
                                             >
                                                 {/* first row is a normal row */}
                                                 {row.getVisibleCells().map((cell) => {
