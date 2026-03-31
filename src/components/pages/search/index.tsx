@@ -12,7 +12,15 @@ const SearchPage: React.FC = () => {
         <>
             <div className="vf-stack vf-stack--800">
                 <div className="vf-u-padding__top--400">
-                    <h2 className="vf-text vf-text-heading--2">Search</h2>
+                    <div style={{display: "flex", alignItems: "baseline", gap: ".5rem"}}>
+                        <h2 className="vf-text vf-text-heading--2">Search</h2>{" "}
+                        <a
+                            className="vf-link"
+                            href="https://hmmer-web-docs.readthedocs.io/en/latest/algorithms.html#hmmer-algorithms"
+                        >
+                            documentation
+                        </a>
+                    </div>
                 </div>
                 <div className="vf-tabs">
                     <ul className="vf-tabs__list">
