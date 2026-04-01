@@ -1,17 +1,14 @@
 import "./index.scss";
 
 type TreeToggleButtonProps = {
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isOpen: boolean;
 };
 
 export const TreeToggleButton: React.FC<TreeToggleButtonProps> = ({
-  onClick,
   isOpen,
 }) => {
   return (
     <button
-      onClick={onClick}
       className={`tree-toggle-button ${isOpen ? "tree-toggle-button--open" : ""}`}
     >
       <svg

@@ -113,7 +113,7 @@ const columns = [
         cell: (props) => props.getValue().toFixed(1),
     }),
     columnHelper.group({
-        header: "E-value",
+        header: "Domain E-value",
         columns: [
             columnHelper.accessor("ievalue", {
                 header: "Independent",
