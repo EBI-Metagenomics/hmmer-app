@@ -1,4 +1,4 @@
-import _, { max } from "lodash";
+import _ from "lodash";
 import { useCallback, useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
@@ -80,7 +80,7 @@ export const Input: React.FC<InputProps> = ({ mode, onBatchModeChange }) => {
                 const fastaMatches = value.input.match(singleFastaRegex);
 
                 if (fastaMatches) {
-                    const biggestBasePairCount = _(fastaMatches)
+                    const biggestAminoAcidCount = _(fastaMatches)
                         .map((match) => {
                             return _(match)
                                 .trim()
@@ -94,12 +94,12 @@ export const Input: React.FC<InputProps> = ({ mode, onBatchModeChange }) => {
                     if (fastaMatches.length > 1) {
                         onBatchModeChange(true);
                         setHelperMessage(
-                            `${fastaMatches.length} sequences with the longest having ${biggestBasePairCount} base ${pluralize("pair", biggestBasePairCount)}`,
+                            `${fastaMatches.length} sequences with the longest having ${biggestAminoAcidCount} amino ${pluralize("acid", biggestAminoAcidCount)}`,
                         );
                     } else {
                         onBatchModeChange(false);
                         setHelperMessage(
-                            `1 sequence of ${biggestBasePairCount} base ${pluralize("pair", biggestBasePairCount)}`,
+                            `1 sequence of ${biggestAminoAcidCount} amino ${pluralize("acid", biggestAminoAcidCount)}`,
                         );
                     }
 
