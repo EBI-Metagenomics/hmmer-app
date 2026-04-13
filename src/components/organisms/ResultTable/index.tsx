@@ -651,7 +651,7 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                                                 ref={(element) => (rowsRef.current[index] = element)}
                                                 onMouseDown={(e) => {
                                                     skipIsInteractive.current = !!(e.target as HTMLElement).closest(
-                                                        "a, button, input, label",
+                                                        "a, input, label",
                                                     );
                                                     skipNextToggle.current = skipIsInteractive.current;
                                                     const onMouseUp = () => {
