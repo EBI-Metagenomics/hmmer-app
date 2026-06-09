@@ -1,0 +1,35 @@
+stages:
+- test
+- secret-detection
+include:
+- template: Jobs/Dependency-Scanning.latest.gitlab-ci.yml
+- template: Jobs/SAST.gitlab-ci.yml
+- template: Jobs/Secret-Detection.gitlab-ci.yml
+- template: Jobs/Container-Scanning.gitlab-ci.yml
+
+variables:
+  DS_ENFORCE_NEW_ANALYZER: 'true'
+  GITLAB_ADVANCED_SAST_ENABLED: 'true'
+
+sast:
+  stage: test
+  artifacts:
+    name: sast
+    paths:
+      - gl-sast-report.json
+    reports:
+      sast: gl-sast-report.json
+    when: always
+
+secret_detection:
+  stage: secret-detection
+
+container_scanning:
+  tags:
+    - docker
+  variables:
+    CS_IMAGE: "dockerhub.ebi.ac.uk/microbiome-informatics/containers/hmmer-app:production-latest"
+    CS_REGISTRY_USER: "$REGISTRY_RO_USER"
+    CS_REGISTRY_PASSWORD: "$REGISTRY_RO_PASSWORD"
+    CS_DOCKERFILE_PATH: "Dockerfile"
+    GIT_STRATEGY: fetch
