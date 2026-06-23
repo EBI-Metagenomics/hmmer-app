@@ -71,6 +71,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
         resetField("input");
         setIsBatch(false);
     }, [algo]);
+
     useEffect(() => {
         const subscription = watch(({ input }, { name, type }) => {
             if (name === "input" && type === "change") {
