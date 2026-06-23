@@ -142,8 +142,8 @@ const ResultsPage: React.FC = () => {
                     </div>
                     <Routes>
                         <Route path="score" element={<ResultTable id={id!} />} />
-                        <Route path="taxonomy" element={<TaxonomyElement id={id!} />} />
-                        <Route path="domain" element={<DomainArchitectureList id={id!} />} />
+                        {showTaxonomyTab && <Route path="taxonomy" element={<TaxonomyElement id={id!} />} />}
+                        {showDomainTab && <Route path="domain" element={<DomainArchitectureList id={id!} />} />}
                         <Route path="download" element={<DownloadList id={id!} />} />
                     </Routes>
                 </div>
