@@ -547,7 +547,7 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
     const getColumns = () => {
         if (algo === "hmmscan") return hmmscanColumns;
 
-        const columnGenerator = (stats?.database as string)?.startsWith("mgnify")
+        const columnGenerator = (stats?.database as string)?.toLowerCase().includes("mgnify")
             ? mgnify30columns
             : columns;
 
