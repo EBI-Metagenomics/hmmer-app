@@ -5,45 +5,45 @@ export const ArchitectureSchemaSchema = {
         sequence_accession: {
             anyOf: [
                 {
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Sequence Accession",
+            title: 'Sequence Accession'
         },
         sequence_external_link: {
             anyOf: [
                 {
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Sequence External Link",
+            title: 'Sequence External Link'
         },
         names: {
-            title: "Names",
-            type: "string",
+            title: 'Names',
+            type: 'string'
         },
         score: {
-            title: "Score",
-            type: "integer",
+            title: 'Score',
+            type: 'integer'
         },
         graphics: {
-            title: "Graphics",
-            type: "object",
+            title: 'Graphics',
+            type: 'object'
         },
         accessions: {
-            title: "Accessions",
-            type: "string",
-        },
+            title: 'Accessions',
+            type: 'string'
+        }
     },
-    required: ["names", "score", "graphics", "accessions"],
-    title: "ArchitectureSchema",
-    type: "object",
+    required: ['names', 'score', 'graphics', 'accessions'],
+    title: 'ArchitectureSchema',
+    type: 'object'
 } as const;
 
 export const ArchitectureQuerySchemaSchema = {
@@ -51,232 +51,233 @@ export const ArchitectureQuerySchemaSchema = {
         page: {
             default: 1,
             exclusiveMinimum: 0,
-            title: "Page",
-            type: "integer",
+            title: 'Page',
+            type: 'integer'
         },
         page_size: {
             default: 50,
             exclusiveMinimum: 0,
-            title: "Page Size",
-            type: "integer",
-        },
+            title: 'Page Size',
+            type: 'integer'
+        }
     },
-    title: "ArchitectureQuerySchema",
-    type: "object",
+    title: 'ArchitectureQuerySchema',
+    type: 'object'
 } as const;
 
 export const ArchitectureAggregationSchemaSchema = {
     properties: {
         count: {
-            title: "Count",
-            type: "integer",
+            title: 'Count',
+            type: 'integer'
         },
         architecture: {
-            $ref: "#/components/schemas/ArchitectureSchema",
-        },
+            '$ref': '#/components/schemas/ArchitectureSchema'
+        }
     },
-    required: ["count", "architecture"],
-    title: "ArchitectureAggregationSchema",
-    type: "object",
+    required: ['count', 'architecture'],
+    title: 'ArchitectureAggregationSchema',
+    type: 'object'
 } as const;
 
 export const ArchitectureResponseSchemaSchema = {
     properties: {
         status: {
-            title: "Status",
-            type: "string",
+            title: 'Status',
+            type: 'string'
         },
         architectures: {
             anyOf: [
                 {
                     items: {
-                        $ref: "#/components/schemas/ArchitectureAggregationSchema",
+                        '$ref': '#/components/schemas/ArchitectureAggregationSchema'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Architectures",
+            title: 'Architectures'
         },
         page_count: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Page Count",
-        },
+            title: 'Page Count'
+        }
     },
-    required: ["status"],
-    title: "ArchitectureResponseSchema",
-    type: "object",
+    required: ['status'],
+    title: 'ArchitectureResponseSchema',
+    type: 'object'
 } as const;
 
 export const AnnotationSchema = {
     properties: {
         length: {
-            title: "Length",
-            type: "integer",
+            title: 'Length',
+            type: 'integer'
         },
         regions: {
             items: {
-                $ref: "#/components/schemas/Region",
+                '$ref': '#/components/schemas/Region'
             },
-            title: "Regions",
-            type: "array",
-        },
+            title: 'Regions',
+            type: 'array'
+        }
     },
-    required: ["length", "regions"],
-    title: "Annotation",
-    type: "object",
+    required: ['length', 'regions'],
+    title: 'Annotation',
+    type: 'object'
 } as const;
 
 export const ArchitectureAnnotationsResponseSchemaSchema = {
     properties: {
         status: {
-            title: "Status",
-            type: "string",
+            title: 'Status',
+            type: 'string'
         },
         annotations: {
             anyOf: [
                 {
                     items: {
-                        $ref: "#/components/schemas/Annotation",
+                        '$ref': '#/components/schemas/Annotation'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Annotations",
-        },
+            title: 'Annotations'
+        }
     },
-    required: ["status"],
-    title: "ArchitectureAnnotationsResponseSchema",
-    type: "object",
+    required: ['status'],
+    title: 'ArchitectureAnnotationsResponseSchema',
+    type: 'object'
 } as const;
 
 export const RegionSchema = {
     properties: {
         color: {
-            default: "",
-            title: "Color",
-            type: "string",
+            default: '',
+            title: 'Color',
+            type: 'string'
         },
         end_style: {
-            default: "curved",
-            title: "End Style",
-            type: "string",
+            default: 'curved',
+            title: 'End Style',
+            type: 'string'
         },
         start_style: {
-            default: "curved",
-            title: "Start Style",
-            type: "string",
+            default: 'curved',
+            title: 'Start Style',
+            type: 'string'
         },
         display: {
             default: true,
-            title: "Display",
-            type: "boolean",
+            title: 'Display',
+            type: 'boolean'
         },
         href: {
-            default: "",
-            title: "Href",
-            type: "string",
+            default: '',
+            title: 'Href',
+            type: 'string'
         },
         clan: {
-            default: "",
-            title: "Clan",
-            type: "string",
+            default: '',
+            title: 'Clan',
+            type: 'string'
         },
         metadata: {
+            additionalProperties: true,
             default: {},
-            title: "Metadata",
-            type: "object",
+            title: 'Metadata',
+            type: 'object'
         },
         type: {
-            default: "pfam",
-            title: "Type",
-            type: "string",
+            default: 'pfam',
+            title: 'Type',
+            type: 'string'
         },
         text: {
-            title: "Text",
-            type: "string",
+            title: 'Text',
+            type: 'string'
         },
         model_length: {
-            title: "Model Length",
-            type: "integer",
+            title: 'Model Length',
+            type: 'integer'
         },
         model_start: {
-            title: "Model Start",
-            type: "integer",
+            title: 'Model Start',
+            type: 'integer'
         },
         model_end: {
-            title: "Model End",
-            type: "integer",
+            title: 'Model End',
+            type: 'integer'
         },
         start: {
-            title: "Start",
-            type: "integer",
+            title: 'Start',
+            type: 'integer'
         },
         end: {
-            title: "End",
-            type: "integer",
+            title: 'End',
+            type: 'integer'
         },
         ali_start: {
-            title: "Ali Start",
-            type: "integer",
+            title: 'Ali Start',
+            type: 'integer'
         },
         ali_end: {
-            title: "Ali End",
-            type: "integer",
-        },
+            title: 'Ali End',
+            type: 'integer'
+        }
     },
-    required: ["text", "model_length", "model_start", "model_end", "start", "end", "ali_start", "ali_end"],
-    title: "Region",
-    type: "object",
+    required: ['text', 'model_length', 'model_start', 'model_end', 'start', 'end', 'ali_start', 'ali_end'],
+    title: 'Region',
+    type: 'object'
 } as const;
 
 export const ArchitectureListResponseSchemaSchema = {
     properties: {
         status: {
-            title: "Status",
-            type: "string",
+            title: 'Status',
+            type: 'string'
         },
         architectures: {
             anyOf: [
                 {
                     items: {
-                        $ref: "#/components/schemas/ArchitectureSchema",
+                        '$ref': '#/components/schemas/ArchitectureSchema'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Architectures",
+            title: 'Architectures'
         },
         page_count: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Page Count",
-        },
+            title: 'Page Count'
+        }
     },
-    required: ["status", "architectures"],
-    title: "ArchitectureListResponseSchema",
-    type: "object",
+    required: ['status', 'architectures'],
+    title: 'ArchitectureListResponseSchema',
+    type: 'object'
 } as const;
 
 export const ResultQuerySchemaSchema = {
@@ -284,909 +285,172 @@ export const ResultQuerySchemaSchema = {
         page: {
             default: 1,
             exclusiveMinimum: 0,
-            title: "Page",
-            type: "integer",
+            title: 'Page',
+            type: 'integer'
         },
         page_size: {
             default: 50,
             exclusiveMinimum: 0,
-            title: "Page Size",
-            type: "integer",
+            title: 'Page Size',
+            type: 'integer'
         },
         taxonomy_ids: {
             anyOf: [
                 {
                     items: {
-                        type: "integer",
+                        type: 'integer'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Taxonomy Ids",
+            title: 'Taxonomy Ids'
         },
         architecture: {
             anyOf: [
                 {
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Architecture",
+            title: 'Architecture'
         },
         with_domains: {
             anyOf: [
                 {
-                    type: "boolean",
+                    type: 'boolean'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: false,
-            title: "With Domains",
-        },
+            title: 'With Domains'
+        }
     },
-    title: "ResultQuerySchema",
-    type: "object",
+    title: 'ResultQuerySchema',
+    type: 'object'
 } as const;
 
 export const BatchResponseSchemaSchema = {
     properties: {
         id: {
-            format: "uuid4",
-            title: "Id",
-            type: "string",
+            format: 'uuid4',
+            title: 'Id',
+            type: 'string'
         },
         query_name: {
-            title: "Query Name",
-            type: "string",
+            title: 'Query Name',
+            type: 'string'
         },
         status: {
-            title: "Status",
-            type: "string",
-        },
+            title: 'Status',
+            type: 'string'
+        }
     },
-    required: ["id", "query_name", "status"],
-    title: "BatchResponseSchema",
-    type: "object",
+    required: ['id', 'query_name', 'status'],
+    title: 'BatchResponseSchema',
+    type: 'object'
 } as const;
 
 export const HmmdSearchStatsSchema = {
-    properties: {
-        id: {
-            title: "Id",
-            type: "string",
-        },
-        algo: {
-            title: "Algo",
-            type: "string",
-        },
-        database: {
-            title: "Database",
-            type: "string",
-        },
-        elapsed: {
-            title: "Elapsed",
-            type: "number",
-        },
-        user: {
-            title: "User",
-            type: "number",
-        },
-        sys: {
-            title: "Sys",
-            type: "number",
-        },
-        Z: {
-            title: "Z",
-            type: "number",
-        },
-        domZ: {
-            title: "Domz",
-            type: "number",
-        },
-        Z_setby: {
-            title: "Z Setby",
-            type: "integer",
-        },
-        domZ_setby: {
-            title: "Domz Setby",
-            type: "integer",
-        },
-        nmodels: {
-            title: "Nmodels",
-            type: "integer",
-        },
-        nseqs: {
-            title: "Nseqs",
-            type: "integer",
-        },
-        n_past_msv: {
-            title: "N Past Msv",
-            type: "integer",
-        },
-        n_past_bias: {
-            title: "N Past Bias",
-            type: "integer",
-        },
-        n_past_vit: {
-            title: "N Past Vit",
-            type: "integer",
-        },
-        n_past_fwd: {
-            title: "N Past Fwd",
-            type: "integer",
-        },
-        nhits: {
-            title: "Nhits",
-            type: "integer",
-        },
-        nreported: {
-            title: "Nreported",
-            type: "integer",
-        },
-        nincluded: {
-            title: "Nincluded",
-            type: "integer",
-        },
-        ngained: {
-            anyOf: [
-                {
-                    type: "integer",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Ngained",
-        },
-        nlost: {
-            anyOf: [
-                {
-                    type: "integer",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Nlost",
-        },
-        ndropped: {
-            anyOf: [
-                {
-                    type: "integer",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Ndropped",
-        },
-        first_gained_index: {
-            anyOf: [
-                {
-                    type: "integer",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "First Gained Index",
-        },
-        hit_offsets: {
-            anyOf: [
-                {
-                    items: {
-                        type: "integer",
-                    },
-                    type: "array",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Hit Offsets",
-        },
-        size: {
-            title: "Size",
-            type: "integer",
-        },
-    },
-    required: [
-        "elapsed",
-        "user",
-        "sys",
-        "Z",
-        "domZ",
-        "Z_setby",
-        "domZ_setby",
-        "nmodels",
-        "nseqs",
-        "n_past_msv",
-        "n_past_bias",
-        "n_past_vit",
-        "n_past_fwd",
-        "nhits",
-        "nreported",
-        "nincluded",
-        "hit_offsets",
-    ],
-    title: "HmmdSearchStats",
-    type: "object",
+    additionalProperties: true,
+    type: 'object'
 } as const;
 
 export const JackhmmerResponseSchemaSchema = {
     properties: {
         id: {
-            format: "uuid4",
-            title: "Id",
-            type: "string",
+            format: 'uuid4',
+            title: 'Id',
+            type: 'string'
         },
         status: {
-            title: "Status",
-            type: "string",
+            title: 'Status',
+            type: 'string'
         },
         iteration: {
-            title: "Iteration",
-            type: "integer",
+            title: 'Iteration',
+            type: 'integer'
         },
         convergence_stats: {
             anyOf: [
                 {
                     additionalProperties: {
-                        type: "integer",
+                        type: 'integer'
                     },
-                    type: "object",
+                    type: 'object'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Convergence Stats",
-        },
+            title: 'Convergence Stats'
+        }
     },
-    required: ["id", "status", "iteration", "convergence_stats"],
-    title: "JackhmmerResponseSchema",
-    type: "object",
-} as const;
-
-export const P7AlignmentDisplaySchema = {
-    properties: {
-        size: {
-            title: "Size",
-            type: "integer",
-        },
-        n: {
-            title: "N",
-            type: "integer",
-        },
-        hmmfrom: {
-            title: "Hmmfrom",
-            type: "integer",
-        },
-        hmmto: {
-            title: "Hmmto",
-            type: "integer",
-        },
-        m: {
-            title: "M",
-            type: "integer",
-        },
-        sqfrom: {
-            title: "Sqfrom",
-            type: "integer",
-        },
-        sqto: {
-            title: "Sqto",
-            type: "integer",
-        },
-        l: {
-            title: "L",
-            type: "integer",
-        },
-        string_presence_flags: {
-            title: "String Presence Flags",
-        },
-        rfline: {
-            anyOf: [
-                {
-                    type: "string",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Rfline",
-        },
-        mmline: {
-            anyOf: [
-                {
-                    type: "string",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Mmline",
-        },
-        csline: {
-            anyOf: [
-                {
-                    type: "string",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Csline",
-        },
-        model: {
-            title: "Model",
-            type: "string",
-        },
-        mline: {
-            title: "Mline",
-            type: "string",
-        },
-        aseq: {
-            anyOf: [
-                {
-                    type: "string",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Aseq",
-        },
-        ntseq: {
-            anyOf: [
-                {
-                    type: "string",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Ntseq",
-        },
-        ppline: {
-            anyOf: [
-                {
-                    type: "string",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Ppline",
-        },
-        hmmname: {
-            title: "Hmmname",
-            type: "string",
-        },
-        hmmacc: {
-            title: "Hmmacc",
-            type: "string",
-        },
-        hmmdesc: {
-            title: "Hmmdesc",
-            type: "string",
-        },
-        sqname: {
-            title: "Sqname",
-            type: "string",
-        },
-        sqacc: {
-            title: "Sqacc",
-            type: "string",
-        },
-        sqdesc: {
-            title: "Sqdesc",
-            type: "string",
-        },
-        identity: {
-            anyOf: [
-                {
-                    maxItems: 2,
-                    minItems: 2,
-                    prefixItems: [
-                        {
-                            type: "number",
-                        },
-                        {
-                            type: "integer",
-                        },
-                    ],
-                    type: "array",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Identity",
-        },
-        similarity: {
-            anyOf: [
-                {
-                    maxItems: 2,
-                    minItems: 2,
-                    prefixItems: [
-                        {
-                            type: "number",
-                        },
-                        {
-                            type: "integer",
-                        },
-                    ],
-                    type: "array",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Similarity",
-        },
-    },
-    required: [
-        "size",
-        "n",
-        "hmmfrom",
-        "hmmto",
-        "m",
-        "sqfrom",
-        "sqto",
-        "l",
-        "string_presence_flags",
-        "rfline",
-        "mmline",
-        "csline",
-        "model",
-        "mline",
-        "aseq",
-        "ntseq",
-        "ppline",
-        "hmmname",
-        "hmmacc",
-        "hmmdesc",
-        "sqname",
-        "sqacc",
-        "sqdesc",
-    ],
-    title: "P7AlignmentDisplay",
-    type: "object",
-} as const;
-
-export const P7DomainSchema = {
-    properties: {
-        size: {
-            title: "Size",
-            type: "integer",
-        },
-        ienv: {
-            title: "Ienv",
-            type: "integer",
-        },
-        jenv: {
-            title: "Jenv",
-            type: "integer",
-        },
-        iali: {
-            title: "Iali",
-            type: "integer",
-        },
-        jali: {
-            title: "Jali",
-            type: "integer",
-        },
-        iorf: {
-            title: "Iorf",
-            type: "integer",
-        },
-        jorf: {
-            title: "Jorf",
-            type: "integer",
-        },
-        envsc: {
-            title: "Envsc",
-            type: "number",
-        },
-        domcorrection: {
-            title: "Domcorrection",
-            type: "number",
-        },
-        dombias: {
-            title: "Dombias",
-            type: "number",
-        },
-        oasc: {
-            title: "Oasc",
-            type: "number",
-        },
-        bitscore: {
-            title: "Bitscore",
-            type: "number",
-        },
-        lnP: {
-            title: "Lnp",
-            type: "number",
-        },
-        ievalue: {
-            title: "Ievalue",
-            type: "number",
-        },
-        cevalue: {
-            title: "Cevalue",
-            type: "number",
-        },
-        is_reported: {
-            title: "Is Reported",
-            type: "boolean",
-        },
-        is_included: {
-            title: "Is Included",
-            type: "boolean",
-        },
-        scores_per_pos_length: {
-            title: "Scores Per Pos Length",
-            type: "integer",
-        },
-        scores_per_pos: {
-            items: {
-                type: "integer",
-            },
-            title: "Scores Per Pos",
-            type: "array",
-        },
-        alignment_display: {
-            $ref: "#/components/schemas/P7AlignmentDisplay",
-        },
-        display: {
-            title: "Display",
-            type: "boolean",
-        },
-        outcompeted: {
-            title: "Outcompeted",
-            type: "boolean",
-        },
-        significant: {
-            title: "Significant",
-            type: "boolean",
-        },
-        uniq: {
-            title: "Uniq",
-            type: "integer",
-        },
-        segments: {
-            anyOf: [
-                {
-                    items: {
-                        maxItems: 2,
-                        minItems: 2,
-                        prefixItems: [
-                            {
-                                type: "integer",
-                            },
-                            {
-                                type: "integer",
-                            },
-                        ],
-                        type: "array",
-                    },
-                    type: "array",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Segments",
-        },
-        predicted_active_sites: {
-            anyOf: [
-                {
-                    items: {
-                        maxItems: 2,
-                        minItems: 2,
-                        prefixItems: [
-                            {
-                                type: "string",
-                            },
-                            {
-                                items: {
-                                    type: "integer",
-                                },
-                                type: "array",
-                            },
-                        ],
-                        type: "array",
-                    },
-                    type: "array",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Predicted Active Sites",
-        },
-    },
-    required: [
-        "size",
-        "ienv",
-        "jenv",
-        "iali",
-        "jali",
-        "iorf",
-        "jorf",
-        "envsc",
-        "domcorrection",
-        "dombias",
-        "oasc",
-        "bitscore",
-        "lnP",
-        "is_reported",
-        "is_included",
-        "scores_per_pos_length",
-        "scores_per_pos",
-        "alignment_display",
-    ],
-    title: "P7Domain",
-    type: "object",
+    required: ['id', 'status', 'iteration', 'convergence_stats'],
+    title: 'JackhmmerResponseSchema',
+    type: 'object'
 } as const;
 
 export const P7HitSchema = {
-    properties: {
-        index: {
-            title: "Index",
-            type: "integer",
-        },
-        size: {
-            title: "Size",
-            type: "integer",
-        },
-        window_length: {
-            title: "Window Length",
-            type: "integer",
-        },
-        sortkey: {
-            title: "Sortkey",
-            type: "number",
-        },
-        score: {
-            title: "Score",
-            type: "number",
-        },
-        pre_score: {
-            title: "Pre Score",
-            type: "number",
-        },
-        sum_score: {
-            title: "Sum Score",
-            type: "number",
-        },
-        bias: {
-            title: "Bias",
-            type: "number",
-        },
-        lnP: {
-            title: "Lnp",
-            type: "number",
-        },
-        pre_lnP: {
-            title: "Pre Lnp",
-            type: "number",
-        },
-        sum_lnP: {
-            title: "Sum Lnp",
-            type: "number",
-        },
-        nexpected: {
-            title: "Nexpected",
-            type: "number",
-        },
-        nregions: {
-            title: "Nregions",
-            type: "integer",
-        },
-        nclustered: {
-            title: "Nclustered",
-            type: "integer",
-        },
-        noverlaps: {
-            title: "Noverlaps",
-            type: "integer",
-        },
-        nenvelopes: {
-            title: "Nenvelopes",
-            type: "integer",
-        },
-        ndom: {
-            title: "Ndom",
-            type: "integer",
-        },
-        flags: {
-            title: "Flags",
-        },
-        is_reported: {
-            title: "Is Reported",
-            type: "boolean",
-        },
-        is_included: {
-            title: "Is Included",
-            type: "boolean",
-        },
-        is_new: {
-            title: "Is New",
-            type: "boolean",
-        },
-        is_dropped: {
-            title: "Is Dropped",
-            type: "boolean",
-        },
-        nreported: {
-            title: "Nreported",
-            type: "integer",
-        },
-        nincluded: {
-            title: "Nincluded",
-            type: "integer",
-        },
-        best_domain: {
-            title: "Best Domain",
-            type: "integer",
-        },
-        seqidx: {
-            title: "Seqidx",
-            type: "integer",
-        },
-        subseq_start: {
-            title: "Subseq Start",
-            type: "integer",
-        },
-        string_presence_flags: {
-            title: "String Presence Flags",
-        },
-        name: {
-            title: "Name",
-            type: "string",
-        },
-        acc: {
-            anyOf: [
-                {
-                    type: "string",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Acc",
-        },
-        desc: {
-            anyOf: [
-                {
-                    type: "string",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Desc",
-        },
-        evalue: {
-            title: "Evalue",
-            type: "number",
-        },
-        metadata: {
-            anyOf: [
-                {
-                    type: "object",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Metadata",
-        },
-        domains: {
-            anyOf: [
-                {
-                    items: {
-                        $ref: "#/components/schemas/P7Domain",
-                    },
-                    type: "array",
-                },
-                {
-                    type: "null",
-                },
-            ],
-            title: "Domains",
-        },
-    },
-    required: [
-        "size",
-        "window_length",
-        "sortkey",
-        "score",
-        "pre_score",
-        "sum_score",
-        "lnP",
-        "pre_lnP",
-        "sum_lnP",
-        "nexpected",
-        "nregions",
-        "nclustered",
-        "noverlaps",
-        "nenvelopes",
-        "ndom",
-        "flags",
-        "nreported",
-        "nincluded",
-        "best_domain",
-        "seqidx",
-        "subseq_start",
-        "string_presence_flags",
-        "name",
-        "acc",
-        "desc",
-        "domains",
-    ],
-    title: "P7Hit",
-    type: "object",
+    additionalProperties: true,
+    type: 'object'
 } as const;
 
 export const ResultSchema = {
     properties: {
         stats: {
-            $ref: "#/components/schemas/HmmdSearchStats",
+            '$ref': '#/components/schemas/HmmdSearchStats'
         },
         hits: {
             items: {
-                $ref: "#/components/schemas/P7Hit",
+                '$ref': '#/components/schemas/P7Hit'
             },
-            title: "Hits",
-            type: "array",
-        },
+            title: 'Hits',
+            type: 'array'
+        }
     },
-    required: ["stats", "hits"],
-    title: "Result",
-    type: "object",
+    required: ['stats', 'hits'],
+    title: 'Result',
+    type: 'object'
 } as const;
 
 export const ResultResponseSchemaSchema = {
     properties: {
         status: {
-            title: "Status",
-            type: "string",
+            title: 'Status',
+            type: 'string'
         },
         result: {
             anyOf: [
                 {
-                    $ref: "#/components/schemas/Result",
+                    '$ref': '#/components/schemas/Result'
                 },
                 {
-                    type: "null",
-                },
-            ],
+                    type: 'null'
+                }
+            ]
         },
         page_count: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Page Count",
-        },
+            title: 'Page Count'
+        }
     },
-    required: ["status"],
-    title: "ResultResponseSchema",
-    type: "object",
+    required: ['status'],
+    title: 'ResultResponseSchema',
+    type: 'object'
 } as const;
 
 export const AlignmentQuerySchemaSchema = {
@@ -1194,38 +458,43 @@ export const AlignmentQuerySchemaSchema = {
         index: {
             default: 0,
             minimum: 0,
-            title: "Index",
-            type: "integer",
-        },
+            title: 'Index',
+            type: 'integer'
+        }
     },
-    title: "AlignmentQuerySchema",
-    type: "object",
+    title: 'AlignmentQuerySchema',
+    type: 'object'
 } as const;
 
 export const AlignmentResponseSchemaSchema = {
     properties: {
         status: {
-            title: "Status",
-            type: "string",
+            title: 'Status',
+            type: 'string'
         },
         domains: {
             anyOf: [
                 {
                     items: {
-                        $ref: "#/components/schemas/P7Domain",
+                        '$ref': '#/components/schemas/P7Domain'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Domains",
-        },
+            title: 'Domains'
+        }
     },
-    required: ["status", "domains"],
-    title: "AlignmentResponseSchema",
-    type: "object",
+    required: ['status', 'domains'],
+    title: 'AlignmentResponseSchema',
+    type: 'object'
+} as const;
+
+export const P7DomainSchema = {
+    additionalProperties: true,
+    type: 'object'
 } as const;
 
 export const DatabaseResponseSchemaSchema = {
@@ -1234,44 +503,50 @@ export const DatabaseResponseSchemaSchema = {
             anyOf: [
                 {
                     maxLength: 32,
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Id",
+            title: 'Id'
         },
         type: {
-            default: "seq",
+            default: 'seq',
             maxLength: 16,
-            title: "Type",
-            type: "string",
+            title: 'Type',
+            type: 'string'
+        },
+        status: {
+            default: 'enabled',
+            maxLength: 16,
+            title: 'Status',
+            type: 'string'
         },
         name: {
             maxLength: 32,
-            title: "Name",
-            type: "string",
+            title: 'Name',
+            type: 'string'
         },
         version: {
             maxLength: 32,
-            title: "Version",
-            type: "string",
+            title: 'Version',
+            type: 'string'
         },
         release_date: {
-            format: "date",
-            title: "Release Date",
-            type: "string",
+            format: 'date',
+            title: 'Release Date',
+            type: 'string'
         },
         order: {
             default: -1,
-            title: "Order",
-            type: "integer",
-        },
+            title: 'Order',
+            type: 'integer'
+        }
     },
-    required: ["name", "version"],
-    title: "DatabaseResponseSchema",
-    type: "object",
+    required: ['name', 'version'],
+    title: 'DatabaseResponseSchema',
+    type: 'object'
 } as const;
 
 export const JobDetailsResponseSchemaSchema = {
@@ -1279,454 +554,469 @@ export const JobDetailsResponseSchemaSchema = {
         task: {
             anyOf: [
                 {
-                    $ref: "#/components/schemas/TaskResultSchema",
+                    '$ref': '#/components/schemas/TaskResultSchema'
                 },
                 {
-                    type: "null",
-                },
-            ],
+                    type: 'null'
+                }
+            ]
         },
         database: {
-            $ref: "#/components/schemas/DatabaseResponseSchema",
+            '$ref': '#/components/schemas/DatabaseResponseSchema'
         },
         iteration: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Iteration",
+            title: 'Iteration'
         },
         next_job_id: {
             anyOf: [
                 {
-                    format: "uuid4",
-                    type: "string",
+                    format: 'uuid4',
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Next Job Id",
+            title: 'Next Job Id'
         },
         previous_job_id: {
             anyOf: [
                 {
-                    format: "uuid4",
-                    type: "string",
+                    format: 'uuid4',
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Previous Job Id",
+            title: 'Previous Job Id'
         },
         parent_job_id: {
             anyOf: [
                 {
-                    format: "uuid4",
-                    type: "string",
+                    format: 'uuid4',
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Parent Job Id",
+            title: 'Parent Job Id'
         },
         include: {
             items: {
-                type: "integer",
+                type: 'integer'
             },
-            title: "Include",
-            type: "array",
+            title: 'Include',
+            type: 'array'
         },
         exclude: {
             items: {
-                type: "integer",
+                type: 'integer'
             },
-            title: "Exclude",
-            type: "array",
+            title: 'Exclude',
+            type: 'array'
         },
         id: {
             anyOf: [
                 {
-                    format: "uuid",
-                    type: "string",
+                    format: 'uuid',
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Id",
+            title: 'Id'
         },
         algo: {
-            default: "phmmer",
+            default: 'phmmer',
             maxLength: 16,
-            title: "Algo",
-            type: "string",
+            title: 'Algo',
+            type: 'string'
         },
         input: {
             anyOf: [
                 {
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Input",
+            title: 'Input'
         },
         input_type: {
-            default: "sequence",
+            default: 'sequence',
             maxLength: 16,
-            title: "Input Type",
-            type: "string",
+            title: 'Input Type',
+            type: 'string'
         },
         calculated_input: {
             anyOf: [
                 {
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Calculated Input",
+            title: 'Calculated Input'
         },
         threshold: {
-            default: "evalue",
+            default: 'evalue',
             maxLength: 16,
-            title: "Threshold",
-            type: "string",
+            title: 'Threshold',
+            type: 'string'
         },
         E: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 1,
-            title: "E",
+            title: 'E'
         },
         domE: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 1,
-            title: "domE",
+            title: 'domE'
         },
         T: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 7,
-            title: "T",
+            title: 'T'
         },
         domT: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 5,
-            title: "domT",
+            title: 'domT'
         },
         incE: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 0.01,
-            title: "incE",
+            title: 'incE'
         },
         incdomE: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 0.03,
-            title: "incdomE",
+            title: 'incdomE'
         },
         incT: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 25,
-            title: "incT",
+            title: 'incT'
         },
         incdomT: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 22,
-            title: "incdomT",
+            title: 'incdomT'
         },
         include_taxonomy: {
-            title: "Include Taxonomy",
-            type: "object",
+            anyOf: [
+                {
+                    type: 'object'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Include Taxonomy'
         },
         exclude_taxonomy: {
-            title: "Exclude Taxonomy",
-            type: "object",
+            anyOf: [
+                {
+                    type: 'object'
+                },
+                {
+                    type: 'null'
+                }
+            ],
+            title: 'Exclude Taxonomy'
         },
         popen: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 0.02,
-            title: "Popen",
+            title: 'Popen'
         },
         pextend: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 0.4,
-            title: "Pextend",
+            title: 'Pextend'
         },
         mx: {
             anyOf: [
                 {
                     maxLength: 16,
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            default: "BLOSUM62",
-            title: "Mx",
+            default: 'BLOSUM62',
+            title: 'Mx'
+        },
+        with_taxonomy: {
+            default: false,
+            title: 'With Taxonomy',
+            type: 'boolean'
+        },
+        with_architecture: {
+            default: false,
+            title: 'With Architecture',
+            type: 'boolean'
         },
         exclude_all: {
             default: false,
-            title: "Exclude All",
-            type: "boolean",
+            title: 'Exclude All',
+            type: 'boolean'
         },
         iterations: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Iterations",
+            title: 'Iterations'
         },
         date_submitted: {
             anyOf: [
                 {
-                    format: "date-time",
-                    type: "string",
+                    format: 'date-time',
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Date Submitted",
+            title: 'Date Submitted'
         },
         number_of_hits: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Number Of Hits",
+            title: 'Number Of Hits'
         },
         number_of_included: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Number Of Included",
+            title: 'Number Of Included'
         },
         number_of_gained: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Number Of Gained",
+            title: 'Number Of Gained'
         },
         number_of_dropped: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Number Of Dropped",
+            title: 'Number Of Dropped'
         },
         number_of_lost: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Number Of Lost",
+            title: 'Number Of Lost'
         },
         first_gained_index: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "First Gained Index",
+            title: 'First Gained Index'
         },
         email_address: {
             anyOf: [
                 {
                     maxLength: 254,
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Email Address",
-        },
+            title: 'Email Address'
+        }
     },
-    required: [
-        "task",
-        "database",
-        "iteration",
-        "next_job_id",
-        "previous_job_id",
-        "parent_job_id",
-        "include",
-        "exclude",
-    ],
-    title: "JobDetailsResponseSchema",
-    type: "object",
+    required: ['task', 'database', 'iteration', 'next_job_id', 'previous_job_id', 'parent_job_id', 'include', 'exclude'],
+    title: 'JobDetailsResponseSchema',
+    type: 'object'
 } as const;
 
 export const TaskResultSchemaSchema = {
     properties: {
         status: {
-            default: "PENDING",
-            description: "Current state of the task being run",
+            default: 'PENDING',
+            description: 'Current state of the task being run',
             maxLength: 50,
-            title: "Task State",
-            type: "string",
+            title: 'Task State',
+            type: 'string'
         },
         date_created: {
-            description: "Datetime field when the task result was created in UTC",
-            format: "date-time",
-            title: "Created DateTime",
-            type: "string",
+            description: 'Datetime field when the task result was created in UTC',
+            format: 'date-time',
+            title: 'Created DateTime',
+            type: 'string'
         },
         date_done: {
-            description: "Datetime field when the task was completed in UTC",
-            format: "date-time",
-            title: "Completed DateTime",
-            type: "string",
-        },
+            description: 'Datetime field when the task was completed in UTC',
+            format: 'date-time',
+            title: 'Completed DateTime',
+            type: 'string'
+        }
     },
-    required: ["date_created", "date_done"],
-    title: "TaskResultSchema",
-    type: "object",
+    required: ['date_created', 'date_done'],
+    title: 'TaskResultSchema',
+    type: 'object'
 } as const;
 
 export const ValidationErrorDetailSchemaSchema = {
     properties: {
         type: {
-            title: "Type",
-            type: "string",
+            title: 'Type',
+            type: 'string'
         },
         loc: {
             items: {
-                type: "string",
+                type: 'string'
             },
-            title: "Loc",
-            type: "array",
+            title: 'Loc',
+            type: 'array'
         },
         msg: {
-            title: "Msg",
-            type: "string",
-        },
+            title: 'Msg',
+            type: 'string'
+        }
     },
-    required: ["type", "loc", "msg"],
-    title: "ValidationErrorDetailSchema",
-    type: "object",
+    required: ['type', 'loc', 'msg'],
+    title: 'ValidationErrorDetailSchema',
+    type: 'object'
 } as const;
 
 export const ValidationErrorSchemaSchema = {
     properties: {
         detail: {
             items: {
-                $ref: "#/components/schemas/ValidationErrorDetailSchema",
+                '$ref': '#/components/schemas/ValidationErrorDetailSchema'
             },
-            title: "Detail",
-            type: "array",
-        },
+            title: 'Detail',
+            type: 'array'
+        }
     },
-    required: ["detail"],
-    title: "ValidationErrorSchema",
-    type: "object",
+    required: ['detail'],
+    title: 'ValidationErrorSchema',
+    type: 'object'
 } as const;
 
 export const SearchPatchSchemaSchema = {
@@ -1734,37 +1024,37 @@ export const SearchPatchSchemaSchema = {
         email_address: {
             anyOf: [
                 {
-                    format: "email",
-                    type: "string",
+                    format: 'email',
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Email Address",
-        },
+            title: 'Email Address'
+        }
     },
-    title: "SearchPatchSchema",
-    type: "object",
+    title: 'SearchPatchSchema',
+    type: 'object'
 } as const;
 
 export const AlgoChoicesSchema = {
-    enum: ["phmmer", "hmmsearch", "hmmscan", "jackhmmer"],
-    title: "AlgoChoices",
-    type: "string",
+    enum: ['phmmer', 'hmmsearch', 'hmmscan', 'jackhmmer'],
+    title: 'AlgoChoices',
+    type: 'string'
 } as const;
 
 export const SearchResponseSchemaSchema = {
     properties: {
         id: {
-            format: "uuid4",
-            title: "Id",
-            type: "string",
-        },
+            format: 'uuid4',
+            title: 'Id',
+            type: 'string'
+        }
     },
-    required: ["id"],
-    title: "SearchResponseSchema",
-    type: "object",
+    required: ['id'],
+    title: 'SearchResponseSchema',
+    type: 'object'
 } as const;
 
 export const SearchRequestSchemaSchema = {
@@ -1772,306 +1062,306 @@ export const SearchRequestSchemaSchema = {
         input: {
             anyOf: [
                 {
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    format: "uuid4",
-                    type: "string",
-                },
+                    format: 'uuid4',
+                    type: 'string'
+                }
             ],
-            title: "Input",
+            title: 'Input'
         },
         input_type: {
             anyOf: [
                 {
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Input Type",
+            title: 'Input Type'
         },
         database: {
             anyOf: [
                 {
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Database",
+            title: 'Database'
         },
         include: {
             anyOf: [
                 {
                     items: {
-                        type: "integer",
+                        type: 'integer'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: [],
-            title: "Include",
+            title: 'Include'
         },
         exclude: {
             anyOf: [
                 {
                     items: {
-                        type: "integer",
+                        type: 'integer'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: [],
-            title: "Exclude",
+            title: 'Exclude'
         },
         include_taxonomy: {
             anyOf: [
                 {
                     items: {
-                        type: "integer",
+                        type: 'integer'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: [],
-            title: "Include Taxonomy",
+            title: 'Include Taxonomy'
         },
         exclude_taxonomy: {
             anyOf: [
                 {
                     items: {
-                        type: "integer",
+                        type: 'integer'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: [],
-            title: "Exclude Taxonomy",
+            title: 'Exclude Taxonomy'
         },
         threshold: {
             anyOf: [
                 {
                     maxLength: 16,
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            default: "evalue",
-            title: "Threshold",
+            default: 'evalue',
+            title: 'Threshold'
         },
         E: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 1,
-            title: "E",
+            title: 'E'
         },
         domE: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 1,
-            title: "domE",
+            title: 'domE'
         },
         T: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 7,
-            title: "T",
+            title: 'T'
         },
         domT: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 5,
-            title: "domT",
+            title: 'domT'
         },
         incE: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 0.01,
-            title: "incE",
+            title: 'incE'
         },
         incdomE: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 0.03,
-            title: "incdomE",
+            title: 'incdomE'
         },
         incT: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 25,
-            title: "incT",
+            title: 'incT'
         },
         incdomT: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 22,
-            title: "incdomT",
+            title: 'incdomT'
         },
         popen: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 0.02,
-            title: "Popen",
+            title: 'Popen'
         },
         pextend: {
             anyOf: [
                 {
-                    type: "number",
+                    type: 'number'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: 0.4,
-            title: "Pextend",
+            title: 'Pextend'
         },
         mx: {
             anyOf: [
                 {
                     maxLength: 16,
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            default: "BLOSUM62",
-            title: "Mx",
+            default: 'BLOSUM62',
+            title: 'Mx'
         },
         with_taxonomy: {
             anyOf: [
                 {
-                    type: "boolean",
+                    type: 'boolean'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: false,
-            title: "With Taxonomy",
+            title: 'With Taxonomy'
         },
         with_architecture: {
             anyOf: [
                 {
-                    type: "boolean",
+                    type: 'boolean'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: false,
-            title: "With Architecture",
+            title: 'With Architecture'
         },
         iterations: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Iterations",
+            title: 'Iterations'
         },
         exclude_all: {
             anyOf: [
                 {
-                    type: "boolean",
+                    type: 'boolean'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
             default: false,
-            title: "Exclude All",
+            title: 'Exclude All'
         },
         email_address: {
             anyOf: [
                 {
                     maxLength: 254,
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Email Address",
-        },
+            title: 'Email Address'
+        }
     },
-    required: ["input"],
-    title: "SearchRequestSchema",
-    type: "object",
+    required: ['input'],
+    title: 'SearchRequestSchema',
+    type: 'object'
 } as const;
 
 export const JobsResponseSchemaSchema = {
@@ -2079,51 +1369,51 @@ export const JobsResponseSchemaSchema = {
         task: {
             anyOf: [
                 {
-                    $ref: "#/components/schemas/TaskResultSchema",
+                    '$ref': '#/components/schemas/TaskResultSchema'
                 },
                 {
-                    type: "null",
-                },
-            ],
+                    type: 'null'
+                }
+            ]
         },
         query_name: {
-            title: "Query Name",
-            type: "string",
+            title: 'Query Name',
+            type: 'string'
         },
         id: {
             anyOf: [
                 {
-                    format: "uuid",
-                    type: "string",
+                    format: 'uuid',
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Id",
+            title: 'Id'
         },
         algo: {
-            default: "phmmer",
+            default: 'phmmer',
             maxLength: 16,
-            title: "Algo",
-            type: "string",
+            title: 'Algo',
+            type: 'string'
         },
         date_submitted: {
             anyOf: [
                 {
-                    format: "date-time",
-                    type: "string",
+                    format: 'date-time',
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Date Submitted",
-        },
+            title: 'Date Submitted'
+        }
     },
-    required: ["task", "query_name"],
-    title: "JobsResponseSchema",
-    type: "object",
+    required: ['task', 'query_name'],
+    title: 'JobsResponseSchema',
+    type: 'object'
 } as const;
 
 export const TaxonomyResponseSchemaSchema = {
@@ -2131,117 +1421,117 @@ export const TaxonomyResponseSchemaSchema = {
         id: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Id",
+            title: 'Id'
         },
         name: {
             maxLength: 255,
-            title: "Name",
-            type: "string",
+            title: 'Name',
+            type: 'string'
         },
         rank: {
             maxLength: 255,
-            title: "Rank",
-            type: "string",
+            title: 'Rank',
+            type: 'string'
         },
         lft: {
-            title: "Lft",
-            type: "integer",
+            title: 'Lft',
+            type: 'integer'
         },
         rgt: {
-            title: "Rgt",
-            type: "integer",
+            title: 'Rgt',
+            type: 'integer'
         },
         depth: {
-            title: "Depth",
-            type: "integer",
-        },
+            title: 'Depth',
+            type: 'integer'
+        }
     },
-    required: ["name", "rank", "lft", "rgt", "depth"],
-    title: "TaxonomyResponseSchema",
-    type: "object",
+    required: ['name', 'rank', 'lft', 'rgt', 'depth'],
+    title: 'TaxonomyResponseSchema',
+    type: 'object'
 } as const;
 
 export const TaxonomyTreeSchema = {
     properties: {
         id: {
-            title: "Id",
-            type: "integer",
+            title: 'Id',
+            type: 'integer'
         },
         name: {
-            title: "Name",
-            type: "string",
+            title: 'Name',
+            type: 'string'
         },
         hitcount: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Hitcount",
+            title: 'Hitcount'
         },
         hitdist: {
             anyOf: [
                 {
                     items: {
-                        type: "integer",
+                        type: 'integer'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Hitdist",
+            title: 'Hitdist'
         },
         children: {
             anyOf: [
                 {
                     items: {
-                        $ref: "#/components/schemas/TaxonomyTree",
+                        '$ref': '#/components/schemas/TaxonomyTree'
                     },
-                    type: "array",
+                    type: 'array'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Children",
-        },
+            title: 'Children'
+        }
     },
-    required: ["id", "name", "hitcount", "hitdist", "children"],
-    title: "TaxonomyTree",
-    type: "object",
+    required: ['id', 'name', 'hitcount', 'hitdist', 'children'],
+    title: 'TaxonomyTree',
+    type: 'object'
 } as const;
 
 export const TaxonomyTreeResponseSchemaSchema = {
     properties: {
         status: {
-            title: "Status",
-            type: "string",
+            title: 'Status',
+            type: 'string'
         },
         tree: {
             anyOf: [
                 {
-                    $ref: "#/components/schemas/TaxonomyTree",
+                    '$ref': '#/components/schemas/TaxonomyTree'
                 },
                 {
-                    type: "null",
-                },
-            ],
-        },
+                    type: 'null'
+                }
+            ]
+        }
     },
-    required: ["status"],
-    title: "TaxonomyTreeResponseSchema",
-    type: "object",
+    required: ['status'],
+    title: 'TaxonomyTreeResponseSchema',
+    type: 'object'
 } as const;
 
 export const TaxonomyDistributionGraphSchema = {
@@ -2249,122 +1539,122 @@ export const TaxonomyDistributionGraphSchema = {
         data: {
             items: {
                 items: {
-                    type: "integer",
+                    type: 'integer'
                 },
-                type: "array",
+                type: 'array'
             },
-            title: "Data",
-            type: "array",
+            title: 'Data',
+            type: 'array'
         },
         labels: {
             items: {
-                type: "string",
+                type: 'string'
             },
-            title: "Labels",
-            type: "array",
+            title: 'Labels',
+            type: 'array'
         },
         categories: {
             items: {
-                type: "string",
+                type: 'string'
             },
-            title: "Categories",
-            type: "array",
+            title: 'Categories',
+            type: 'array'
         },
         colors: {
             items: {
-                type: "string",
+                type: 'string'
             },
-            title: "Colors",
-            type: "array",
-        },
+            title: 'Colors',
+            type: 'array'
+        }
     },
-    required: ["data", "labels", "categories", "colors"],
-    title: "TaxonomyDistributionGraph",
-    type: "object",
+    required: ['data', 'labels', 'categories', 'colors'],
+    title: 'TaxonomyDistributionGraph',
+    type: 'object'
 } as const;
 
 export const TaxonomyDistributionResponseSchemaSchema = {
     properties: {
         status: {
-            title: "Status",
-            type: "string",
+            title: 'Status',
+            type: 'string'
         },
         graph: {
             anyOf: [
                 {
-                    $ref: "#/components/schemas/TaxonomyDistributionGraph",
+                    '$ref': '#/components/schemas/TaxonomyDistributionGraph'
                 },
                 {
-                    type: "null",
-                },
-            ],
-        },
+                    type: 'null'
+                }
+            ]
+        }
     },
-    required: ["status"],
-    title: "TaxonomyDistributionResponseSchema",
-    type: "object",
+    required: ['status'],
+    title: 'TaxonomyDistributionResponseSchema',
+    type: 'object'
 } as const;
 
 export const DownloadsQuerySchemaSchema = {
     properties: {
         taxonomy_ids: {
             items: {
-                type: "integer",
+                type: 'integer'
             },
-            title: "Taxonomy Ids",
-            type: "array",
+            title: 'Taxonomy Ids',
+            type: 'array'
         },
         architecture: {
-            title: "Architecture",
-            type: "string",
-        },
+            title: 'Architecture',
+            type: 'string'
+        }
     },
-    title: "DownloadsQuerySchema",
-    type: "object",
+    title: 'DownloadsQuerySchema',
+    type: 'object'
 } as const;
 
 export const DownloadsResponseSchemaSchema = {
     properties: {
         format: {
-            title: "Format",
-            type: "string",
+            title: 'Format',
+            type: 'string'
         },
         name: {
-            title: "Name",
-            type: "string",
+            title: 'Name',
+            type: 'string'
         },
         description: {
-            title: "Description",
-            type: "string",
+            title: 'Description',
+            type: 'string'
         },
         status: {
-            title: "Status",
-            type: "string",
+            title: 'Status',
+            type: 'string'
         },
         url: {
             anyOf: [
                 {
-                    type: "string",
+                    type: 'string'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Url",
+            title: 'Url'
         },
         size: {
             anyOf: [
                 {
-                    type: "integer",
+                    type: 'integer'
                 },
                 {
-                    type: "null",
-                },
+                    type: 'null'
+                }
             ],
-            title: "Size",
-        },
+            title: 'Size'
+        }
     },
-    required: ["format", "name", "description", "status", "url", "size"],
-    title: "DownloadsResponseSchema",
-    type: "object",
+    required: ['format', 'name', 'description', 'status', 'url', 'size'],
+    title: 'DownloadsResponseSchema',
+    type: 'object'
 } as const;
