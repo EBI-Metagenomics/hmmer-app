@@ -1,10 +1,11 @@
+import { searchApiGetDatabasesOptions } from "@/client/@tanstack/react-query.gen";
+import { SearchRequestSchema } from "@/client/types.gen";
+import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 import { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import ReactModal from "react-modal";
-import { useQuery } from "@tanstack/react-query";
-import { useFormContext, Controller } from "react-hook-form";
-import { SearchRequestSchema } from "@/client/types.gen";
-import { searchApiGetDatabasesOptions } from "@/client/@tanstack/react-query.gen";
+import { useSearchParams } from "react-router";
 
 interface DatabaseInputProps {
     type: "seq" | "hmm";
@@ -26,6 +27,7 @@ const customStyles = {
 };
 
 export const DatabaseInput: React.FC<DatabaseInputProps> = ({ type }) => {
+    const [searchParams] = useSearchParams();
     const [showConfirm, setShowConfirm] = useState(false);
     const [pendingDatabase, setPendingDatabase] = useState<string>();
 
@@ -42,15 +44,12 @@ export const DatabaseInput: React.FC<DatabaseInputProps> = ({ type }) => {
     });
 
     useEffect(() => {
-        if (databases) {
-            setValue(
-                "database",
-                _(databases ?? [])
-                    .filter(["type", type])
-                    .head()?.id ?? "",
-                { shouldValidate: false },
-            );
-        }
+        if (!databases) return;
+
+        const filtered = _(databases).filter(["type", type]).value();
+        const paramDb = searchParams.get("database");
+        const match = paramDb && filtered.some((db) => db.id === paramDb);
+        setValue("database", match ? paramDb : (filtered[0]?.id ?? ""), { shouldValidate: false });
     }, [databases]);
 
     const taxonomyIds = watch("taxonomy_ids");
@@ -72,7 +71,6 @@ export const DatabaseInput: React.FC<DatabaseInputProps> = ({ type }) => {
             setPendingDatabase(newDatabase);
             setShowConfirm(true);
         }
-
     };
 
     return (

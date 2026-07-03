@@ -33,6 +33,9 @@ const ResultsPage: React.FC = () => {
         refetchIntervalInBackground: true,
     });
 
+    const showTaxonomyTab = stats && stats?.algo !== "hmmscan" && data?.with_taxonomy;
+    const showDomainTab = stats && stats?.algo !== "hmmscan" && data?.with_architecture;
+
     if (isPending)
         return (
             <div className="vf-stack vf-stack--400 | vf-u-padding__top--400">
@@ -79,7 +82,7 @@ const ResultsPage: React.FC = () => {
                                     Score
                                 </a>
                             </li>
-                            {stats && stats?.algo !== "hmmscan" && (
+                            {showTaxonomyTab && (
                                 <li className="vf-tabs__item">
                                     <a
                                         role="tab"
@@ -92,7 +95,7 @@ const ResultsPage: React.FC = () => {
                                     </a>
                                 </li>
                             )}
-                            {stats && stats?.algo !== "hmmscan" && (
+                            {showDomainTab && (
                                 <li className="vf-tabs__item">
                                     <a
                                         role="tab"
@@ -139,8 +142,8 @@ const ResultsPage: React.FC = () => {
                     </div>
                     <Routes>
                         <Route path="score" element={<ResultTable id={id!} />} />
-                        <Route path="taxonomy" element={<TaxonomyElement id={id!} />} />
-                        <Route path="domain" element={<DomainArchitectureList id={id!} />} />
+                        {showTaxonomyTab && <Route path="taxonomy" element={<TaxonomyElement id={id!} />} />}
+                        {showDomainTab && <Route path="domain" element={<DomainArchitectureList id={id!} />} />}
                         <Route path="download" element={<DownloadList id={id!} />} />
                     </Routes>
                 </div>

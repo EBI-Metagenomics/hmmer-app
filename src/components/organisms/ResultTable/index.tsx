@@ -186,6 +186,139 @@ const columns = (onHitChange: (index: number, aboveThreshold: boolean, isChecked
         ),
     },
 ];
+const mgnify30columns = (onHitChange: (index: number, aboveThreshold: boolean, isChecked: boolean) => void) => [
+    {
+        id: "expander",
+        header: () => null,
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return <TreeToggleButton isOpen={row.getIsExpanded()} />;
+        },
+        enableHiding: false,
+        maxSize: 10,
+    },
+    {
+        id: "rowNumber",
+        header: "Row number",
+        cell: ({ row }: { row: Row<P7Hit> }) => (row.original.index ?? 0) + 1,
+        maxSize: 20,
+    },
+    columnHelper.accessor("metadata.accession", {
+        id: "accession",
+        header: "Target",
+        enableHiding: false,
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return (
+                <a href={(row.original.metadata?.external_link as string) ?? ""} className="vf-link">
+                    {(row.original.metadata?.accession as string) ?? ""}
+                </a>
+            );
+        },
+    }),
+    {
+        id: "studies",
+        header: "Studies",
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return (
+                <ul className="vf-list vf-list--default | vf-list--tight">
+                    {row.original.metadata?.studies.map((study, index) => (
+                        <li key={study} className="vf-list__item">
+                            <a href={row.original.metadata?.study_links[index]} className="vf-link">
+                                {study}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            );
+        },
+    },
+    {
+        id: "assemblies",
+        header: "Assemblies",
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return (
+                <ul className="vf-list vf-list--default | vf-list--tight">
+                    {row.original.metadata?.assemblies.map((assembly, index) => (
+                        <li key={assembly} className="vf-list__item">
+                            <a href={row.original.metadata?.assembly_links[index]} className="vf-link">
+                                {assembly}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            );
+        },
+    },
+    {
+        id: "pfamMatches",
+        header: "Pfam Matches",
+        cell: ({ row }: { row: Row<P7Hit> }) => {
+            return (
+                <ul className="vf-list vf-list--default | vf-list--tight">
+                    {row.original.metadata?.pfam_accessions.map((pfam, index) => (
+                        <li key={pfam} className="vf-list__item">
+                            <a href={row.original.metadata?.pfam_links[index]} className="vf-link">
+                                {pfam}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            );
+        },
+    },
+    {
+        id: "hitPositions",
+        header: "Hit Positions",
+        cell: ({ row }: { row: Row<P7Hit> }) => <HitPosition hit={row.original} />,
+    },
+    {
+        id: "numHits",
+        header: "# Hits",
+        cell: ({ row }: { row: Row<P7Hit> }) => row.original.nreported,
+    },
+    {
+        id: "numSignificantHits",
+        header: "# Significant Hits",
+        cell: ({ row }: { row: Row<P7Hit> }) => row.original.nincluded,
+    },
+    columnHelper.accessor("score", {
+        id: "bitscore",
+        header: "Bit Score",
+        cell: (props) => props.getValue().toFixed(2),
+    }),
+    columnHelper.accessor("evalue", {
+        id: "evalue",
+        header: "E-value",
+        cell: (props) => props.getValue()?.toPrecision(2),
+        enableHiding: false,
+        minSize: 150,
+    }),
+    {
+        id: "rowCheck",
+        header: "",
+        maxSize: 10,
+        enableHiding: false,
+        cell: ({ row, table }: { row: Row<P7Hit>; table: Table<P7Hit> }) => (
+            <div className="vf-form__item vf-form__item--checkbox">
+                <input
+                    type="checkbox"
+                    checked={isChecked(
+                        row.original.seqidx,
+                        row.original.is_included ?? false,
+                        table.options.meta?.include ?? [],
+                        table.options.meta?.exclude ?? [],
+                        table.options.meta?.excludeAll ?? false,
+                    )}
+                    id={`rowCheck-${row.original.seqidx}`}
+                    className="vf-form__checkbox"
+                    onChange={(e) =>
+                        onHitChange(row.original.seqidx!, row.original.is_included ?? false, e.target.checked)
+                    }
+                />
+                <label htmlFor={`rowCheck-${row.original.seqidx}`} className="vf-form__label" />
+            </div>
+        ),
+    },
+];
 
 const hmmscanColumns = [
     {
@@ -414,7 +547,11 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
     const getColumns = () => {
         if (algo === "hmmscan") return hmmscanColumns;
 
-        let columnsToReturn = columns(handleCheckChange);
+        const columnGenerator = (stats?.database as string)?.toLowerCase().includes("mgnify")
+            ? mgnify30columns
+            : columns;
+
+        let columnsToReturn = columnGenerator(handleCheckChange);
 
         if (stats?.database === "pdb") columnsToReturn = _.reject(columnsToReturn, ["id", "structures"]);
         if (stats?.algo !== "jackhmmer" || jobConverged(stats))
@@ -617,12 +754,12 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                         />
                     </div>
                     <div className="table-container">
-                        <table className="vf-table" style={{ height: "100%" }}>
+                        <table className="vf-table" style={{ height: "100%", width: "100%" }}>
                             <thead className="vf-table__header">
                                 {table.getHeaderGroups().map((headerGroup) => (
                                     <tr key={headerGroup.id} className="vf-table__row">
                                         {headerGroup.headers.map((header) => (
-                                            <th key={header.id} colSpan={header.colSpan} className="vf-table__heading">
+                                            <th key={header.id} colSpan={header.colSpan} className="vf-table__heading vf-u-padding--200">
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(header.column.columnDef.header, header.getContext())}
@@ -675,7 +812,7 @@ export const ResultTable: React.FC<ResultTableProps> = ({ id }) => {
                                                     return (
                                                         <td
                                                             key={cell.id}
-                                                            className={`vf-table__cell ${cell.column.id === "accession" ? "accession-cell" : ""}`}
+                                                            className={`vf-table__cell vf-u-padding--200 ${cell.column.id === "accession" ? "accession-cell" : ""}`}
                                                             width={cell.column.getSize()}
                                                         >
                                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
