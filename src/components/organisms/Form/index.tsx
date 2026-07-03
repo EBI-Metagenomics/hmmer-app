@@ -51,6 +51,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
     const resetDisabled = formState.isSubmitting || !seqFieldState.isDirty;
     const cleanDisabled = formState.isSubmitting || !seqFieldState.isDirty;
 
+    const database = watch("database");
     const iterations = watch("iterations");
 
     const { mutateAsync, error } = useMutation({
@@ -188,7 +189,7 @@ export const Form: React.FC<FormProps> = ({ algo }) => {
                                 <DatabaseInput type="hmm" />
                             </MenuSection>
                         )}
-                        {algo !== "hmmscan" && (
+                        {algo !== "hmmscan" && !database?.startsWith("mgnify30") && (
                             <MenuSection title="Taxonomy restriction">
                                 <TaxonomyFilterInput />
                             </MenuSection>
