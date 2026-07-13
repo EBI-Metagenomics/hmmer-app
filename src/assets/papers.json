@@ -131,7 +131,9 @@
         "page": "W272-W278",
         "source": "Crossref",
         "is-referenced-by-count": 1,
-        "title": "HMMER web server: 2026 update",
+        "title": [
+            "HMMER web server: 2026 update"
+        ],
         "prefix": "10.1093",
         "volume": "54",
         "author": [
