@@ -3,7 +3,7 @@ import _ from "lodash";
 import papers from "@/assets/papers.json";
 
 const About: React.FC = () => {
-    const paper = _.find(papers, ["DOI", "10.1093/nar/gky448"]);
+    const paper = _.find(papers, ["DOI", "10.1093/nar/gkag373"]);
 
     return (
         <div className="vf-stack vf-stack__200 | vf-text-body vf-text-body--2 | vf-u-padding__top--400">
