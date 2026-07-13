@@ -99,9 +99,10 @@ const Home = () => {
                 <div>
                     <Papers
                         papers={_(papers)
-                            .sortBy(
+                            .orderBy(
                                 (paper) =>
                                     `${paper.published["date-parts"][0][0]}-${paper.published["date-parts"][0][1]}-${paper.published["date-parts"][0][2]}`,
+                                ["desc"],
                             )
                             .take(3)
                             .value()}
