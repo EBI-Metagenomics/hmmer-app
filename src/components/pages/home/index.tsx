@@ -97,7 +97,15 @@ const Home = () => {
                     <h3 className="vf-text vf-text-heading--3">Papers</h3>
                 </div>
                 <div>
-                    <Papers papers={papers} />
+                    <Papers
+                        papers={_(papers)
+                            .sortBy(
+                                (paper) =>
+                                    `${paper.published["date-parts"][0][0]}-${paper.published["date-parts"][0][1]}-${paper.published["date-parts"][0][2]}`,
+                            )
+                            .take(3)
+                            .value()}
+                    />
                 </div>
                 <a className="vf-button vf-button--tertiary vf-button--sm" href="http://eddylab.org/publications.html">
                     More publications
