@@ -29,12 +29,12 @@ jobs:
         uses: EBI-Metagenomics/clippy-pirate@v1
         with:
           image_repo: ${{ vars.IMAGE_REPO }}
-          registry: dockerhub.ebi.ac.uk
-          registry_username: ${{ secrets.EBI_GITLAB_USERNAME }}
-          registry_password: ${{ secrets.EBI_GITLAB_PASSWORD }}
+          registry: ${{ vars.GITLAB_CONTAINERS_REGISTRY }}
+          registry_username: ${{ secrets.GITLAB_CONTAINERS_USERNAME }}
+          registry_password: ${{ secrets.GITLAB_CONTAINERS_PASSWORD }}
           manifest_repo_url: ${{ vars.GITLAB_INFRA_REPO_URL }}
           manifest_branch: ${{ vars.GITLAB_INFRA_BRANCH }}
           gitops_repo_token: ${{ secrets.GITLAB_INFRA_TOKEN }}
-          overlay_path_main: sites/hmmer/overlays/prod
-          overlay_path_dev: sites/hmmer/overlays/dev
+          overlay_path_main: ${{ vars.OVERLAY_PATH_MAIN }}
+          overlay_path_dev: ${{ vars.OVERLAY_PATH_DEV }}
           build_args: VITE_API_URL=${{ env.VITE_API_URL }}
